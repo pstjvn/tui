@@ -5,7 +5,7 @@ define([
 	var TeleMini = function(options) {
 		Mini.call(this,options);
 		this.on('remote-key', this.remoteKeyHandler);
-		this.setupPanels(options.panels)
+		this.setupPanels(options.panels);
 	};
 	inherit(TeleMini, Mini);
 	TeleMini.prototype.remoteKeyHandler = function(key) {
@@ -23,7 +23,7 @@ define([
 			bottom: (typeof opts.bottom === 'boolean') ? opts.bottom : this.useBottomPanel,
 			topContent: opts.topContent,
 			keys: opts.keys || []
-		}
+		};
 	};
 	TeleMini.prototype.keyHandler = function(key) {
 		console.log('Received key - please setup your own k h', key);
