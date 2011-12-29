@@ -3,8 +3,17 @@ define([
 	'transport/response',
 	'shims/bind',
 	'data/static-strings',
-	'utils/events'
-], function(request, response, bind, strings, events) {
+	'utils/events',
+	'array/array',
+	'tpl/audio-player',
+	'text!css/audio-player.css',
+	'loader/loader',
+	'dom/dom'
+], function(request, response, bind, strings, events, array, tpl, css, loader, dom) {
+	loader.loadCSSFromText( css );
+	//
+	// TODO: finish implementation for recording
+	// 
 	/**
 	* Global player object to handle all playback in DSP
 	* @consructor
@@ -17,7 +26,23 @@ define([
 		this.current_ = null;
 		this.playlist_ = null;
 		this.shufflePlayList_ = false;
+		this.visualPlayer = this.createPlayer();
 	};
+	Player.prototype.recording_ = false;
+	Player.prototype.setRecording = function( bool ) {
+		this.recording_ = bool;
+	};
+	/**
+	 * Status if we should use the visual player, usually with audio files.
+	 * @type {boolean}
+	 * @private
+	 */
+	Player.prototype.useVisualPlayer_ = false;
+	/**
+	 * The parental password used on the particular device
+	 * @type {string}
+	 * @private
+	 */
 	Player.prototype.parentalPassword = '';
 	/**
 	* Internal player statuses, translated from DSP signals
@@ -47,12 +72,39 @@ define([
 		playing: Player.STATES.PLAYING,
 		error: Player.STATES.STOPPED
 	};
-	Player.prototype.audioPlayerSetup = function(options) {
-		this.audioPlayerState = options.status;
-		
-	};
-	Player.prototype.autioPlayerUpdate = function(options) {
-		
+	Player.prototype.createPlayer = function() {
+		var that = {};
+		that.dom = dom.getInnerNodes(tpl.render({ }));
+		that.trackName = dom.$('.audio-title', that.dom);
+		that.timeElapsed = dom.$$('.audio-time span', that.dom)[0];
+		that.duration = dom.$$('.audio-time span', that.dom)[2];
+		that.progressBar = dom.$('.audio-fill-bar', that.dom);
+		that.statusIndicator = dom.$('.audio-icons div', that.dom);
+		that.update = function( name, elapsedTime, duration ) {
+			var progress;
+			if ( typeof duration !== 'number' || duration === 0 ) {
+				duration = elapsedTime || 'N/A';
+				elapsedTime = '';
+			} else if ( typeof elapsedTime == 'number' ) {
+				progress = parseInt( (duration / elapsedTime) * 100 , 10) ;
+			}
+			if (typeof name == 'string') {
+				this.trackName.innerHTML = name;
+			}
+			this.timeElapsed.innerHTML = elapsedTime;
+			this.duration.innerHTML = duration;
+			if (progress) {
+				this.progressBar.style.left = '-' + progress + '%';
+			}
+		};
+		that.clean = function() {
+			this.update( '', 0, 0);
+		};
+		that.setState = function(iconclass) {
+			this.statusIndicator.className = iconclass;
+		};
+		return that;
+
 	};
 	Player.prototype.setOSDState = function(state) {
 		var item = this.current_[0], id = '';
@@ -61,13 +113,23 @@ define([
 		switch (state) {
 			case 'started':
 			case 'playing':
-				tui.osdInstance.setContent(strings.player.states.playing + id + item.publishName, 5, 'play');
+				if (this.useVisualPlayer_) {
+					this.visualPlayer.setState('play');
+				} else {
+					tui.osdInstance.setContent(strings.player.states.playing + id + item.publishName, 5, 'play');
+				}
 				break;
 			case 'buffering':
 				tui.osdInstance.setContent(strings.player.states.buffering + id +  item.publishName, 5, 'buffering');
 				break;
 			case 'paused':
-				tui.osdInstance.setContent(strings.player.states.paused, 5, 'pause');
+				if (this.useVisualPlayer_) {
+					this.visualPlayer.setState('pause');
+				} else {
+					tui.osdInstance.setContent(strings.player.states.paused, 5, 'pause');
+				}
+				break;
+			default: break;
 		}
 	};
 	/**
@@ -83,8 +145,12 @@ define([
 		if (old_state !== this.state) {
 			if (this.state === Player.STATES.STOPPED) {
 				tui.signals.restoreEventTree();
+				this.disableVisual();
 			} else if (this.state === Player.STATES.PLAYING) {
 				tui.stealEvents(this.keyHandler);
+				if ( this.useVisualPlayer_ ) {
+					this.visualPlayer.setState('play');
+				}
 			}
 		}
 	};
@@ -145,6 +211,7 @@ define([
 				break;
 			case 'rec':
 				this.record();
+				break;
 			default:
 //				console.log('This is the player now accepting all events');
 				return;
@@ -160,16 +227,15 @@ define([
 		}
 		if (object.personalRecordingOptions && object.personalRecordingOptions.canRecord) {
 			var now = new Date();
-			var path = this.defaultRecordingPath + now.getFullYear();
+			var path = this.defaultRecordingPath + object.publishName;
+			path += this.pathSeparator;
+			path += now.getFullYear();
 			path += this.pathSeparator;
 			path += (now.getMonth() + 1);
 			path += this.pathSeparator;
 			path += now.getDate();
 			path += this.pathSeparator;
-			path += object.publishName;
-			path += this.pathSeparator;
 			path += (now.getHours() + ':' + now.getMinutes());
-			path += this.pathSeparator;
 			console.log('Configured path', path);
 		//
 		// var newreq = request.create('record',{
@@ -181,6 +247,9 @@ define([
 			return;
 		}
 	};
+	Player.AUDIO_TYPES = ['radio', 'music', 'useraudio'];
+	Player.VIDEO_TYPES = ['iptv', 'ppv', 'vod', 'uservideo'];
+	Player.IMAGE_TYPES = ['userpicture'];
 	Player.prototype.alterChannels = function() {
 		console.log(JSON.stringify(this.history_));
 		if (this.history_ && this.history_.length === 2) {
@@ -206,6 +275,7 @@ define([
 	*/
 	Player.prototype.play = function(obj, resume, password) {
 		console.log('Try to play uri: '+ obj.playURI + ' , pass:' + password);
+		var newreq;
 		if (obj.isLocked) {
 			//Prevent event stealing, set state manually so that when the event comes it 
 			//does not restore the event handler but leave it to the lock screen
@@ -214,7 +284,7 @@ define([
 				this.stop();
 			}
 			if (this.parentalPassword === '') {
-				var newreq = request.create('calld', {
+				newreq = request.create('calld', {
 					run: 'get_cfgval_json',
 					section: 'streaming',
 					'var': 'lockpass'
@@ -233,9 +303,32 @@ define([
 		}
 		var play_command = (obj.player ? 'play_youtube':'play');
 		this.addToHistory( [obj, password] );
-		var newreq = request.create(play_command, {"url": obj.playURI, 'resume': resume});
+		if (array.has(Player.AUDIO_TYPES, obj.type)) {
+			this.enableVisual(obj.publishName);
+		} else if ( array.has(Player.VIDEO_TYPES. obj.type )) {
+			this.disableVisual();
+		}
+		console.log('Sending req');
+		newreq = request.create(play_command, {"url": obj.playURI, 'resume': resume});
 		response.register(newreq, bind(this.requestResultHandle, this, obj.publishName, 'play') );
 		newreq.send();
+	};
+	/**
+	 * Call when we want to show visual player, usually when we start playing audio
+	 * @param {string} title Optional title for the playing track
+	 */
+	Player.prototype.enableVisual = function(title) {
+		this.useVisualPlayer_ = true;
+		dom.adopt(this.visualPlayer.dom);
+		this.visualPlayer.update( title );
+	};
+	/**
+	 * Called when we stop playback, clean the mess after the previous track
+	 */
+	Player.prototype.disableVisual = function() {
+		this.useVisualPlayer_ = false;
+		dom.dispose(this.visualPlayer.dom);
+		this.visualPlayer.clean();
 	};
 	Player.prototype.addToHistory = function(newSet) {
 		this.history_ = this.current_;
@@ -286,12 +379,17 @@ define([
 			break;
 		case 'player':
 			this.handlePlaybackInfo(JSONObj['event']);
+			break;
+		default: break;
 		}
 	};
 	Player.prototype.handlePlaybackInfo = function(event) {
 		var audio = event['has_audio'] || false;
 		var video = event['has_video'] || false;
-		//Handle this further
+		if (this.useVisualPlayer_) {
+			this.visualPlayer.update( undefined, event['current_position'], event['duration']);
+		}
+		
 	};
 	
 	return Player;
