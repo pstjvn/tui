@@ -29,9 +29,9 @@ html.browser .tui-mosaic.list-container {
 	height: 190px;
 }
 .tui-mosaic .item {
-	/* do not use - attributes to +1/+2 px in positioning (offsetTop)
-    display: inline-block;
-    */
+/* do not use - attributes to +1/+2 px in positioning (offsetTop)
+	display: inline-block;
+*/
     float: left;
     text-align: center;
    	padding: 5px 5px 5px 5px;
