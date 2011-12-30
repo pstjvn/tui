@@ -305,7 +305,7 @@ define([
 		this.addToHistory( [obj, password] );
 		if (array.has(Player.AUDIO_TYPES, obj.type)) {
 			this.enableVisual(obj.publishName);
-		} else if ( array.has(Player.VIDEO_TYPES. obj.type )) {
+		} else if ( array.has(Player.VIDEO_TYPES, obj.type )) {
 			this.disableVisual();
 		}
 		console.log('Sending req');
