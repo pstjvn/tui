@@ -38,16 +38,22 @@
 	height: 104px;
 }
 .setup-container .active {
-	-webkit-transform: translate(0px,-30px); 
+	/*-webkit-transform: translate(0px,-30px); 
 	-moz-transform: translate(0px,-30px);
 	-o-transform: translate(0px,-30px);
 	-ms-transform: translate(0px,-30px);
 	color: white;
-	-webkit-transition: 0.1s ease-in;
+	-webkit-transition: 0.1s ease-in;*/
 }
 .setup-container .icon .general {
 	background-image: url('app/imgs/setup.png');
 	background-position: left -4px;
+	background-repeat:no-repeat;
+	z-index: 5;
+}
+.setup-container .active .general {
+	background-image: url('app/imgs/setup.png'),url('app/imgs/setup.png');
+	background-position: left -4px, 0 -535px;
 	background-repeat:no-repeat;
 	z-index: 5;
 }
@@ -57,10 +63,22 @@
 	background-repeat:no-repeat;
 	z-index: 5;
 }
+.setup-container .active .iptv-settings {
+	background-image: url('app/imgs/setup.png'),url('app/imgs/setup.png');
+	background-position: left -115px, 0 -646px;
+	background-repeat:no-repeat;
+	z-index: 5;
+}
 .setup-container .icon .LAN {
 	background-image: url('app/imgs/setup.png');
 	background-position: left -215px;
 	background-repeat: no-repeat;
+	z-index: 5;
+}
+.setup-container .active .LAN {
+	background-image: url('app/imgs/setup.png'),url('app/imgs/setup.png');
+	background-position: left -215px, 0 -746px;
+	background-repeat:no-repeat;
 	z-index: 5;
 }
 .setup-container .icon .WIFI {
@@ -69,9 +87,21 @@
 	background-repeat:no-repeat;
 	z-index: 5;
 }
+.setup-container .active .WIFI {
+	background-image: url('app/imgs/setup.png'),url('app/imgs/setup.png');
+	background-position: left -325px, 0 -856px;
+	background-repeat:no-repeat;
+	z-index: 5;
+}
 .setup-container .icon .voip-settings {
 	background-image: url('app/imgs/setup.png');
 	background-position: left -430px;
+	background-repeat:no-repeat;
+	z-index: 5;
+}
+.setup-container .active .voip-settings {
+	background-image: url('app/imgs/setup.png'),url('app/imgs/setup.png');
+	background-position: left -430px, 0 -644px;
 	background-repeat:no-repeat;
 	z-index: 5;
 }
