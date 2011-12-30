@@ -139,7 +139,7 @@ define([
 	Player.prototype.setOSDState = function(state) {
 		var item = this.current_[0], id = '';
 		if (item.id.length < 5)
-			id = '[' + item.id + '] ';
+			id = '[' + item.sortIndex + '] ';
 		switch (state) {
 			case 'started':
 			case 'playing':
@@ -360,7 +360,7 @@ define([
 		}
 		console.log('Sending req');
 		newreq = request.create(play_command, {"url": obj.playURI, 'resume': resume, 'audio': isAudio});
-		response.register(newreq, bind(this.requestResultHandle, this, obj.publishName, 'play') );
+		response.register(newreq, bind(this.requestResultHandle, this, obj.sortIndex,  obj.publishName, 'play') );
 		newreq.send();
 	};
 	/**
@@ -416,8 +416,8 @@ define([
 	* Handle for the request result (i.e. transport layer debug, no useful application yet)
 	* @param {JSONObject} data The data returned by transport layer response
 	*/
-	Player.prototype.requestResultHandle = function(title, icon) {
-		tui.osdInstance.setContent(strings.player.states.starting + title, 10, icon);
+	Player.prototype.requestResultHandle = function( index, title, icon) {
+		tui.osdInstance.setContent(strings.player.states.starting + '[' + index + '] ' + title, 10, icon);
 	};
 	/**
 	* Handles the events coming from transport layer communication, called via tui.globalPlayer.handleEvent, no need for context
