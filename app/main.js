@@ -270,14 +270,32 @@ require(['ui/throbber'], function(t) {
 		
 		globalevents.addHandlers({
 			globalreturn: {
-				name: 'return',
+				name: 'display',
 				func: function() {
 					if (tui.globalPlayer.getState() !== player.STATES.STOPPED) {
 						tui.stealEvents(tui.globalPlayer.keyHandler);
+						if (!tui.globalPlayer.useVisualPlayer_) {
+							tui.globalPlayer.setVState(player.VSTATE.OPAQUE);
+						}
 					}
 				},
 				attached: false
-			}//,
+			},
+			globalstop: {
+				name: 'stop',
+				func: function() {
+					tui.globalPlayer.stop();
+				},
+				attached: false
+			}
+			//
+			// globaldisplay: {
+			// 	name: 'display',
+			// 	func: function() {
+			// 		if (tui.globalPlayer.getState() !== player.STOPPED.STOPPED) {
+			// 			tui.stealEvents(
+			// }
+			// 
 //			displaykey: {
 //				name: 'display',
 //				func: function() {

@@ -27,6 +27,7 @@ define([
 		this.playlist_ = null;
 		this.shufflePlayList_ = false;
 		this.visualPlayer = this.createPlayer();
+		this.vstate_ = Player.VSTATE.OPAQUE;
 	};
 	Player.prototype.recording_ = false;
 	Player.prototype.setRecording = function( bool ) {
@@ -56,6 +57,16 @@ define([
 		PAUSED: 2
 	};
 	/**
+	 * Indicates the player visibility, this is only for video player
+	 *
+	 * @enum {number}
+	 * @private
+	 */
+	Player.VSTATE = {
+		OPAQUE: 0,
+		TRANSLUSENT: 1
+	};
+	/**
 	* The strings returned by transport layer as player status
 	* @define
 	* @static
@@ -72,6 +83,18 @@ define([
 		playing: Player.STATES.PLAYING,
 		error: Player.STATES.STOPPED
 	};
+	Player.prototype.vstateName_ = 'display';
+	//
+	// Player.prototype.requestVState = function(state) {
+	// 	var page;
+	// 	switch (state) {
+	// 		case Player.VISIBILITY.VISIBLE:
+	// 			page = 'media';
+	// 			break;
+	// 		case Player.VISIBILITY.TRANSLUSENT: 
+	// 			
+	// };
+	// 
 	Player.prototype.createPlayer = function() {
 		var that = {};
 		that.dom = dom.getInnerNodes(tpl.render({ }));
@@ -105,6 +128,13 @@ define([
 		};
 		return that;
 
+	};
+	Player.prototype.getVState = function() {
+		return this.vstate_;
+	};
+	Player.prototype.setVState = function(state) {
+		var req = request.create('display', { 'page': ( state === Player.VSTATE.OPAQUE ) ? 'media' : 'ui' });
+		req.send();
 	};
 	Player.prototype.setOSDState = function(state) {
 		var item = this.current_[0], id = '';
@@ -147,10 +177,20 @@ define([
 				tui.signals.restoreEventTree();
 				this.disableVisual();
 			} else if (this.state === Player.STATES.PLAYING) {
+				console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE');
 				tui.stealEvents(this.keyHandler);
-				if ( this.useVisualPlayer_ ) {
+				if ( Player.AUDIO_TYPES.indexOf( this.current_[0]['type']) !== -1 ) {
+
+					this.enableVisual(this.current_[0]['publishName']);
 					this.visualPlayer.setState('play');
 				}
+				//
+				// if ( this.useVisualPlayer_ ) {
+				// 	console.log('JDdddddddddddddddddddddddddddddHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH');
+				// 	this.enableVisual();
+				// 	this.visualPlayer.setState('play');
+				// }
+				// 
 			}
 		}
 	};
@@ -188,6 +228,14 @@ define([
 			case 'display':
 				if (this.state !== Player.STATES.STOPPED) {
 					tui.signals.restoreEventTree();
+					if (!this.useVisualPlayer_) {
+						this.setVState( Player.VSTATE.TRANSLUSENT ) ;
+						//
+						// var req = request.create('display', {'page': 'ui'});
+						// this.vstate_ = Player.VSTATE.TRANSLUSENT;
+						// req.send();
+						// 
+					} 
 				}
 				break;
 			case 'recall':
@@ -302,14 +350,16 @@ define([
 			}
 		}
 		var play_command = (obj.player ? 'play_youtube':'play');
+		var isAudio = false;
 		this.addToHistory( [obj, password] );
 		if (array.has(Player.AUDIO_TYPES, obj.type)) {
 			this.enableVisual(obj.publishName);
+			isAudio = true;
 		} else if ( array.has(Player.VIDEO_TYPES, obj.type )) {
 			this.disableVisual();
 		}
 		console.log('Sending req');
-		newreq = request.create(play_command, {"url": obj.playURI, 'resume': resume});
+		newreq = request.create(play_command, {"url": obj.playURI, 'resume': resume, 'audio': isAudio});
 		response.register(newreq, bind(this.requestResultHandle, this, obj.publishName, 'play') );
 		newreq.send();
 	};
@@ -318,6 +368,7 @@ define([
 	 * @param {string} title Optional title for the playing track
 	 */
 	Player.prototype.enableVisual = function(title) {
+		console.log('Visual mode enabled');
 		this.useVisualPlayer_ = true;
 		dom.adopt(this.visualPlayer.dom);
 		this.visualPlayer.update( title );
