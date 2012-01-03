@@ -31,7 +31,7 @@
 	background: url('app/imgs/audio-player.png');
 }
 .play {
-	background-position: left 1px;
+	background-position: 0px 0px;
 }
 .previous {
 	background-position: -135px 0px;
