@@ -179,7 +179,7 @@ scrollbar[orient="horizontal"] {
 	height: 40px;
 	width: 100%;
 	/*background-color: rgba(44, 90, 165, 0.84);*/
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(102, 142, 221, 0.8)), color-stop(46%,rgba(0, 100, 184, 0.8)), color-stop(88%,rgba(0, 50, 127, 0.8)), color-stop(100%,rgba(0, 73, 201, 0.6)));
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(49,76,127,1)), color-stop(46%,rgba(0,84,153,1)), color-stop(100%,rgba(0,45,114,1)));
 	
 	-webkit-transition-property: top, bottom;
 	-webkit-transition-duration: 1s;
@@ -197,9 +197,7 @@ scrollbar[orient="horizontal"] {
 
     float: right;
     height: 26px;
-    margin-right: 35px;
-    margin-top: 15px;
-
+	margin: 7px;
     right: 30px;
     width: 110px;
     z-index: 10001;
