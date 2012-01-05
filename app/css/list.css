@@ -69,14 +69,11 @@
 }
 
 .tui-list .rightCont {
-float: left;
-height: 43px;
-width: 43px;
-/*
-overflow-x: hidden;
-overflow-y: hidden;
-*/
-text-align: right;
+	height: 40px;
+	width: 53px;
+	text-align: right;
+	display: -webkit-inline-box;
+	margin-top:3px;
 }
 .tui-list .rightCont-folder {
 	float: right;
@@ -128,8 +125,9 @@ text-align: right;
 	text-overflow: ellipsis;
 }
 .tui-list .img_thumb {
-	height: 100%;
 	border: 0;
+	width: 100%;
+	display: -webkit-box;
 }
 .tui-list .description {
 	display: inline-block;
