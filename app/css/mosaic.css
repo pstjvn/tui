@@ -44,6 +44,7 @@ html.browser .tui-mosaic.list-container {
 .tui-mosaic .regular .imgcont{
 	width: 140px;
 	height: 100px;
+	overflow: hidden;
 }
 /*------------ start-Rating-bar ----------------*/
 .tui-mosaic .regular .imgcont .video-bar {
@@ -156,7 +157,9 @@ position:absolute;
 .tui-mosaic .icon.recordable {
 	background-image: url('imgs/icon_recording.png');
 }
-
+.tui-mosaic .icon.paid {
+	background-image: url('imgs/icon_dollar.png');
+}
 .item .imgcont .screen_default_icon_size {
 	width: 130px; 
 	height: 90px;
@@ -187,11 +190,11 @@ div[data-appid="aod"] .item .default_icon {
 	background-position: center -508px;
 }
 .tui-mosaic div.folder-icon {
-    background-image: url('app/imgs/folder.png');
+	background: url('app/imgs/folder.png') no-repeat;
 	background-size: contain;
 	position: absolute;
 	width: 43px;
 	height: 43px;
-	right: 9px;
-	top: 67px;  
+	right: 11px;
+	top: 73px;  
 }
