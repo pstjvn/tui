@@ -70,19 +70,18 @@ html.browser .tui-mosaic.list-container {
 }
 /*------------- end-Ratin-bar -------------------*/
 .tui-mosaic .imgcont {
-	-webkit-transition-property: background-color;
-	-webkit-transition-duration: 1.2s;
-	-moz-transition-property: background-color;
-	-moz-transition-duration: 1.2s;
-	background-color: gray;
-	/* border: 1px solid gray; */
-	-moz-box-shadow: inset 0 0 8px #d9d9d9;
-	-webkit-box-shadow: inset 0 0 8px #D9D9D9;
-	box-shadow: inset 0 0 8px #d9d9d9;
-	-moz-border-radius: 3px;
+	-webkit-transition: background-color 1.2s;
 	-webkit-border-radius: 3px;
 	float: left;
 	margin-left: 5px;
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(51,78,114,0.9)), color-stop(4%,rgba(51,78,114,0)), color-stop(96%,rgba(51,78,114,0)), color-stop(100%,rgba(51,78,114,0.9)));
+}
+.tui-mosaic .imgcontin {
+	height: 100px;
+	width: 140px;
+	border-radius: 3px;
+	position:absolute;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(51,78,114,0.9)), color-stop(4%,rgba(51,78,114,0)), color-stop(96%,rgba(51,78,114,0)), color-stop(100%,rgba(51,78,114,0.9)));
 }
 .tui-mosaic .item.regular   img {
     /*width: 130px;*/
@@ -136,17 +135,17 @@ html.browser .tui-mosaic.list-container {
     top: 5px;
 }
 .tui-mosaic .item.current .imgcont {
-	background-color: rgba(227, 118, 48, 1);
-	-webkit-transition-property: background-color;
-	-webkit-transition-duration: 0.3s;
-	background-image: -o-linear-gradient(bottom, rgb(214,114,26) 10%, rgb(158,82,24) 19%, rgb(250,108,13) 87%);
-	background-image: -moz-linear-gradient(bottom, rgb(214,114,26) 10%, rgb(158,82,24) 19%, rgb(250,108,13) 87%);
-	background-image: -webkit-linear-gradient(bottom, rgb(214,114,26) 10%, rgb(158,82,24) 19%, rgb(250,108,13) 87%);
-	background-image: -ms-linear-gradient(bottom, rgb(214,114,26) 10%, rgb(158,82,24) 19%, rgb(250,108,13) 87%);
-	background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.07, rgb(222,101,7)), color-stop(0.67, rgb(158,82,24)) );
+background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(198,222,255,0.9)), color-stop(1%,rgba(104,151,221,0.75)), color-stop(3%,rgba(30,105,222,0.45)), color-stop(6%,rgba(30,105,222,0)), color-stop(94%,rgba(30,105,222,0)), color-stop(97%,rgba(30,105,222,0.45)), color-stop(99%,rgba(104,151,221,0.75)), color-stop(100%,rgba(198,222,255,0.9)));
+}
+.tui-mosaic .item.current .imgcontin {
+height: 100px;
+width: 140px;
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(198,222,255,0.9)), color-stop(1%,rgba(104,151,221,0.75)), color-stop(3%,rgba(30,105,222,0.45)), color-stop(6%,rgba(30,105,222,0)), color-stop(94%,rgba(30,105,222,0)), color-stop(97%,rgba(30,105,222,0.45)), color-stop(99%,rgba(104,151,221,0.75)), color-stop(100%,rgba(198,222,255,0.9)));
+border-radius: 3px;
+position:absolute;
 }
 .tui-mosaic .item.current span {
-    color: #ffc4c4;
+    color: rgba(153, 206, 255, 1);
 }
 .tui-mosaic .icon.locked {
 	background-image: url('imgs/icon_lock.png');

@@ -18,6 +18,8 @@ buf.push('>');
 buf.push('<div');
 buf.push(attrs({ "class": ('imgcont') }));
 buf.push('><div');
+buf.push(attrs({ "class": ('imgcontin') }));
+buf.push('></div><div');
 buf.push(attrs({ "class": ('default_icon') + ' ' + ('screen_default_icon_size') }));
 buf.push('></div></div>');
 }
@@ -25,7 +27,9 @@ buf.push('></div></div>');
 {
 buf.push('<div');
 buf.push(attrs({ "class": ('imgcont') }));
-buf.push('><img');
+buf.push('><div');
+buf.push(attrs({ "class": ('imgcontin') }));
+buf.push('></div><img');
 buf.push(attrs({ 'src':(things[i].thumbnail) }));
 buf.push('/></div>');
 }
