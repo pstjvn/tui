@@ -20,7 +20,7 @@
 	 position: fixed;
 	 width: 100%;	
 	 z-index: 1000;
-	 height: 60px;
+	 height: 40px;
 }
 .tui-titlebar { top: -60px; }
 .tui-titlebar-active { top: 0px; }

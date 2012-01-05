@@ -174,9 +174,9 @@ require(['ui/throbber'], function(t) {
 	//					this.panels.top.innerHTML = opt_topContent;
 	//				}
 					this.panels.top.style.top = '0px';
-					this.mainContainer.style.marginTop = '60px';
+					this.mainContainer.style.marginTop = '40px';
 				} else {
-					this.panels.top.style.top = '-60px';
+					this.panels.top.style.top = '-40px';
 					this.mainContainer.style.marginTop = '0px';
 					//this.panels.top.innerHTML = '';
 				}
@@ -185,9 +185,9 @@ require(['ui/throbber'], function(t) {
 						this.panels.infoBlock.innerHTML = opt_bottomContent;
 					}
 					this.panels.bottom.style.bottom = '0px';
-					this.mainContainer.style.marginBottom = '60px';
+					this.mainContainer.style.marginBottom = '40px';
 				} else {
-					this.panels.bottom.style.bottom = '-60px';
+					this.panels.bottom.style.bottom = '-40px';
 					this.mainContainer.style.marginBottom = '0px';
 					this.panels.infoBlock.innerHTML = '';
 				}
@@ -401,11 +401,11 @@ require(['ui/throbber'], function(t) {
 		tui.panels = {
 			top: dom.create('div', {
 				classes: 'tui-component panels top-panel',
-				style: 'top : -60px;'
+				style: 'top : -40px;'
 			}),
 			bottom: dom.create('div', {
 				classes: 'tui-component panels bottom-panel',
-				style: 'bottom: -60px'
+				style: 'bottom: -40px'
 			})
 		};
 		//Setup clock 
