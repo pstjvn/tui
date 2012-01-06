@@ -158,8 +158,29 @@ Partials.prototype.activate = function( data_index ) {
 //
 // TODO: implement this as in mosaic
 // 
-Partials.prototype.updateItem = function( data_index ) {
+Partials.prototype.updateItem = function( index, item ) {
 
+	if (index >= this.getStartIndex() && index < this.getStartIndex() + this.itemsPerPage_) {
+
+		var element = dom.$('div[data-sequence="'+ index + '"]');
+		var opts = dom.$('.channel-settings-icons', element);
+		var locked = dom.$('.locked', opts);
+		var bm = dom.$('.bookmarked', opts);
+		if (item.isLocked && locked === null) {
+			dom.adopt( opts , dom.create('li', {
+				classes: 'icon locked'
+			}));
+		} else if ( !item.isLocked && locked !== null ) {
+			dom.dispose(locked);
+		}
+		if (item.isBookmarked && bm === null) {
+			dom.adopt( opts , dom.create('li', {
+				classes: 'icon bookmarked'
+			}));
+		} else if ( !item.isBookmarked && bm !== null ) {
+			dom.dispose(bm);
+		}
+	}
 };
 Partials.prototype.reset = function(){};
 /**
