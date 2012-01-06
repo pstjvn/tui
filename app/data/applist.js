@@ -5,41 +5,41 @@ define({
 	// In general this should be generated on the fly by the server,
 	// however we currently do not have this capability ready, so we will use static provide
 	iptv: {
-		name: 'IPTV',
+		name: '',
 		apptag: 'iptv',
 		module: 'apps/iptv',
 		icon: 'imgs/start_screen_icon.png'
 	},
 	vod: {
-		name: 'VOD',
+		name: '',
 		apptag: 'vod',
 		module: 'apps/vod',
 		icon: 'imgs/start_screen_icon.png'
 	},
 	ppv: {
-		name: 'PPV',
+		name: '',
 		apptag: 'ppv',
 		module: 'apps/ppv',
 		icon: 'imgs/ppv_screen_icon.png'
 	},
 	aod: {
-		name: 'AOD',
+		name: '',
 		apptag: 'aod',
 		module: 'apps/aod',
 		icon: 'imgs/ppv_screen_icon.png'
 	},
 	youtube: {
-		name: 'YOUTUBE',
+		name: '',
 		apptag: 'youtube',
 		module: 'apps/youtube'
 	},
 	uservideo: {
-		name: 'USERVIDEO',
+		name: '',
 		apptag: 'uservideo',
 		module: 'apps/uvideo',
 	},
 	setup: {
-		name: 'SETUP',
+		name: '',
 		apptag: 'setup',
 		module: 'apps/setup',
 	},
@@ -49,19 +49,19 @@ define({
 //		module: 'apps/telefony'
 //	},
 	radio: {
-		name: 'RADIO',
+		name: '',
 		apptag: 'radio',
 		module: 'apps/radio',
 		icon: 'imgs/radio_screen_icon.png'
 	},
 	games: {
-		name: 'GAMES',
+		name: '',
 		apptag: 'games',
 		module: 'apps/games',
 		icon: 'imgs/radio_screen_icon.png'
 	},
 	weather: {
-		name: 'WEATHER',
+		name: '',
 		apptag: 'weather',
 		module: 'apps/weather'
 	}
