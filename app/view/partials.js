@@ -159,9 +159,7 @@ Partials.prototype.activate = function( data_index ) {
 // TODO: implement this as in mosaic
 // 
 Partials.prototype.updateItem = function( index, item ) {
-
 	if (index >= this.getStartIndex() && index < this.getStartIndex() + this.itemsPerPage_) {
-
 		var element = dom.$('div[data-sequence="'+ index + '"]');
 		var opts = dom.$('.channel-settings-icons', element);
 		var locked = dom.$('.locked', opts);
