@@ -25,5 +25,5 @@ div.tui-list.list-container(style="width:"+ w, data-appid=id)
 					li.icon.locked
 				- if (things[i].isBookmarked)
 					li.icon.bookmarked
-				- if (things[i].personalRecordingOptions.canRecord) 
-					li.icon.recordable
+				- if (things[i].cost > 0) 
+					li.icon.paid

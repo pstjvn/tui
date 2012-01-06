@@ -55,10 +55,10 @@ buf.push('<li');
 buf.push(attrs({ "class": ('icon') + ' ' + ('bookmarked') }));
 buf.push('></li>');
 }
- if (data[i].personalRecordingOptions && data[i].personalRecordingOptions.canRecord) 
+ if (data[i].cost > 0 ) 
 {
 buf.push('<li');
-buf.push(attrs({ "class": ('icon') + ' ' + ('recordable') }));
+buf.push(attrs({ "class": ('icon') + ' ' + ('paid') }));
 buf.push('></li>');
 }
 buf.push('</ul>');
