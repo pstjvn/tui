@@ -2,7 +2,10 @@ div.tui-list.list-container(style="width:"+ w, data-appid=id)
 	- for (var i = 0; i < things.length; i++ )
 		div.item(data-sequence=i)
 			div(class = ((things[i].thumbnail !== null)? "leftCont" : "leftContLong"))
-				h1.number_id!= things[i].sortIndex
+				- if (things[i].sortIndex !== '0' && things[i].sortIndex !== 0 )
+					h1.number_id!= things[i].sortIndex
+				- else 
+					h1.number_id
 				h2.item_name!= things[i].publishName
 				- if (things[i].genre)
 					div.description!= "Genre:" + things[i].genre

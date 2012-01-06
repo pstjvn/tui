@@ -12,12 +12,23 @@ buf.push('<div');
 buf.push(attrs({ 'data-sequence':(i), "class": ('item') }));
 buf.push('><div');
 buf.push(attrs({ "class": (((things[i].thumbnail !== null)? "leftCont" : "leftContLong")) }));
-buf.push('><h1');
+buf.push('>');
+ if (things[i].sortIndex !== '0' && things[i].sortIndex !== 0 )
+{
+buf.push('<h1');
 buf.push(attrs({ "class": ('number_id') }));
 buf.push('>');
 var __val__ = things[i].sortIndex
 buf.push(null == __val__ ? "" : __val__);
-buf.push('</h1><h2');
+buf.push('</h1>');
+}
+ else 
+{
+buf.push('<h1');
+buf.push(attrs({ "class": ('number_id') }));
+buf.push('></h1>');
+}
+buf.push('<h2');
 buf.push(attrs({ "class": ('item_name') }));
 buf.push('>');
 var __val__ = things[i].publishName
