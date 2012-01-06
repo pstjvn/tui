@@ -226,7 +226,7 @@ define([
 	Storage.prototype.enterDir = function() {
 		var item = this.getItem();
 		var url = {};
-		if (item.isDir !== false) {
+		if ( typeof item.isDir !== 'undefined' && item.isDir !== false) {
 			this.isLoading = true;
 			for (var k in item.isDir) {
 				url[k] = item.isDir[k];
