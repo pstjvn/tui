@@ -10,7 +10,7 @@ define([
 //	'transport/response'
 	'transport/grouprequest'
 ], function(inherit, VisualApp, bind, exports, loader, template, css, request, GroupRequest){
-	loader.loadCSSFromText(css);
+	//loader.loadCSSFromText(css);
 	var units_ = '1';
 	var city_ = '104164';
 	var Weather = function(options) {

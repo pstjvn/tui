@@ -15,12 +15,7 @@
 	margin:auto;
 }
 .setup-container .icon {
-	width: 120px;
-	height: 90px;
-	text-align: center;
-	display: inline-block;
 	color: black;
-	-webkit-transition: 0.1s ease-in;
 }
 .setup-container .icon span {
 	z-index:1;
@@ -29,10 +24,6 @@
     margin: 0 auto;
 }
 .setup-container .icon div {
-	-webkit-transition: height 0.2s ease-in; 
-	-moz-transition: height 0.2s ease-in; 
-	-o-transition: height 0.2s ease-in; 
-	-ms-transition: height 0.2s ease-in;
 	position: relative;
 	width: 120px;
 	height: 104px;
@@ -45,89 +36,69 @@
 	color: white;
 	-webkit-transition: 0.1s ease-in;*/
 }
-.setup-container .icon .general {
-	background-image: url('app/imgs/setup.png');
-	background-position: left -4px;
+.icon .general, .icon .iptv-settings, .icon .LAN, .icon .WIFI, .icon .voip-settings,
+.active .general, .active .iptv-settings, .active .LAN, .active .WIFI, .active .voip-settings {
+	background-image: url('../imgs/setup.png');
 	background-repeat:no-repeat;
 	z-index: 5;
+}
+.setup-container .icon .general {
+	background-position: left -4px;
 }
 .setup-container .active .general {
-	background-image: url('app/imgs/setup.png'),url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
 	background-position: left -4px, 0 -535px;
-	background-repeat:no-repeat;
-	z-index: 5;
 }
 .setup-container .icon .iptv-settings {
-	background-image: url('app/imgs/setup.png');
 	background-position: left -115px;
-	background-repeat:no-repeat;
-	z-index: 5;
 }
 .setup-container .active .iptv-settings {
-	background-image: url('app/imgs/setup.png'),url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
 	background-position: left -115px, 0 -646px;
-	background-repeat:no-repeat;
-	z-index: 5;
 }
 .setup-container .icon .LAN {
-	background-image: url('app/imgs/setup.png');
 	background-position: left -215px;
-	background-repeat: no-repeat;
-	z-index: 5;
 }
 .setup-container .active .LAN {
-	background-image: url('app/imgs/setup.png'),url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
 	background-position: left -215px, 0 -746px;
-	background-repeat:no-repeat;
-	z-index: 5;
 }
 .setup-container .icon .WIFI {
-	background-image: url('app/imgs/setup.png');
 	background-position: left -325px;
-	background-repeat:no-repeat;
-	z-index: 5;
 }
 .setup-container .active .WIFI {
-	background-image: url('app/imgs/setup.png'),url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
 	background-position: left -325px, 0 -856px;
-	background-repeat:no-repeat;
-	z-index: 5;
 }
 .setup-container .icon .voip-settings {
-	background-image: url('app/imgs/setup.png');
 	background-position: left -430px;
-	background-repeat:no-repeat;
-	z-index: 5;
 }
 .setup-container .active .voip-settings {
-	background-image: url('app/imgs/setup.png'),url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
 	background-position: left -430px, 0 -644px;
-	background-repeat:no-repeat;
-	z-index: 5;
 }
-
+/*
 .setup-container .icon .general .focus {
-	background-image: url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png');
 	background-position: left -535px;
 }
 .setup-container .icon .iptv-settings .focus {
-	background-image: url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png');
 	background-position: left -646px;
 }
 .setup-container .icon .LAN .focus {
-	background-image: url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png');
 	background-position: left -746px;
 }
 .setup-container .icon .WIFI .focus {
-	background-image: url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png');
 	background-position: left -856px;
 }
 .setup-container .icon .voip-settings .focus {
-	background-image: url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png');
 	background-position: 1px -644px;
 }
-
-
+*/
 
 /*------------------------ General ---------------------------*/
 
@@ -138,6 +109,9 @@
 	color: white;
 	height: 440px;
 	position: relative;
+	display: block;
+	width: auto;
+	background: transparent;
 }
 .general-wrapper > * {
 	margin: 0 auto;
@@ -162,7 +136,7 @@
 	width: 120px;
 	height: 90px;
 	z-index: 1;
-	background-image: url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png');
 	background-position: left 80px;
 	background-repeat: no-repeat;
 	background-size: cover;

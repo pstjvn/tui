@@ -11,7 +11,7 @@ define([
 	'array/array',
 	'shims/bind'
 ], function (dom, tpl, Disposable, inherit, classes, css, loader, domattr, KBD, array, bind){
-	loader.loadCSSFromText(css);
+	//loader.loadCSSFromText(css);
 	
 	var Popup = function(type, callback, title) {
 		Disposable.call(this);

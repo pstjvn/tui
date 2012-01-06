@@ -1,6 +1,6 @@
 define(['tpl/list','text!css/list.css','loader/loader','view/mosaictemplate','oop/inherit'
 ], function(template, css, loader, MosaicTemplate, inherit) {
-	loader.loadCSSFromText(css);
+	//loader.loadCSSFromText(css);
 	
 	var View = function(iWidth, iHeight) {
 		MosaicTemplate.call(this, undefined, 64 );

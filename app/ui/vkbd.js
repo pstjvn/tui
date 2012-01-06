@@ -9,7 +9,7 @@ define([
 	'array/array'
 ], function(template, css, loader, dom, classes, bind, i18l, array) {
 	//Most definetely move the loader loads in the main logic
-	loader.loadCSSFromText(css);
+	//loader.loadCSSFromText(css);
 
 	var KBD = function() {
 		this.layouts = [];
