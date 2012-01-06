@@ -228,17 +228,19 @@
 }
 .general-wrapper .general-content .section .row{
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(34, 35, 38, 1)), color-stop(81%,rgba(27, 28, 35, 1)), color-stop(100%,rgba(23, 25, 30, 1)));
-	border: solid 1px grey;
+	border: 1px solid #3E5170;
 	margin: 4px 3px 1px 50px;
 	color: gainsboro;
-	font-size: 20px;
+	font-size: 15px;
 	display: inline-block;
 	width: 46%;
 	float: right;
+	font-weight: bold;
+	padding: 7px 0;
 }
 .general-wrapper .general-content .section .active{
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(142,129,125,1)), color-stop(49%,rgba(66,53,50,1)), color-stop(50%,rgba(51,22,15,1)), color-stop(60%,rgba(51,22,15,1)), color-stop(100%,rgba(168,77,57,1)));
-	border: solid 1px grey;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(198,222,255,1)), color-stop(3%,rgba(104,151,221,1)), color-stop(10%,rgba(21,74,153,1)), color-stop(50%,rgba(0,0,0,1)), color-stop(82%,rgba(0,0,0,1)), color-stop(98%,rgba(104,151,221,1)), color-stop(100%,rgba(198,222,255,1)));
+	border: 1px solid #1E69D1;
 }
 .general-wrapper .general-content .section.active {
 	height: auto;
@@ -311,7 +313,7 @@
 	line-height: 1.5;
 }
 .general-wrapper .general-content .general-item.active {
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(140,130,124,1)), color-stop(49%,rgba(66,53,50,1)), color-stop(50%,rgba(51,27,15,1)), color-stop(60%,rgba(51,24,15,1)), color-stop(100%,rgba(204,99,38,1)));
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(198,222,255,1)), color-stop(3%,rgba(104,151,221,1)), color-stop(10%,rgba(21,74,153,1)), color-stop(50%,rgba(0,0,0,1)), color-stop(82%,rgba(0,0,0,1)), color-stop(98%,rgba(104,151,221,1)), color-stop(100%,rgba(198,222,255,1)));
 	-moz-border-bottom-colors: #323232;
 	-moz-border-image: none;
 	-moz-border-left-colors: rgba(255,255,255,0.3);
@@ -323,7 +325,7 @@
 	border-left-color: rgba(255,255,255,0.3);
 	border-right-color: #323232;
 	border-top-color: #c8c7cc; 
-	border-radius: 1px 1px 1px 1px;
+	border-radius: 3px 3px 3px 3px;
 	border-style: solid;
 	border-width: 1px;
 }
@@ -332,7 +334,7 @@
 	color: #999;
 }
 .general-wrapper .general-content .general-item.inactive.active {
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(114, 105, 102, 1)), color-stop(50%,rgba(40, 27, 25, 1)), color-stop(51%,rgba(40, 27, 24, 1)), color-stop(60%,rgba(35, 23, 21, 1)), color-stop(100%,rgba(51, 35, 30, 1)));
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,rgba(63,77,107,1)), color-stop(50%,rgba(22,27,43,1)), color-stop(51%,rgba(22,27,38,1)), color-stop(60%,rgba(19,23,33,1)), color-stop(100%,rgba(26,36,61,1)));
 	color: #999;
 	border-bottom-color: #323232;
 	border-left-color: rgba(255, 255, 255, 0.1);

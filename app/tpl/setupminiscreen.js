@@ -41,7 +41,7 @@ buf.push(null == __val__ ? "" : __val__);
 buf.push('</div></div><div');
 buf.push(attrs({ "class": ('section') }));
 buf.push('><div');
-buf.push(attrs({ 'style':('float: left;text-align: center;margin-left: 13%;position: relative;top: 37px; width: 31%;') }));
+buf.push(attrs({ 'style':('float: left; text-align: center; margin-left: 9%; position: relative; top: 8px; width: 36%; margin-bottom: 8px;') }));
 buf.push('>');
 var __val__ = items[i].help
 buf.push(null == __val__ ? "" : __val__);
