@@ -15,7 +15,7 @@ define([
 	'shims/bind',
 	'data/static-strings'
  ], function (inherit, Togglable, events, datetime, sizes, template, dom, css, loader, infobuttonstpl, classes, dom, Scrollable, bind, strings){
-	loader.loadCSSFromText(css);
+	//loader.loadCSSFromText(css);
 	var EPGModel = function(dataCollection, taint_list) {
 		Togglable.call(this);
 		this.dataAccessor = dataCollection;

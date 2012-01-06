@@ -30,7 +30,7 @@ define([
 	json,
 	template,
 	css ) {
-	loader.loadCSSFromText(css);
+	//loader.loadCSSFromText(css);
 	/**
 	* Mini screen chooser
 	*/

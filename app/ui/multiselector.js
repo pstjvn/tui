@@ -10,7 +10,7 @@ define([
 	'dom/classes'
 ], function(inherit, Disposable, template, css, loader, dom, bind, domattr, classes){
 	//Load some CSS code
-	loader.loadCSSFromText(css);
+//	loader.loadCSSFromText(css);
 	/**
 	* @constructor
 	* @param {Array} options, List ot options to visualize

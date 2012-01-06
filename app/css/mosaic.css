@@ -44,6 +44,7 @@ html.browser .tui-mosaic.list-container {
 .tui-mosaic .regular .imgcont{
 	width: 140px;
 	height: 100px;
+	overflow: hidden;
 }
 /*------------ start-Rating-bar ----------------*/
 .tui-mosaic .regular .imgcont .video-bar {
@@ -61,12 +62,12 @@ html.browser .tui-mosaic.list-container {
 }
 .tui-mosaic .regular .imgcont .video-bar .rating_bar {
   width: 79px;
-  background: url(imgs/icon-favorite-grey.png) 0 0 repeat-x;
+  background: url(../imgs/icon-favorite-grey.png) 0 0 repeat-x;
 }
 
 .tui-mosaic .regular .imgcont .video-bar  .rating_bar div {
   height: 17px;
-  background: url(imgs/icon_favorite.png) 0 0 repeat-x;
+  background: url(../imgs/icon_favorite.png) 0 0 repeat-x;
 }
 /*------------- end-Ratin-bar -------------------*/
 .tui-mosaic .imgcont {
@@ -138,60 +139,55 @@ html.browser .tui-mosaic.list-container {
 background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(198,222,255,0.9)), color-stop(1%,rgba(104,151,221,0.75)), color-stop(3%,rgba(30,105,222,0.45)), color-stop(6%,rgba(30,105,222,0)), color-stop(94%,rgba(30,105,222,0)), color-stop(97%,rgba(30,105,222,0.45)), color-stop(99%,rgba(104,151,221,0.75)), color-stop(100%,rgba(198,222,255,0.9)));
 }
 .tui-mosaic .item.current .imgcontin {
-height: 100px;
-width: 140px;
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(198,222,255,0.9)), color-stop(1%,rgba(104,151,221,0.75)), color-stop(3%,rgba(30,105,222,0.45)), color-stop(6%,rgba(30,105,222,0)), color-stop(94%,rgba(30,105,222,0)), color-stop(97%,rgba(30,105,222,0.45)), color-stop(99%,rgba(104,151,221,0.75)), color-stop(100%,rgba(198,222,255,0.9)));
-border-radius: 3px;
-position:absolute;
 }
 .tui-mosaic .item.current span {
     color: rgba(153, 206, 255, 1);
 }
 .tui-mosaic .icon.locked {
-	background-image: url('imgs/icon_lock.png');
+	background-image: url('../imgs/icon_lock.png');
 }
 .tui-mosaic .icon.bookmarked {
-	background-image: url('imgs/icon_favorite.png');
+	background-image: url('../imgs/icon_favorite.png');
 }
 .tui-mosaic .icon.recordable {
-	background-image: url('imgs/icon_recording.png');
+	background-image: url('../imgs/icon_recording.png');
 }
-
+.tui-mosaic .icon.paid {
+	background-image: url('imgs/icon_dollar.png');
+}
 .item .imgcont .screen_default_icon_size {
 	width: 130px; 
 	height: 90px;
 	margin: 5px;
 }
+.item .default_icon {
+	background-image: url('../imgs/icon_set.png');
+}
 div[data-appid="iptv"] .item .default_icon {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: center -3px;
 }
 div[data-appid="ppv"] .item .default_icon {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: center -104px;
 }
 div[data-appid="vod"] .item .default_icon {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: center -205px;
 }
 div[data-appid="uvideo"] .item .default_icon {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: center -306px;
 }
 div[data-appid="radio"] .item .default_icon {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: center -407px;
 }
 div[data-appid="aod"] .item .default_icon {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: center -508px;
 }
 .tui-mosaic div.folder-icon {
-    background-image: url('app/imgs/folder.png');
+	background: url('../imgs/folder.png') no-repeat;
 	background-size: contain;
 	position: absolute;
 	width: 43px;
 	height: 43px;
-	right: 9px;
-	top: 67px;  
+	right: 11px;
+	top: 73px;  
 }

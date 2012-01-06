@@ -455,7 +455,7 @@ require(['ui/throbber'], function(t) {
 						});
 						tui.setPanels(false, true, false, itpl.render({
 							things: {
-								home: 'Select App'
+								home: 'Home'
 							}
 						}));
 					});
@@ -469,7 +469,8 @@ require(['ui/throbber'], function(t) {
 			tui.logger.log('Load the intrinsic loader now..');
 			require(['loader/loader'], function(loader) {
 				tui.logger.log(['Loaded intrinsic loader', 'Should switch to jquery and net/xrh to be browser independent']);
-				loader.loadCSS(['app/css/reset.css', 'app/css/appselector3.css', 'app/css/infobuttons.css'], loadTUI);
+				//loader.loadCSS(['app/css/reset.css', 'app/css/appselector3.css', 'app/css/infobuttons.css'], loadTUI);
+				loadTUI();
 			});
 		});
 	});

@@ -4,7 +4,7 @@ define([
 	'loader/loader',
 	'dom/dom'
 ], function(tpl, css, loader, dom) {
-	loader.loadCSSFromText(css);
+	//loader.loadCSSFromText(css);
 	var FastIndexSelector = function() {
 		this.template = dom.getInnerNodes(tpl.render({}));
 		this.digitsContainer = dom.$('.input', this.template);

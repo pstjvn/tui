@@ -17,8 +17,8 @@ div.tui-mosaic.list-container(style="width:"+ width, data-appid=name)
 							li.icon.locked
 						- if (data[i].isBookmarked)
 							li.icon.bookmarked
-						- if (data[i].personalRecordingOptions && data[i].personalRecordingOptions.canRecord) 
-							li.icon.recordable
+						- if (data[i].cost > 0 ) 
+							li.icon.paid
 					- if (!/[^0-9]/.test(data[i].id))
 						div.object-index!= data[i].sortIndex
 					- if (data[i].isDir !== false)

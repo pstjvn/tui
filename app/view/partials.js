@@ -9,7 +9,7 @@ define([
 	'text!css/mosaic.css',
 	'data/static-strings'
 ], function( inherit, Disposable, dom, paginator, classes, srcTemplate, loader, css, strings) {
-	loader.loadCSSFromText( css );
+	//loader.loadCSSFromText( css );
 	/* START MODULE */
 /**
  * Implement the view component of an App with low end devices on mind, mosaic style

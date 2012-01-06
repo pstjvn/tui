@@ -20,7 +20,7 @@ define([
 	'tpl/telephony_incall',
 	'data/static-strings'
 ], function(App, template1, template2, template3, template4, template5, template6, css, loader, Mini, dom, classes, TeleMini, Scrollable, Dialler, bind, request, exports, template7, strings) {
-	loader.loadCSSFromText(css);
+	//loader.loadCSSFromText(css);
 	/**
 	* Mini screen chooser
 	*/

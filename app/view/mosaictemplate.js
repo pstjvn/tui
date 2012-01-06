@@ -6,7 +6,7 @@ define([
 	'oop/inherit',
 	'data/static-strings'
 ], function(template, css, loader, Disposable, inherit, strings) {
-	loader.loadCSSFromText(css);
+	//loader.loadCSSFromText(css);
 	
 	var View = function(iWidth, iHeight) {
 		Disposable.call(this);

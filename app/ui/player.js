@@ -10,7 +10,7 @@ define([
 	'loader/loader',
 	'dom/dom'
 ], function(request, response, bind, strings, events, array, tpl, css, loader, dom) {
-	loader.loadCSSFromText( css );
+	//loader.loadCSSFromText( css );
 	//
 	// TODO: finish implementation for recording
 	// 
