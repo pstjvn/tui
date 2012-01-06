@@ -81,7 +81,7 @@
 	height: 38px;
 	overflow-x: hidden;
 	overflow-y: hidden;
-	background: url(app/imgs/folder.png) no-repeat;
+	background: url(../imgs/folder.png) no-repeat;
 	background-size: contain;
 	margin: 4px 4px 0 0;
 }
@@ -150,14 +150,14 @@
     float: left; 
 }
 .tui-list.list-container .bookmarked {
-	background-image: url("imgs/icon_favorite.png");
+	background-image: url("../imgs/icon_favorite.png");
 }
 .tui-list.list-container .recordable {
-	background-image: url("imgs/icon_recording.png");
+	background-image: url("../imgs/icon_recording.png");
 }
 .tui-list.list-container .locked {
-	background-image: url("imgs/icon_lock.png");
+	background-image: url("../imgs/icon_lock.png");
 }
 .tui-list.list-container .paid {
-	background-image: url('imgs/icon_dollar.png');
+	background-image: url('../imgs/icon_dollar.png');
 }

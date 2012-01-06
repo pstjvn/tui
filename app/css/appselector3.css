@@ -15,72 +15,49 @@
 	height: 90px;
 	text-align: left;
 }
-.screenChooser .screen.iptv {
-	background-image: url('app/imgs/icon_set.png');
-	background-position: right -4px;
+.screen.iptv, .screen.ppv, .screen.vod, .screen.uservideo, .screen.radio, .screen.aod, .screen.youtube, .screen.uaudio, 
+.screen.setup, .screen.games, .screen.phone, .screen.weather, .screen.weather, .screen-selector-pointer {
+	background-image: url('../imgs/icon_set.png');
 	background-repeat: no-repeat;
+}
+.screenChooser .screen.iptv {
+	background-position: right -4px;
 }
 .screenChooser .screen.ppv {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: right -104px;
-	background-repeat: no-repeat;
 }
 .screenChooser .screen.vod {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: right -205px;
-	background-repeat: no-repeat;
 }
 .screenChooser .screen.uservideo {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: right -307px;
-	background-repeat: no-repeat;
 }
 .screenChooser .screen.radio {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: right -407px;
-	background-repeat: no-repeat;
 }
 .screenChooser .screen.aod {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: right -507px;
-	background-repeat: no-repeat;
 }
 .screenChooser .screen.youtube{
-	background-image: url('app/imgs/icon_set.png');
 	background-position: right -1206px;
-	background-repeat: no-repeat;
 }
 .screenChooser .screen.uaudio {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: right -609px;
-	background-repeat: no-repeat;
 }
 .screenChooser .screen.setup {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: right -707px;
-	background-repeat: no-repeat;
-
 }
 .screenChooser .screen.games {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: right -808px;
-	background-repeat: no-repeat;
 }
 .screenChooser .screen.phone {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: right -908px;
-	background-repeat: no-repeat;
 }
 .screenChooser .screen.weather {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: right -1110px;
-	background-repeat: no-repeat;
 }
-
 .screen-selector-pointer {
-    background-image: url("app/imgs/icon_set.png");
     background-position: left -997px;
-    background-repeat: no-repeat;
     height: 113px;
     position: fixed;
     right: 12px;

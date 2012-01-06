@@ -6,7 +6,7 @@ define(['types/types',
 	'text!css/start.css', 
 	'text!tpl/start.txt', 
 	'loader/loader'], function(types, appeng, dom, events, domattr, css, html, loader) {
-	loader.loadCSSFromText(css, 'startCSS');
+	//loader.loadCSSFromText(css, 'startCSS');
 	var APP = appeng({
 		config: {
 			name: 'start',	
