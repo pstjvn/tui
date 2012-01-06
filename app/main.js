@@ -455,7 +455,7 @@ require(['ui/throbber'], function(t) {
 						});
 						tui.setPanels(false, true, false, itpl.render({
 							things: {
-								home: 'Select App'
+								home: 'Home'
 							}
 						}));
 					});
