@@ -179,7 +179,7 @@ scrollbar[orient="horizontal"] {
 	height: 40px;
 	width: 100%;
 	/*background-color: rgba(44, 90, 165, 0.84);*/
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(49,76,127,1)), color-stop(46%,rgba(0,84,153,1)), color-stop(100%,rgba(0,45,114,1)));
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(45, 82, 163, 1)), color-stop(6%,rgba(26, 62, 109, 1)), color-stop(50%,rgba(22, 27, 43, 1)), color-stop(60%,rgba(19, 23, 33, 1)), color-stop(100%,rgba(26, 36, 61, 1)));
 	
 	-webkit-transition-property: top, bottom;
 	-webkit-transition-duration: 1s;
