@@ -154,7 +154,7 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(1
 	background-image: url('../imgs/icon_recording.png');
 }
 .tui-mosaic .icon.paid {
-	background-image: url('imgs/icon_dollar.png');
+	background-image: url('../imgs/icon_dollar.png');
 }
 .item .imgcont .screen_default_icon_size {
 	width: 130px; 
