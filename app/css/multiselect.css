@@ -54,21 +54,7 @@
 	padding: 20px 0 20px 0;
 	margin: 0 auto; 
 	border-radius: 5px;
-	
-	background-image: linear-gradient(bottom, rgb(33,27,33) 25%, rgb(51,43,51) 75%, rgb(74,69,74) 88%);
-	background-image: -o-linear-gradient(bottom, rgb(33,27,33) 25%, rgb(51,43,51) 75%, rgb(74,69,74) 88%);
-	background-image: -moz-linear-gradient(bottom, rgb(33,27,33) 25%, rgb(51,43,51) 75%, rgb(74,69,74) 88%);
-	background-image: -webkit-linear-gradient(bottom, rgb(33,27,33) 25%, rgb(51,43,51) 75%, rgb(74,69,74) 88%);
-	background-image: -ms-linear-gradient(bottom, rgb(33,27,33) 25%, rgb(51,43,51) 75%, rgb(74,69,74) 88%);
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.25, rgb(33,27,33)),
-		color-stop(0.75, rgb(51,43,51)),
-		color-stop(0.88, rgb(74,69,74))
-	);
-
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(20,50,84,1)), color-stop(50%,rgba(22,27,43,1)), color-stop(60%,rgba(19,23,33,1)), color-stop(100%,rgba(20,29,48,1)));
 }
 .multi-select-wrapper .multi-select-shadow .multi-select-container .title {
 	font-weight: bold;
@@ -148,7 +134,7 @@
 		color-stop(0.25, rgb(107,106,107)),
 		color-stop(0.75, rgb(133,133,133))
 	);
-	border: 2px solid #9D5F00;
+	border: 2px solid #3E6EBB;
 }
 .multi-select-wrapper .multi-select-shadow .multi-select-container div.pressed {
 	border: 2px solid #808080; /*#9D5F00; /*#F49300;*/
