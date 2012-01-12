@@ -22,38 +22,33 @@ define({
 		module: 'apps/ppv',
 		icon: 'imgs/ppv_screen_icon.png'
 	},
-	aod: {
+	uservideo: {
 		name: '',
-		apptag: 'aod',
-		module: 'apps/aod',
-		icon: 'imgs/ppv_screen_icon.png'
+		apptag: 'uservideo',
+		module: 'apps/uvideo',
 	},
 	youtube: {
 		name: '',
 		apptag: 'youtube',
 		module: 'apps/youtube'
 	},
-	uservideo: {
+	aod: {
 		name: '',
-		apptag: 'uservideo',
-		module: 'apps/uvideo',
+		apptag: 'aod',
+		module: 'apps/aod',
+		icon: 'imgs/ppv_screen_icon.png'
 	},
-	setup: {
-		name: '',
-		apptag: 'setup',
-		module: 'apps/setup',
-	},
-//	phone: {
-//		name: 'phone',
-//		apptag: 'phone',
-//		module: 'apps/telefony'
-//	},
 	radio: {
 		name: '',
 		apptag: 'radio',
 		module: 'apps/radio',
 		icon: 'imgs/radio_screen_icon.png'
 	},
+//	phone: {
+//		name: 'phone',
+//		apptag: 'phone',
+//		module: 'apps/telefony'
+//	},
 	games: {
 		name: '',
 		apptag: 'games',
@@ -64,5 +59,10 @@ define({
 		name: '',
 		apptag: 'weather',
 		module: 'apps/weather'
+	},
+	setup: {
+		name: '',
+		apptag: 'setup',
+		module: 'apps/setup',
 	}
 });
