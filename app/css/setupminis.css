@@ -194,7 +194,7 @@
 	color: #CCC;
 	margin: 0;
 	overflow: hidden;
-	background:rgba(255,255,255,0.2);
+	background: #111;
 	height: 0px;
 	margin: 0% 70%;
 	padding-top: 0;
@@ -213,7 +213,7 @@
 	padding: 7px 0;
 }
 .general-wrapper .general-content .section .active{
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(198,222,255,1)), color-stop(3%,rgba(104,151,221,1)), color-stop(10%,rgba(21,74,153,1)), color-stop(50%,rgba(0,0,0,1)), color-stop(82%,rgba(0,0,0,1)), color-stop(98%,rgba(104,151,221,1)), color-stop(100%,rgba(198,222,255,1)));
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(198, 222, 255, 0.9)), color-stop(4%,rgba(104, 151, 221, 0.75)), color-stop(5%,rgba(30, 105, 222, 0.45)), color-stop(34%,rgba(9, 25, 40, 0.72)), color-stop(50%,rgba(9, 25, 40, 0.87)), color-stop(80%,rgba(9, 25, 40, 0.6)), color-stop(96%,rgba(9, 25, 40, 0.45)), color-stop(98%,rgba(9, 25, 40, 0.75)), color-stop(100%,rgba(9, 25, 40, 0.9)));
 	border: 1px solid #1E69D1;
 }
 .general-wrapper .general-content .section.active {
@@ -287,21 +287,9 @@
 	line-height: 1.5;
 }
 .general-wrapper .general-content .general-item.active {
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(198,222,255,1)), color-stop(3%,rgba(104,151,221,1)), color-stop(10%,rgba(21,74,153,1)), color-stop(50%,rgba(0,0,0,1)), color-stop(82%,rgba(0,0,0,1)), color-stop(98%,rgba(104,151,221,1)), color-stop(100%,rgba(198,222,255,1)));
-	-moz-border-bottom-colors: #323232;
-	-moz-border-image: none;
-	-moz-border-left-colors: rgba(255,255,255,0.3);
-	-moz-border-right-colors: #323232;
-	-moz-border-top-colors: #c8c7cc;
-	
-	
-	border-bottom-color: #323232;
-	border-left-color: rgba(255,255,255,0.3);
-	border-right-color: #323232;
-	border-top-color: #c8c7cc; 
-	border-radius: 3px 3px 3px 3px;
-	border-style: solid;
-	border-width: 1px;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(198, 222, 255, 0.9)), color-stop(4%,rgba(104, 151, 221, 0.75)), color-stop(5%,rgba(30, 105, 222, 0.45)), color-stop(34%,rgba(9, 25, 40, 0.72)), color-stop(50%,rgba(9, 25, 40, 0.87)), color-stop(80%,rgba(9, 25, 40, 0.6)), color-stop(96%,rgba(9, 25, 40, 0.45)), color-stop(98%,rgba(9, 25, 40, 0.75)), color-stop(100%,rgba(9, 25, 40, 0.9)));
+	border: 1px solid #1E69D1;
+	border-radius: 2px;
 }
 .general-wrapper .general-content .general-item.inactive {
 	background: rgba(50, 50, 50, 0.5);

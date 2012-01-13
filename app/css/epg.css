@@ -47,7 +47,7 @@
 	width: 100%;
 	height: 100%;
 	color: white;
-	background-color: #272b33;
+	background-color: #1A1A1A;
 	position: relative;
 }
 .epg .active {
@@ -57,12 +57,10 @@
 	width: 100%;
 	height: 70px;
 	vertical-align: middle;
-	text-align: center;
 	padding: 10px;
 	position: relative;
 }
 .epg .header .screenImg {
-	width: 110px;
 	height: 70px;
 	margin: 1px;
 	float: left;
@@ -81,6 +79,8 @@
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	width: 61%;
+	margin-left: 25px;
 }
 .epg .epgProgram {
 	overflow-x: hidden;
@@ -92,22 +92,25 @@
 }
 .epg .epgProgram .epgItem {
 	width: 100%;
-	font-size: 120%;
-	border-bottom: 2px solid #666666;
+	font-size: 110%;
+	border-bottom: 2px solid #3E5170;
 	padding: 8px;
 	clear: both;
+	background-color:#111;
 }
 .epg .epgProgram .epgItem .epgItemTime {
-	width: 20%;
+	width: 18%;
 	font-size: 110%;
 	padding: 5px;
 	display: inline-block;
+	border-right: solid #38B 2px;
+	border-radius: 2px;
 }
 .epg .epgProgram .epgItem .epgItemTitle {
 	display: inline-block;
-	font-size: 120%;
-	margin-left: 8px;
-    width: 75%;
+	font-size: 150%;
+	margin-left: 22px;
+	width: 75%;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -117,6 +120,16 @@
 	background-color: #595b69;
 }
 .epg .epg-selected {
-	background-color: SlateGray;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(198, 222, 255, 1)), color-stop(3%,rgba(104, 151, 221, 1)), color-stop(10%,rgba(21, 74, 153, 1)), color-stop(50%,rgba(0, 0, 0, 1)), color-stop(82%,rgba(0, 0, 0, 1)), color-stop(98%,rgba(104, 151, 221, 1)), color-stop(100%,rgba(198, 222, 255, 1)));
 }
-
+.epg .no-epg-available {
+	margin: 17% auto;
+	border: 2px solid #3E6EBB;
+	border-radius: 4px;
+	color: white;
+	font-weight: inherit;
+	padding: 4% 14%;
+	text-align: center;
+	font-size: 135%;
+	width: 55%;
+}
