@@ -54,7 +54,7 @@
 	padding: 20px 0 20px 0;
 	margin: 0 auto;
 	border-radius: 5px;
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(17, 43, 73, 1)), color-stop(9%,rgba(15, 19, 30, 1)), color-stop(50%,rgba(13, 16, 25, 1)), color-stop(94%,rgba(15, 19, 30, 1)), color-stop(100%,rgba(21, 30, 51, 1)));
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(12,30,51,1)), color-stop(9%,rgba(6,8,12,1)), color-stop(51%,rgba(0,0,0,1)), color-stop(94%,rgba(6,8,12,1)), color-stop(100%,rgba(17,24,40,1)));
 	border: 2px solid #3E5170;
 }
 .multi-select-wrapper .multi-select-shadow .multi-select-container .title {
