@@ -16,7 +16,7 @@ define([
 	// 
 	/**
 	* Global player object to handle all playback in DSP
-	* @consructor
+	* @constructor
 	*/
 	var Player = function() {
 		this.state = Player.STATES.STOPPED;
