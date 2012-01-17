@@ -63,7 +63,7 @@ define({
 	screens: {
 		setup: {
 			header: {
-				settings: "Setting",
+				settings: "Parameter",
 				value: "Value"
 			}	
 		},
