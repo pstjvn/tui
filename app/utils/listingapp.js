@@ -1,8 +1,8 @@
 define(['oop/inherit', 'utils/visualapp', 'model/listmodel2', 'view/mosaicpresentation', 'shims/bind',
 // 'net/simplexhr',
 'data/static-strings', 'transport/request', 'transport/response',
-'json/json', 'view/partials'], 
-function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, request, response, json, Partials) {
+'json/json', 'view/partials', 'oop/clone'], 
+function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, request, response, json, Partials, cloner) {
 	var ListApp = function(options) {
 		VisualApp.call(this, options);
 		this.numericTimeout_ = null;
@@ -40,8 +40,14 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 	ListApp.prototype.onShowComplete = function() {
 		this.attachEvents(true);
 	};
-	ListApp.prototype.onPlayRequest = function(resume) {
-		tui.globalPlayer.play(this.model.getItem(), resume);
+	ListApp.prototype.getEPGByID = function() {
+		return [];
+	};
+	ListApp.prototype.onPlayRequest = function(obj, resume) {
+		var clone = cloner(obj);
+        clone.title = clone.id + '. ' + clone.publishName;
+		clone.epg=[];
+		tui.globalPlayer.play(clone, resume);
 	};
 	ListApp.prototype.onSelectionChanged = function(objectWithIndex) {
 		this.model.currentIndex = objectWithIndex.index;
@@ -211,7 +217,7 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 					this.acceptPass();
 					break;
 				case 'resume':
-					this.fire('try-play', true);
+					this.fire('try-play', this.model.getItem(), true);
 					this.dialogInstance = null;
 					delete this.dialogInstance;
 					break;

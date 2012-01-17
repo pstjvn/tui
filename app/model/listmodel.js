@@ -325,11 +325,11 @@ define([
 			return null;
 		}
 		var itemByID = this.getPropertyFromItem('id',index);
-		if (itemByID && this.data.epg[itemByID]) {
-			return this.data.epg[itemByID].body;
-		} else {
-			return [];
-		}
+		return this.getEPGForItemByID( itemByID );
+	};
+	Storage.prototype.getEPGForItemByID = function( id ) {
+		if ( this.data.epg[ id ]) return this.data.epg[id].body;
+		return [];
 	};
 	Storage.prototype.unload = function(){};
 	Storage.prototype.disposeInternal = function() {
