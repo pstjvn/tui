@@ -147,6 +147,8 @@ function(tpl,applist, dom, classes, Mevents, sizes, exports) {
 		remoteSelectScreen: function(apptag) {
 			for (var i = 0; i < internalAppList.length; i++ ) {
 				if (internalAppList[i].apptag === apptag) {
+					tui.setContainerVisibility(true);
+					tui.setPanels(false, false);
 					currenScreen = dom.$$('.approtator-item', DOM)[i];
 					selectApp();
 					return;

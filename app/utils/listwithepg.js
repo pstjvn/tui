@@ -2,7 +2,8 @@ define([
 	'oop/inherit',
 	'oop/idisposable',
 	'utils/listingapp',
-	'utils/epg',
+//	'utils/epg',
+	'ui/epgvisual',
 	'shims/bind',
 	'tpl/infobuttons',
 	'oop/clone',
@@ -15,31 +16,31 @@ define([
 		this.appEvents['info'] = {
 			name: 'info',
 			func: bind(function() {
-				if (this.epgInstance.isAttachedToDom()) {
-					this.epgInstance.exitDom();
+				if (this.epgInstance.isVisible()) {
+					this.epgInstance.hide();
 				} else {
-					this.epgInstance.load();
-					this.epgInstance.enterDom();					
+					this.epgInstance.show();
+					this.epgInstance.selectRow( this.model.currentIndex );
 				}
 			},this),
 			attached: false
 		};
 		//Override the OK event to handle EPG also
-		this.appEvents['ok'] = {
-			name: 'ok',
-			func: bind(function() {
-				if (this.epgInstance.isAttachedToDom()) {
-					this.epgInstance.enterListing(true);
-					this.epgInstance.attachEvents(true);
-				} else {
-					this.model.acceptEvent({
-						action: 'ok'
-					});
-				}
-			},this), 
-			attached: false
-		};
-		this.on('show-complete', this.showHints);
+//		this.appEvents['ok'] = {
+//			name: 'ok',
+//			func: bind(function() {
+//				if (this.epgInstance.isAttachedToDom()) {
+//					this.epgInstance.enterListing(true);
+//					this.epgInstance.attachEvents(true);
+//				} else {
+//					this.model.acceptEvent({
+//						action: 'ok'
+//					});
+//				}
+//			},this), 
+//			attached: false
+//		};
+//		this.on('show-complete', this.showHints);
 	};
 	inherit(App, ListApp);
 	App.prototype.showHints = function() {
@@ -51,8 +52,8 @@ define([
 	};
 	App.prototype.onSelectionChanged = function(obj) {
 		this.constructor.superClass_.onSelectionChanged.call(this, obj);
-		if (this.epgInstance.attachedToDom_) {
-			this.epgInstance.load(obj.index);
+		if (this.epgInstance.isVisible()) {
+			this.epgInstance.selectRow(obj.index);
 		}
 	};
 	

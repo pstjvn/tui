@@ -2,8 +2,6 @@
 <html>
 	<head>
 		<title>TUI</title>
-<!--		Include basic reset with styles for the loader screen-->
-		<!--<link href="app/css/appselector.css" type="text/css" rel="stylesheet" />-->
 		<link href="app/css/appselector3.css" type="text/css" rel="stylesheet" />
 		<link href="app/css/audio-player.css" type="text/css" rel="stylesheet" />
 		<link href="app/css/basic-reset.css" type="text/css" rel="stylesheet" />
@@ -24,12 +22,10 @@
 		<link href="app/css/titles.css" type="text/css" rel="stylesheet" />
 		<link href="app/css/vkbd.css" type="text/css" rel="stylesheet" />
 		<link href="app/css/weather.css" type="text/css" rel="stylesheet" />
-<!--		Postpone any signals from backend until we are readay-->
 		<script>alert("app://waitready")</script>
-<!--        <script>console.log('^^^^^^^^^^^^^^^^^^^^^^^' + (new Date()).getTime());</script>-->
 	</head>
 	<body>
-<!--	    Load require and all requirements-->
+	    <script type="text/javascript" language="javascript" charset="utf-8" src="/cgi-bin/voip.cgi?run=backend_json"></script>
 		<script src="library/js/require.js" data-main='app/main.js'></script>
 	</body>
 </html>

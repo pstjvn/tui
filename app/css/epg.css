@@ -133,3 +133,23 @@
 	font-size: 135%;
 	width: 55%;
 }
+
+/* FOR NEW EPG */
+.channelitem {
+	background-color: red;
+	width: 100px;
+	height: 60px;
+	position: absolute;
+	top:0;
+	left:0;
+}
+.channel.active .channelitem {
+	background-color: green;
+}
+.channelitem .imgcont {
+	width: 53px;
+	height: 40px;
+}
+.channelitem .imgcont img {
+	width: 100%;
+}
