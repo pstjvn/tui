@@ -66,13 +66,13 @@
 }
 .multi-select-wrapper .multi-select-shadow .multi-select-container .input-box {
 	font-weight: bold;
-	background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.25, rgb(69,69,69)), color-stop(0.75, rgb(102,102,102)) );
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(50%,rgba(26,30,40,1)), color-stop(90%,rgba(39,46,61,1)));
 	width: 33px;
 	height: 20px;
 	padding: 10px;
 	text-align: center;
 	margin: 4px;
-	border: 2px solid transparent;
+	border: 2px solid #3E5170;
 	font-size: 160%;
 	line-height: 1;
 	border-radius: 4px;
@@ -82,13 +82,13 @@
 }
 .multi-select-wrapper .multi-select-shadow .multi-select-container .horizontal-button {
 	font-weight: bold;
-	background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.25, rgb(69,69,69)), color-stop(0.75, rgb(102,102,102)) );
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(50%,rgba(26,30,40,1)), color-stop(90%,rgba(39,46,61,1)));
 	width: 80px;
 	height: 20px;
 	padding: 10px;
 	text-align: center;
 	margin: 4px;
-	border: 2px solid transparent;
+	border: 2px solid #3E5170;
 	font-size: 120%;
 	border-radius: 4px;
 }
