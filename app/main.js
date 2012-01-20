@@ -18,7 +18,8 @@ require.config({
 		"dom": "../library/js/dom",
 		"debug": "../library/js/debug",
 		"array": "../library/js/array",
-		"text": "../library/js/text"
+		"text": "../library/js/text",
+		"datetime/xdate": "../library/js/datetime/xdate"
 	},
 	urlArgs: "bust=" + (new Date()).getTime()
 });
@@ -448,9 +449,9 @@ require(['ui/throbber'], function(t) {
 		dom.adopt(tui.panels.bottom);
 		function preloadApps() {
 			console.log(preloads);
-			require(preloads.preloadsModules, function(varargs) {
-				console.log('Modules loaded...');
-			});
+//			require(preloads.preloadsModules, function(varargs) {
+//				console.log('Modules loaded...');
+//			});
 		}
 		
 		function loadTUI() {

@@ -4,7 +4,7 @@ define([
 	return new App({
 		name: 'uservideo',
 		shouldJump: true,
-		listType: 'list',
+//		listType: 'list',
 		canResume: true
 	});
 });

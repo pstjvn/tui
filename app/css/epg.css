@@ -135,21 +135,32 @@
 }
 
 /* FOR NEW EPG */
-.channelitem {
-	background-color: red;
-	width: 100px;
+.epgrow {
+	background-color:yellow;
+	width: 640px;
 	height: 60px;
 	position: absolute;
 	top:0;
 	left:0;
 }
-.channel.active .channelitem {
+.epgrow .prog {
+	position: relative;
+	top:0;
+	left:0;
+	background-color: blue;
+	height: 60px;
+	width: 1440px;
+}
+.epgrow .prog .p {
+	display: inline-block;
+	height: 50px;
 	background-color: green;
 }
-.channelitem .imgcont {
-	width: 53px;
-	height: 40px;
-}
-.channelitem .imgcont img {
-	width: 100%;
+.epgrow .title {
+	position: relative;
+	top:-60px;
+	left:0;
+	background-color: red;
+	width:100px;
+	height: 60px;
 }

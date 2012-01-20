@@ -12,16 +12,19 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 		} else {
 			this.model = new ListModel(this);
 		}
+		console.log('\n\n\n\n BACKEND CONFIG' + JSON.stringify( window.BACKEND_CONFIG ));
+		console.log('OPTIONS: LISTTYPE' + options.listType)
 		if (options.listType && options.listType !== 'mosaic' && options.listType  !== 'list' ) {
 			this.presentation = new MosaicPresentation(this, options.listType, options.itemWidth, options.itemHeight, options.shouldJump);
-		} else if ( window.BACKEND_CONFIG && typeof window.BACKEND_CONFIG['LIST_TYPE'] === 'string' &&
-		options.listType !== 'mosaic' && options.listType  !== 'list' ) {
+		} else if ( window.BACKEND_CONFIG && typeof window.BACKEND_CONFIG['LIST_TYPE'] === 'string' && options.listType !== 'mosaic' && options.listType  !== 'list' ) {
+			console.log('RIGHT IN ***********************');
 			if ( window.BACKEND_CONFIG['LIST_TYPE'] === '0') {
 				this.presentation = new MosaicPresentation( this, 'list', options.itemWidth, options.itemHeight, options.shouldJump);
 			} else if ( window.BACKEND_CONFIG['LIST_TYPE'] === '1') {
 				this.presentation = new Partials(this, 'mosaic', options.itemWidth, options.itemHeight, options.shouldJump);
 			}
 		} else {
+			console.log('NOOOOOOOOOOOOOOOOOOOOOOOOOo')
 			if (options.usePagination) {
 				this.presentation = new Partials(this, options.listType, options.itemWidth, options.itemHeight, options.shouldJump);
 			} else {

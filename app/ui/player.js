@@ -12,20 +12,16 @@ define([
 	'oop/mix'
 ], function(request, response, bind, strings, events, array, tpl, css, loader, dom, mix) {
 	//loader.loadCSSFromText( css );
+//	var Theme = {
+//		"fontname" : window.BACKEND_CONFIG.THEME.fontname || "Tahoma",
+//        "fontsize" : window.BACKEND_CONFIG.THEME.fontsize || 15,
+//        "timefmt" : window.BACKEND_CONFIG.THEME.timefmt || "us"
+//	};
 	var Theme = {
-		"fontname" : "Tahoma",
-        "fontsize" : 15,
-        "timefmt" : "us",
-        "textcolor" : "#FFFFFF",
-        "bgcolor" : "#00000000",
-        "hlcolor" : "#9f00004c",
-        "barcolor" : "#9f00004c",
-        "bordercolor" : "#004c00",
-        "seekbarcolor" : "#ffff00",
-        "titlecolor" : "#ffff00",
-        "opacity" : 0.85
-	};
-
+		"fontname" :  "Tahoma",
+        "fontsize" :  15,
+        "timefmt" : "us"
+	}
 
 	//
 	// TODO: finish implementation for recording
@@ -464,8 +460,17 @@ define([
 		}
 		
 	};
-	//Notify osd for theme
-    var r = request.create('mediainfo', Theme );
-    r.send();
+	// Notify osd for theme
+//    var r = request.create('set_osdcolors', {
+//    	"textcolor" : "#FFFFFF",
+//        "bgcolor" : "#00000000",
+//        "hlcolor" : "#9f00004c",
+//        "barcolor" : "#9f00004c",
+//        "bordercolor" : "#004c00",
+//        "seekbarcolor" : "#ffff00",
+//        "titlecolor" : "#ffff00",
+//        "opacity" : 0.85
+//    });
+//    r.send();
 	return Player;
 });

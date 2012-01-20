@@ -4,7 +4,7 @@ define([
 ], function(App, strings){
 	return new App({
 		name: 'iptv',
-		listType: 'list',
+//		listType: 'list',
 		shouldJump: true,
 		hints: {
 			ok: strings.screens.iptv.panels.bottom.ok,

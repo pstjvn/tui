@@ -4,7 +4,7 @@ var buf = [];
 with (locals || {}) {
 var interp;
 buf.push('<div');
-buf.push(attrs({ "class": ('channelitem') }));
+buf.push(attrs({ "class": ('title') }));
 buf.push('>');
  if (channel.thumbnail.length > 4)
 {
