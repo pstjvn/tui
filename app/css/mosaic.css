@@ -49,8 +49,8 @@ html.browser .tui-mosaic.list-container {
 }
 /*------------ start-Rating-bar ----------------*/
 .tui-mosaic .regular .imgcont .video-bar {
-	height: 21px;
-	width: 85px;
+	height: 15px;
+	width: 70px;
 	background: rgba(0, 0, 0, 0.4);
 	border-radius: 3px;
 	position: absolute;
@@ -62,13 +62,15 @@ html.browser .tui-mosaic.list-container {
 	right: 9px;
 }
 .tui-mosaic .regular .imgcont .video-bar .rating_bar {
-  width: 79px;
-  background: url(../imgs/icon-favorite-grey.png) 0 0 repeat-x;
+	width: 66px;
+	background: url(../imgs/icon-favorite-grey.png) 0 0 repeat-x;
+	background-size: 13px;
 }
 
 .tui-mosaic .regular .imgcont .video-bar  .rating_bar div {
-  height: 17px;
-  background: url(../imgs/icon_favorite.png) 0 0 repeat-x;
+	height: 17px;
+	background: url(../imgs/icon_favorite.png) 0 0 repeat-x;
+	background-size: 13px;
 }
 /*------------- end-Ratin-bar -------------------*/
 .tui-mosaic .imgcont {
