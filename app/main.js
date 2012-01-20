@@ -70,8 +70,10 @@ require(['ui/throbber'], function(t) {
 		'ui/player',
 		'transport/response',
 		'appdebug/preload',
-		'utils/osd'
-	], function(globalevents, classes, dom, Dialogs, bind, player, response, preloads, OSD ) {
+		'utils/osd',
+        'transport/request',
+        'ui/simplescreenselector'
+	], function(globalevents, classes, dom, Dialogs, bind, player, response, preloads, OSD, request, AS ) {
 //		Let the response handler for transport layer know where to direct key presses on the remote
 		response.setRemoteKeyHandler(globalevents.defaultEventAccepter);
 //		Load images offscreen after we have loaded the deps to avoid trapping the JS in the max Concurent Reqs of the browsser
@@ -259,6 +261,10 @@ require(['ui/throbber'], function(t) {
 				require([appobj.module], function(appmodule) {
 					tui.appModuleAdded(appmodule);
 				});
+			},
+			selectApp: function(apptag) {
+				console.log('Go select an app')
+				AS.remoteSelectScreen( apptag === 'video' ? 'iptv' : apptag === 'audio' ? 'radio': apptag );
 			}
 		};
 		
@@ -287,6 +293,21 @@ require(['ui/throbber'], function(t) {
 					tui.globalPlayer.stop();
 				},
 				attached: false
+			},
+			loadiptv: {
+				name: 'video',
+				func: tui.selectApp,
+				attached: false,
+			},
+			loadonlineradio: {
+				name: 'audio',
+				func: tui.selectApp,
+				attached: false
+			},
+			loadsetup: {
+				name: 'setup',
+				func: tui.selectApp,
+				attached: false			
 			}
 			//
 			// globaldisplay: {

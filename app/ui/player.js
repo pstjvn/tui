@@ -8,9 +8,25 @@ define([
 	'tpl/audio-player',
 	'text!css/audio-player.css',
 	'loader/loader',
-	'dom/dom'
-], function(request, response, bind, strings, events, array, tpl, css, loader, dom) {
+	'dom/dom',
+	'oop/mix'
+], function(request, response, bind, strings, events, array, tpl, css, loader, dom, mix) {
 	//loader.loadCSSFromText( css );
+	var Theme = {
+		"fontname" : "Tahoma",
+        "fontsize" : 15,
+        "timefmt" : "us",
+        "textcolor" : "#FFFFFF",
+        "bgcolor" : "#00000000",
+        "hlcolor" : "#9f00004c",
+        "barcolor" : "#9f00004c",
+        "bordercolor" : "#004c00",
+        "seekbarcolor" : "#ffff00",
+        "titlecolor" : "#ffff00",
+        "opacity" : 0.85
+	};
+
+
 	//
 	// TODO: finish implementation for recording
 	// 
@@ -356,12 +372,18 @@ define([
 			this.enableVisual(obj.publishName);
 			isAudio = true;
 		} else if ( array.has(Player.VIDEO_TYPES, obj.type )) {
+			this.notifyOSD( obj );
 			this.disableVisual();
 		}
-		console.log('Sending req');
+
 		newreq = request.create(play_command, {"url": obj.playURI, 'resume': resume, 'audio': isAudio});
 		response.register(newreq, bind(this.requestResultHandle, this, obj.sortIndex,  obj.publishName, 'play') );
 		newreq.send();
+	};
+	Player.prototype.notifyOSD = function( obj ) {
+		mix( obj, Theme);
+		var req = request.create('mediainfo', obj);
+		req.send( obj );
 	};
 	/**
 	 * Call when we want to show visual player, usually when we start playing audio
@@ -442,6 +464,8 @@ define([
 		}
 		
 	};
-	
+	//Notify osd for theme
+    var r = request.create('mediainfo', Theme );
+    r.send();
 	return Player;
 });

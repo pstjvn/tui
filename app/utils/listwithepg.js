@@ -4,8 +4,10 @@ define([
 	'utils/listingapp',
 	'utils/epg',
 	'shims/bind',
-	'tpl/infobuttons'
-], function(inherit, Disposable, ListApp, Epg,bind, infobuttonstpl){
+	'tpl/infobuttons',
+	'oop/clone',
+    'utils/datetime'
+], function(inherit, Disposable, ListApp, Epg,bind, infobuttonstpl, cloner, datetime){
 	var App = function(opts){
 		ListApp.call(this, opts);
 		this.epgInstance = new Epg(this.model, ListApp.remoteKeys_);
@@ -54,6 +56,18 @@ define([
 		}
 	};
 	
+	App.prototype.getEPGByID = function( obj ) {
+		if ( obj && obj.id ) {
+			var epg = this.model.getEPGForItemByID( obj.id );
+			var currIndex = Epg.findCurrentProgramIndex( epg );
+			if ( currIndex < 0 ) return [];
+			return epg.slice( currIndex, epg.length);
+
+		} else {
+			return App.superClass_.getEPGByID.call( this );
+		}
+	};
+	
 	App.prototype.defaultStartRequested = function() {
 		this.constructor.superClass_.defaultStartRequested.call(this);
 		if (this.model.data.epg === null) {
@@ -63,6 +77,25 @@ define([
 			});
 		}
 	};
+	
+	App.prototype.epgFrameSeparator_ = ' - ';
+	App.prototype.onPlayRequest = function(obj,  resume ) {
+		var clone = cloner( obj );
+		var epgdata = this.getEPGByID( clone );
+		var epg = [], i;
+		if ( epgdata.length > 0 ) {
+			for ( i = 0; i < epgdata.length; i++ ) {
+				epg.push({
+					Prog: datetime.getParsedTime( epgdata[i][1]) + this.epgFrameSeparator_  + 
+					datetime.getParsedTime( epgdata[i][2] ) + ' ' +  epgdata[i][3]
+				});
+			}
+		}
+		clone.epg = epg;
+        clone.title = clone.id + '. ' + clone.publishName;
+		tui.globalPlayer.play(clone, resume);
+	};
+	
 	App.prototype.onStopRequested = function() {
 		if (this.epgInstance.isAttachedToDom()) {
 			this.epgInstance.exitDom();

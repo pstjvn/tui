@@ -12,7 +12,8 @@ define(['types/types', 'array/array', 'dmc/smjs'], function(Mtypes, Marray, smjs
 		'chup', 'chdown',
 		'play', 'stop', 'ff', 'rw', 'rec', 'save',
 		'power',
-		'delete'
+		'delete',
+		'setup','video','audio'
 	];
 	var defHandler = function(useraction) {};
 	var internalEventList = {};
