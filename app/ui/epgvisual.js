@@ -39,12 +39,15 @@ Epg.prototype.constructDom_ = function() {
 	this.container_.appendChild( this.detailsContainer_);
 	this.container_.appendChild( this.transContainer_);	
 };
+Epg.prototype.style_ = '.prog{-webkit-transform: translate('
+Epg.prototype.style2_ = 'px, 0px);}'
+Epg.prototype.initOffset_ = 100;
 //ms*secs*mins*hours
 Epg.prototype.detailsHeight_ = 100;
-Epg.prototype.maxShownPeriod_ = 1000*60*60*24;
+Epg.prototype.maxShownPeriod_ = 1000*60*60*8;
 Epg.prototype.timelineLookbackTreshold_ = 1000*60*60;
-Epg.prototype.timelineHourDistance_ = 60; //px
-Epg.prototype.itemHeight_ = 60;
+Epg.prototype.timelineHourDistance_ = 60*3; //px
+Epg.prototype.itemHeight_ = 70;
 Epg.prototype.rows_ = 0;
 Epg.prototype.isVisuallyInitialized_ = false;
 
@@ -57,6 +60,11 @@ Epg.prototype.isVisible = function() {
 };
 Epg.prototype.selectRow = function(index) {
 	this.selectRowInternal_(index);
+};
+Epg.prototype.compileStyle = function(offset) {
+	var off = offset || this.initOffset_;
+	return this.style_ + off + this.style2_;
+	
 };
 //PRIVATE
 Epg.prototype.selectRowInternal_ = function( index ) {
@@ -166,8 +174,9 @@ Epg.prototype.constructEvents_ = function() {
 };
 Epg.prototype.updateTime_ = function() {
 	this.now_ = new Xdate();
-	this.endTimeInterval_ = new Xdate( this.now_.getTime() + this.maxShownPeriod_ );
+	
 	this.timelineStart_ = this.now_.getRoundedTime( Xdate.ROUNDERS.PRIOR_FULL_HOUR );
+	this.endTimeInterval_ = new Xdate( this.timelineStart_.getTime() + this.maxShownPeriod_ );
 };
 Epg.prototype.updateChannelList_ = function() {
 	this.channelList_ = this.dataAccessor_.get('list');
@@ -183,24 +192,30 @@ Epg.prototype.updateAll_ = function() {
 Epg.prototype.showInternal_ = function() {
 	document.body.appendChild( this.container_ );
 	this.updateAll_();
+	this.styleElement_ = dom.create('style');
+	dom.adopt(document.head, this.styleElement_);
+	this.styleElement_.textContent = this.compileStyle();
 	this.isVisible_ = true;
 	if ( !this.isVisuallyInitialized_) {
-		this.visuallyInitialize_(this.timelineStart_);
+		this.visuallyInitialize_(this.timelineStart_, this.endTimeInterval_);
 	}
 };
 
-Epg.prototype.visuallyInitialize_ = function(timelinestart) {
+Epg.prototype.visuallyInitialize_ = function(timelinestart, timelineend) {
+	console.log('VI')
 	var i;
 	this.rows_ = Math.floor( parseInt(this.transContainer_.style.height, 10) / this.itemHeight_ );
+
 	this.elements_ = Epg.createElements(this.rows_, this.transContainer_);
 
 	var epgbody;
+	
 	for (i = 0; i < this.elements_.length; i++) {
 		if ( this.epgList_[ this.channelList_[ this.dataPointer_ + i ].id ] ) {
 			epgbody = this.epgList_[ this.channelList_[ this.dataPointer_ + i ].id ].body;
 		} else epgbody = undefined;
 
-		Epg.populateChannelItem( this.elements_[i], this.channelList_[this.dataPointer_ + i], epgbody, timelinestart);
+		Epg.populateChannelItem( this.elements_[i], this.channelList_[this.dataPointer_ + i], epgbody, timelinestart, timelineend);
 	}
 	
 	for ( i = 0; i < this.rows_; i++ ) {
@@ -240,15 +255,15 @@ Epg.setTranformationsY = function( el, position ) {
 	el.style.webkitTransform =  'translate(0,' + position + 'px)';
 	el.style.MozTransform = 'translateY(' + position + 'px)';
 };
-Epg.populateChannelItem = function( element, data, epgdata, timelinestart ) {
-	console.log(arguments);
+Epg.populateChannelItem = function( element, data, epgdata, timelinestart,timelineend ) {
+	console.log('At populate channel item data ', arguments);
 	// Here we need to construct all the shit!
 //	first, construct the title
 	var titlediv = channelItemTemplate.render({
 		channel: data
 	});
 //	now fill in the epg data in it
-	var progs = Epg.populatePrograms( epgdata, timelinestart );
+	var progs = Epg.populatePrograms( epgdata, timelinestart, timelineend );
 	console.log('What we have rendered: ', progs)
 	element.innerHTML = progs + titlediv;
 };
@@ -260,29 +275,76 @@ Epg.findProgramThatFinishesAfterNow = function( epgdata, xdate ) {
 		}
 	}
 	return -1;
-}
-Epg.populatePrograms = function( epgdata, timelinestart ) {
-	var result = '<div class="prog" style="-webkit-transform: translate(100px, 0px);">';
+};
+Epg.findProgramThatEndsAfterEndTimeFrame = function( epgdata, starti, xdate ) {
+	var i;
+	for ( i = starti; i < epgdata.length; i++ ) {
+
+		if ( xdate.isEarlierOrSameThan( epgdata[i][1]) ) {
+			return i - 1;
+		}
+	}
+	return epgdata.length - 1;
+};
+Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
+	var result = '<div class="prog">';
 	console.log('EPG DATA ARRIVED AT COMPILE :', epgdata)
 	if ( typeof epgdata == 'undefined') return result + '</div>';
 	console.log('GOGO WITH EPG', timelinestart)
 	//find first prog
-	var startIndex = Epg.findProgramThatFinishesAfterNow( epgdata, timelinestart );
-	var endIndex = -1;
-	var timelineend = timelinestart.getTime() + (1000*60*60*24);
-	var len = epgdata.length, i;
-	console.log('FOUND START INDEX', startIndex)
-	return result + '</div>';
-//	for ( i = 0; i < len; i++ )	{
-//		console.log('Start time: ',parseInt(epgdata[i][2],10),timelinestart.getTime())
-//		if (parseInt(epgdata[i][2],10) > timelinestart.getTime() ) {
-//			startIndex = i;
-//			break;
-//		}
-//	}
+	var startIndex, endIndex;
 	
-	// Ako namerim start index znachi ima pone enda programa,
-	// zapochvame ot neq i tyrsim kude e posledniq kanal za izobrazqvane
+	startIndex = Epg.findProgramThatFinishesAfterNow( epgdata, timelinestart );
+	console.log('aa', startIndex);
+	if ( startIndex > -1 ) {
+		console.log('11');
+		endIndex = Epg.findProgramThatEndsAfterEndTimeFrame( epgdata, startIndex, timelineend);
+		var firstItemStartTime = new Xdate(epgdata[startIndex][1]);
+		var startOffsetAsMS;
+		if ( timelinestart.isLaterThan( firstItemStartTime ) ) {
+			startOffsetAsMS = 0;
+		} else if ( timelinestart.isEarlierThan( firstItemStartTime ) ) {
+			startOffsetAsMS = firstItemStartTime.getTime() - timelinestart.getTime();
+		} else startOffsetAsMS = 0;
+		var startOffsetinMinutes = Xdate.getTimeDiffereceAsMinutes( timelinestart, timelinestart.getTime() + startOffsetAsMS );
+		var endMinutes = Xdate.getTimeDiffereceAsMinutes( epgdata[startIndex][2], epgdata[startIndex][1]);
+		result += epgRecordTemplate.render({
+			leftOffset: Math.abs(startOffsetinMinutes * 3),
+			widthByDuration : endMinutes * 3,
+			progTitle: epgdata[startIndex][3]
+		});
+		console.log('Real START INDEXL : ' , startIndex)
+		startIndex++;
+		for (; startIndex < endIndex; startIndex++ ) {
+			startOffsetinMinutes = Xdate.getTimeDiffereceAsMinutes( timelinestart,
+				epgdata[startIndex][1]);
+			endMinutes = Xdate.getTimeDiffereceAsMinutes( epgdata[startIndex][2],
+				epgdata[startIndex][1]);
+			result += epgRecordTemplate.render({
+				leftOffset: Math.abs(startOffsetinMinutes * 3),
+				widthByDuration : endMinutes * 3,
+				progTitle: epgdata[startIndex][3]
+			});
+		}
+		startOffsetinMinutes = Xdate.getTimeDiffereceAsMinutes( timelinestart,
+				epgdata[endIndex][1]);
+		
+		endMinutes = timelineend.isEarlierThan( epgdata[endIndex][2]) ? 
+			Xdate.getTimeDiffereceAsMinutes( timelineend, epgdata[endIndex][1]) :
+			Xdate.getTimeDiffereceAsMinutes( epgdata[endIndex][2], epgdata[endIndex][1]);
+		result += epgRecordTemplate.render({
+			leftOffset: Math.abs(startOffsetinMinutes * 3),
+			widthByDuration : endMinutes * 3,
+			progTitle: epgdata[startIndex][3]
+		});
+	}
+	console.log('bb')
+	console.log('FOUND START INDEX', startIndex, endIndex, timelinestart.getTime());
+	console.log('ENDDD', timelineend.getTime(), epgdata[endIndex]);
+	return result + '</div>';
+	
+
+
 
 	if ( startIndex > -1 ) {
 		endIndex = startIndex;

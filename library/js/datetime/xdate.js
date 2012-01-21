@@ -48,6 +48,10 @@ define(function() {
 		if ( res === -1 ) return true;
 		return false;
 	};
+	Xdate.prototype.isEarlierOrSameThan = function( dt ) {
+		if  (Xdate.compareTimes( this, dt ) === 1) return false;
+		return true;
+	};
 	Xdate.prototype.getHours = function() {
 		return Xdate.fillToTwoSimbols(this.date_.getHours());
 	};
@@ -62,6 +66,12 @@ define(function() {
 		PRIOR_FULL_HOUR: 0,
 		PRIOR_FULL_MINUTE: 1
 	};
+	Xdate.CONST = {
+		MILISECONDS: 1000,
+		SECONDS: 60*1000,
+		MINUTES: 60*60*1000,
+		HOURS: 24*60*60*1000
+	};
 	Xdate.compareTimes = function( time1, time2 ) {
 		time1 = Xdate.convertToXdate( time1 );
 		time2 = Xdate.convertToXdate( time2 );
@@ -71,13 +81,19 @@ define(function() {
 		return 0;
 	};
 	Xdate.convertToXdate = function( datetime ) {
-		if ( datetime instanceof Xdate ) return Xdate;
+		if ( datetime instanceof Xdate ) return datetime;
 		return new Xdate( datetime );
 	};
 	Xdate.getTimeDifference = function( time1, time2 ) {
 		time1 = Xdate.convertToXdate( time1 );
 		time2 = Xdate.convertToXdate( time2 );
 		return time2.getTime() - time1.getTime();
+	};
+	Xdate.getTimeDiffereceAsMinutes = function( time1, time2 ) {
+		time1 = Xdate.convertToXdate( time1 );
+		time2 = Xdate.convertToXdate( time2 );
+		var difference = time1.getTime() - time2.getTime();
+		return Math.floor( difference / Xdate.CONST.SECONDS );
 	};
 	Xdate.now = function() {
 		return new Xdate( (new Date()).getTime() );

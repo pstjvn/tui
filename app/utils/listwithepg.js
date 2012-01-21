@@ -13,18 +13,18 @@ define([
 		ListApp.call(this, opts);
 		this.epgInstance = new Epg(this.model, ListApp.remoteKeys_);
 		this.hints = opts.hints || null;
-//		this.appEvents['info'] = {
-//			name: 'info',
-//			func: bind(function() {
-//				if (this.epgInstance.isVisible()) {
-//					this.epgInstance.hide();
-//				} else {
-//					this.epgInstance.show();
-//					this.epgInstance.selectRow( this.model.currentIndex );
-//				}
-//			},this),
-//			attached: false
-//		};
+		this.appEvents['info'] = {
+			name: 'info',
+			func: bind(function() {
+				if (this.epgInstance.isVisible()) {
+					this.epgInstance.hide();
+				} else {
+					this.epgInstance.show();
+					this.epgInstance.selectRow( this.model.currentIndex );
+				}
+			},this),
+			attached: false
+		};
 		//Override the OK event to handle EPG also
 //		this.appEvents['ok'] = {
 //			name: 'ok',
@@ -98,9 +98,9 @@ define([
 	};
 	
 	App.prototype.onStopRequested = function() {
-//		if (this.epgInstance.isAttachedToDom()) {
-//			this.epgInstance.exitDom();
-//		}
+		if (this.epgInstance.isAttachedToDom()) {
+			this.epgInstance.exitDom();
+		}
 		App.superClass_.onStopRequested.call(this);
 	};
 	return App;
