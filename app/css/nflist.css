@@ -1,0 +1,20 @@
+.tui-nflist-container {
+	top: 0;
+	left: 0;
+	position: absolute;
+	z-index: 1000;
+	
+}
+.tui-vertical-transition-container {
+	position: relative;
+}
+.tui-nflist-item {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 70px;
+	background-color: green;
+}
+.tui-nflist-item.active {
+	background-color: red;
+}

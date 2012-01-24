@@ -8,13 +8,25 @@ define([
 	'datetime/xdate'
 ], function(events, dom, channelItemTemplate, classes, datetime, epgRecordTemplate, Xdate) {
 
+/**
+ * @fileoverview Provides means to work with epg and visualize it in table tows on 
+ * small screens
+ */
 
+
+/**
+ * Epg visualizer
+ * @constructor
+ * @param {tui.sysmaster.Storage} data_accessor The datqa model to request data from
+ */
 var Epg = function(data_accessor) {
 	this.channelList_ = null;
 	this.epgList_ = null;
 	this.dataAccessor_ = data_accessor;
 	this.isVisible_ = false;
-	this.events_;
+	//
+	// this.events_;
+	// 
 	this.constructDom_();
 
 	this.dataPointer_ = 0;
@@ -23,14 +35,26 @@ var Epg = function(data_accessor) {
 	this.afterscreen_ = [];
 	this.activeChannelElement_ = null;
 };
-
+Epg.enableAnimation_ = false;
+Epg.animationDuration_ = 300;
+/**
+ * Utilized class names
+ * @type {string}
+ */
+Epg.prototype.mainContainerClass = 'tui-epg-container';
+Epg.prototype.transContainerClass = 'tui-internal-epg-container';
+Epg.prototype.epgDetailContainerClass = 'epg-details';
+/**
+ * Called directly at construction time, just visualy separate the DOM construction
+ * @private
+ */
 Epg.prototype.constructDom_ = function() {
-	this.container_ = dom.create('div',{classes: 'tui-epg-container'});
+	this.container_ = dom.create('div',{classes: this.mainContainerClass});
 	this.setupContainerInternal();
 	this.container_.style.zIndex = 1000;
-	this.transContainer_ = dom.create('div',{classes:'tui-internal-epg-container'});
+	this.transContainer_ = dom.create('div',{classes: this.transContainerClass});
 	this.detailsContainer_ = dom.create('div',{
-		classes:'epg-details',
+		classes: this.epgDetailContainerClass,
 		style: "height:" + this.detailsHeight_ + 'px'	
 	});
 	this.setupContainerInternal(this.transContainer_);
@@ -39,34 +63,94 @@ Epg.prototype.constructDom_ = function() {
 	this.container_.appendChild( this.detailsContainer_);
 	this.container_.appendChild( this.transContainer_);	
 };
-Epg.prototype.style_ = '.prog{-webkit-transform: translate('
-Epg.prototype.style2_ = 'px, 0px);}'
+/**
+ * Styling for the time offset and time line 
+ * @type {string}
+ */
+Epg.prototype.style_ = '.prog, .timeline {-webkit-transform: translate(';
+Epg.prototype.style2_ = 'px, 0px);}';
+/**
+ * This is the initial offset of the timeline - enouight to make space for the channel header on the left
+ * It should be updated whenever the style ( especially the width ) of the channel title is altered
+ * @type {number}
+ */
 Epg.prototype.initOffset_ = 100;
-//ms*secs*mins*hours
+/**
+ * This is the height of the top box that visualizes all the channel details and current
+ * selected program details
+ * @type {number}
+ */
 Epg.prototype.detailsHeight_ = 100;
+/**
+ * How many hours should we show in the epg list startin with the current full hour
+ * Make it smaller on lower end devices to avoid mem exhaustion
+ * @type {number}
+ */
 Epg.prototype.maxShownPeriod_ = 1000*60*60*8;
+/**
+ * Indicated how many miliseconds should we go back in time starting with the current time 
+ * to set the start of our timeline
+ * ex: it is now 14:37, should this be set to 1h, the timeline start will be set to 14:00
+ * @type {number}
+ */
 Epg.prototype.timelineLookbackTreshold_ = 1000*60*60;
-Epg.prototype.timelineHourDistance_ = 60*3; //px
+/**
+ * How many pixels on the screen should represent one minute time
+ * @type {number}
+ */
+Epg.prototype.timelineHourDistance_ = 60*3; 
+/**
+ * How many pixels height is one epg/channel row on the screen, 
+ * update this to match the css settings as it is used to calculate translation offsets
+ * @type {number}
+ */
 Epg.prototype.itemHeight_ = 70;
+/**
+ * How many rows of data can be visualized in the container; calculated by deviding the container 
+ * height by the item height, calculatedd internally, do not set!
+ * @type {number}
+ * @private
+ */
 Epg.prototype.rows_ = 0;
+/**
+ * Indicates if the channel elements have been created and populated, 
+ * usually this should be done only one
+ * @type {boolean}
+ */
 Epg.prototype.isVisuallyInitialized_ = false;
 
-//API
+/** Public API follows */
+/**
+ * Called to init the visual respresentation, 
+ * Calls the internall function
+ */
 Epg.prototype.show = function() {
 	this.showInternal_();
 };
+/**
+ * Checks the visual state of the EPG collection
+ * @return {boolean} true if the EPG is visible, otherwise false
+ */
 Epg.prototype.isVisible = function() {
 	return this.isVisible_;
 };
+/**
+ * Selects a row by item index, the index should ve valid one in the tui.sysmaster.Storage instance
+ * set as data accessor in the construction, no checks are performed
+ * @param {number}
+ */
 Epg.prototype.selectRow = function(index) {
 	this.selectRowInternal_(index);
 };
-Epg.prototype.compileStyle = function(offset) {
+/** END Public API */
+/**
+ * Compiles style as text for timeline offsetting
+ * @param {number} offset How much should we move to left
+ */
+Epg.prototype.compileStyle_ = function(offset) {
 	var off = offset || this.initOffset_;
 	return this.style_ + off + this.style2_;
-	
 };
-//PRIVATE
 Epg.prototype.selectRowInternal_ = function( index ) {
 	var jumps;
 	if ( index >= this.dataPointer_ && index <= this.dataPointer_ + this.rows_ -1 ) {
@@ -100,8 +184,14 @@ Epg.prototype.iterateRotationTimes_ = function( num, direction ) {
 	}
 	this.setTranformationsForChannelsInternal();
 };
+Epg.prototype.getEpgDataByObject = function( object_with_id ) {
+	var res = this.epgList_[ object_with_id.id ];
+	if ( res ) return res.body;
+	return res;
+};
 Epg.prototype.rotateUp_ = function() {
-	var taken = this.onscreen_.pop();
+	var epgbody, avobject, taken;
+	taken = this.onscreen_.pop();
 	this.afterscreen_.unshift(taken);
 	taken = this.beforescreen_.pop();
 	this.onscreen_.unshift(taken);
@@ -109,13 +199,17 @@ Epg.prototype.rotateUp_ = function() {
 	if (this.beforescreen_.length < 1 ) {
 		if ( this.dataPointer_ > 0 ) {
 			taken = this.afterscreen_.pop();
-			Epg.populateChannelItem(taken, this.channelList_[this.dataPointer_-1], this.epgList_[ this.channelList_[ this.dataPointer_ + i ].id ]);
+			avobject = this.channelList_[ this.dataPointer_ -1];
+			epgbody = this.getEpgDataByObject( avobject );
+			taken.style.webkitTransition = 'none';
+			Epg.populateChannelItem(taken, avobject, epgbody, this.timelineStart_, this.endTimeInterval_);
 			this.beforescreen_.push(taken);
 		}
 	}
 };
 Epg.prototype.rotateDown_ = function() {
-	var taken = this.onscreen_.shift();
+	var epgbody, avobject, taken;
+	taken = this.onscreen_.shift();
 	this.beforescreen_.push(taken);
 	taken = this.afterscreen_.shift();
 	this.onscreen_.push(taken);
@@ -123,7 +217,10 @@ Epg.prototype.rotateDown_ = function() {
 	if (this.afterscreen_.length < 1) {
 		if ( this.channelList_.length > this.dataPointer_ + this.rows_ ) {
 			taken = this.beforescreen_.shift();	
-			Epg.populateChannelItem(taken, this.channelList_[this.dataPointer_ + this.rows_], this.epgList_[ this.channelList_[ this.dataPointer_ + i ].id ] );
+			avobject = this.channelList_[ this.dataPointer_ + this.rows_];
+			epgbody = this.getEpgDataByObject( avobject );
+			taken.style.webkitTransition = 'none'
+			Epg.populateChannelItem(taken, avobject, epgbody ,this.timelineStart_, this.endTimeInterval_ );
 			this.afterscreen_.push(taken);
 		}
 	}
@@ -172,18 +269,33 @@ Epg.prototype.constructEvents_ = function() {
 		}
 	};
 };
+/**
+ * Updates the internal state of time, current time is set to now,
+ * start and end times are set accordingly,
+ * start time is calculated from current time and rounding
+ * end time is calculated from start time plus the time we should visualize
+ * Usually called on show
+ */
 Epg.prototype.updateTime_ = function() {
 	this.now_ = new Xdate();
-	
 	this.timelineStart_ = this.now_.getRoundedTime( Xdate.ROUNDERS.PRIOR_FULL_HOUR );
 	this.endTimeInterval_ = new Xdate( this.timelineStart_.getTime() + this.maxShownPeriod_ );
 };
+/**
+ * Re-get the channel listing from data accessor
+ */
 Epg.prototype.updateChannelList_ = function() {
 	this.channelList_ = this.dataAccessor_.get('list');
 };
+/**
+ * Re-get the epg listing from data accessor
+ */
 Epg.prototype.updateEpgList_ = function() {
 	this.epgList_ = this.dataAccessor_.get('epg');
 };
+/**
+ * Update all, called on show
+ */
 Epg.prototype.updateAll_ = function() {
 	this.updateTime_();
 	this.updateChannelList_();
@@ -194,7 +306,7 @@ Epg.prototype.showInternal_ = function() {
 	this.updateAll_();
 	this.styleElement_ = dom.create('style');
 	dom.adopt(document.head, this.styleElement_);
-	this.styleElement_.textContent = this.compileStyle();
+	this.styleElement_.textContent = this.compileStyle_();
 	this.isVisible_ = true;
 	if ( !this.isVisuallyInitialized_) {
 		this.visuallyInitialize_(this.timelineStart_, this.endTimeInterval_);
@@ -202,7 +314,6 @@ Epg.prototype.showInternal_ = function() {
 };
 
 Epg.prototype.visuallyInitialize_ = function(timelinestart, timelineend) {
-	console.log('VI')
 	var i;
 	this.rows_ = Math.floor( parseInt(this.transContainer_.style.height, 10) / this.itemHeight_ );
 
@@ -234,7 +345,7 @@ Epg.prototype.setTranformationsForChannelsInternal = function() {
 		Epg.setTranformationsY( this.beforescreen_[i], '-' +( this.itemHeight_ + this.detailsHeight_) );
 	}
 	for (i = 0; i < this.onscreen_.length; i++) {
-		Epg.setTranformationsY( this.onscreen_[i], this.itemHeight_ * i )
+		Epg.setTranformationsY( this.onscreen_[i], this.itemHeight_ * i );
 	}
 	for ( i = 0; i < this.afterscreen_.length; i++ ) {
 		Epg.setTranformationsY( this.afterscreen_[i], this.itemHeight_ * (this.rows_ + 1));
@@ -254,6 +365,13 @@ Epg.findCurrentProgramIndex = function( epgList ) {
 Epg.setTranformationsY = function( el, position ) {
 	el.style.webkitTransform =  'translate(0,' + position + 'px)';
 	el.style.MozTransform = 'translateY(' + position + 'px)';
+	
+	if (Epg.enableAnimation_ && el.style.webkitTransition == 'none') {
+		setTimeout( function() {
+			el.style.webkitTransition = "";
+		}, Epg.animationDuration_);
+	}
+
 };
 Epg.populateChannelItem = function( element, data, epgdata, timelinestart,timelineend ) {
 	console.log('At populate channel item data ', arguments);
@@ -264,7 +382,6 @@ Epg.populateChannelItem = function( element, data, epgdata, timelinestart,timeli
 	});
 //	now fill in the epg data in it
 	var progs = Epg.populatePrograms( epgdata, timelinestart, timelineend );
-	console.log('What we have rendered: ', progs)
 	element.innerHTML = progs + titlediv;
 };
 Epg.findProgramThatFinishesAfterNow = function( epgdata, xdate ) {
@@ -288,16 +405,14 @@ Epg.findProgramThatEndsAfterEndTimeFrame = function( epgdata, starti, xdate ) {
 };
 Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
 	var result = '<div class="prog">';
-	console.log('EPG DATA ARRIVED AT COMPILE :', epgdata)
 	if ( typeof epgdata == 'undefined') return result + '</div>';
-	console.log('GOGO WITH EPG', timelinestart)
-	//find first prog
 	var startIndex, endIndex;
 	
 	startIndex = Epg.findProgramThatFinishesAfterNow( epgdata, timelinestart );
 	console.log('aa', startIndex);
 	if ( startIndex > -1 ) {
-		console.log('11');
+		
+		console.log(epgdata);
 		endIndex = Epg.findProgramThatEndsAfterEndTimeFrame( epgdata, startIndex, timelineend);
 		var firstItemStartTime = new Xdate(epgdata[startIndex][1]);
 		var startOffsetAsMS;
@@ -313,7 +428,6 @@ Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
 			widthByDuration : endMinutes * 3,
 			progTitle: epgdata[startIndex][3]
 		});
-		console.log('Real START INDEXL : ' , startIndex)
 		startIndex++;
 		for (; startIndex < endIndex; startIndex++ ) {
 			startOffsetinMinutes = Xdate.getTimeDiffereceAsMinutes( timelinestart,
@@ -338,46 +452,47 @@ Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
 			progTitle: epgdata[startIndex][3]
 		});
 	}
-	console.log('bb')
-	console.log('FOUND START INDEX', startIndex, endIndex, timelinestart.getTime());
-	console.log('ENDDD', timelineend.getTime(), epgdata[endIndex]);
 	return result + '</div>';
 	
 
 
 
-	if ( startIndex > -1 ) {
-		endIndex = startIndex;
-		for ( i = startIndex; i < len; i++) {
-			if ( parseInt(epgdata[i][2],10) > timelineend ) {
-				endIndex = i;
-				break;
-			}
-		}
-			
-	//	zapochni izgrajdaneto na programta, trim na purvata namerena programa do nachalniq chas
-		var res = '';
-		var cumulativeOffset = 0;
-		var wbd = 0;
-		for (i = startIndex ; i <= endIndex; i++ ) {
-			wbd = ( i === startIndex ) ? +epgdata[i][2] - timelinestart.getTime() : +epgdata[i][2] - +epgdata[i][1];
-			wbd = Math.floor(wbd/(1000*60));
+	//
+	// if ( startIndex > -1 ) {
+	// 	endIndex = startIndex;
+	// 	for ( i = startIndex; i < len; i++) {
+	// 		if ( parseInt(epgdata[i][2],10) > timelineend ) {
+	// 			endIndex = i;
+	// 			break;
+	// 		}
+	// 	}
+	// 		
+	// //	zapochni izgrajdaneto na programta, trim na purvata namerena programa do nachalniq chas
+	// 	var res = '';
+	// 	var cumulativeOffset = 0;
+	// 	var wbd = 0;
+	// 	for (i = startIndex ; i <= endIndex; i++ ) {
+	// 		wbd = ( i === startIndex ) ? +epgdata[i][2] - timelinestart.getTime() : +epgdata[i][2] - +epgdata[i][1];
+	// 		wbd = Math.floor(wbd/(1000*60));
+	// 
 
-			res += epgRecordTemplate.render({
-				leftOffset: cumulativeOffset,
-				widthByDuration: wbd,
-				progTitle: epgdata[i][3]
-			});
-			cumulativeOffset+=wbd;
-		}	
-	}
-	result += '</div>';
-	return result;
+	//
+	// 		res += epgRecordTemplate.render({
+	// 			leftOffset: cumulativeOffset,
+	// 			widthByDuration: wbd,
+	// 			progTitle: epgdata[i][3]
+	// 		});
+	// 		cumulativeOffset+=wbd;
+	// 	}	
+	// }
+	// result += '</div>';
+	// return result;
+	// 
 };
 Epg.calculateWidthByDuration = function( start, end ) {
 	var s = Math.floor(start / (1000*60));
 	var e = Math.floor(end/ (1000*60));
-	return 
+	return 0;
 };
 Epg.setupContainer = function(element) {
 	var mc = document.getElementById('maincontainer');

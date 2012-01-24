@@ -142,6 +142,7 @@
 	position: absolute;
 	top:0;
 	left:0;
+/*	-webkit-transition: -webkit-transform 0.3s;*/
 }
 .epgrow .prog {
 	position: relative;
@@ -164,4 +165,7 @@
 	background-color: red;
 	width:100px;
 	height: 70px;
+}
+.epgrow.active .title {
+	background-color: black;
 }
