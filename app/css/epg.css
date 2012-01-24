@@ -136,32 +136,85 @@
 
 /* FOR NEW EPG */
 .epgrow {
-	background-color:yellow;
+	background: black;
 	width: 640px;
 	height: 70px;
 	position: absolute;
 	top:0;
 	left:0;
 }
+/*
+.epgrow.active {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(167,181,204,1)), color-stop(4%,rgba(14,49,102,1)), color-stop(54%,rgba(0,0,0,1)), color-stop(97%,rgba(0,0,0,1)), color-stop(100%,rgba(124,140,165,1)));
+}*/
 .epgrow .prog {
 	position: relative;
 	top:0;
 	left:0;
-	background-color: blue;
 	height: 70px;
 	width: 1440px;
 }
 .epgrow .prog .p {
 	display: inline-block;
-	height: 50px;
-	background-color: green;
+	height: 70px;
 	position: absolute;
+}
+.title-holder {
+	color: white;
+	text-align: center;
+	width: 96%;
+	overflow: hidden;
+}
+.title-background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: #264C73;
+	width: 96%;
+	height: 95%;
+	z-index: -1;
+	border: 2px solid black;
+	border-radius: 5px;
+}
+.title-container {
+	display: table-cell;
+	height: 100%;
+	width: 100%;
+	vertical-align: middle;
+}
+.title-background.active {
+	border: 2px solid #B3D1FE;
+	background: #114F8D;
+}
+.epgrow.active .title {
+	background: url(../imgs/epg-active.png);
+}
+.epgrow.active .title div{
+	background: url(../imgs/epg-active-h.png);
 }
 .epgrow .title {
 	position: relative;
 	top:-70px;
 	left:0;
-	background-color: red;
 	width:100px;
 	height: 70px;
+	border-right: 1px solid #364C63;
+	display: table;
+}
+.epgrow .title div {
+	text-align: center;
+	display: table-cell;
+	height: 65px;
+	vertical-align: middle;
+	border-bottom: 1px solid #364C63;
+	background: black;
+}
+.epgrow .title .imgcont img {
+	height: 90%;
+	vertical-align: middle;
+	border-radius: 4px;
+}
+.epg-details {
+	background: black;
+	border-bottom: 1px solid #364C63;
 }
