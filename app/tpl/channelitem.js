@@ -12,13 +12,36 @@ buf.push('<div');
 buf.push(attrs({ "class": ('imgcont') }));
 buf.push('><img');
 buf.push(attrs({ 'src':(channel.thumbnail) }));
-buf.push('/></div>');
+buf.push('/></div><div');
+buf.push(attrs({ "class": ('channel-name') }));
+buf.push('>Discovery Channel</div>');
 }
  else 
 {
-buf.push('<div>No image</div>');
+buf.push('<div>Discovery Science</div>');
 }
-buf.push('</div>');
+buf.push('<ul');
+buf.push(attrs({ "class": ('channel-settings-icons') }));
+buf.push('>');
+ if (channel.isLocked)
+{
+buf.push('<li');
+buf.push(attrs({ "class": ('icon') + ' ' + ('locked') }));
+buf.push('></li>');
+}
+ if (channel.isBookmarked)
+{
+buf.push('<li');
+buf.push(attrs({ "class": ('icon') + ' ' + ('bookmarked') }));
+buf.push('></li>');
+}
+ if (channel.cost > 0) 
+{
+buf.push('<li');
+buf.push(attrs({ "class": ('icon') + ' ' + ('paid') }));
+buf.push('></li>');
+}
+buf.push('</ul></div>');
 }
 return buf.join("");
 }return { render: anonymous }; });
