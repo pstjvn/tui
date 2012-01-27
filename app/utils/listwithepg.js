@@ -42,8 +42,16 @@ define([
 //			attached: false
 //		};
 //		this.on('show-complete', this.showHints);
+//
+		this.on('epg-selection', this.onEpgSelection);
 	};
 	inherit(App, ListApp);
+	App.prototype.onEpgSelection = function( bool ) {
+		console.log('Epg direction',bool);
+		if ( this.epgInstance.isVisible()) {
+			this.epgInstance.selectEpg(bool);
+		}
+	};
 	App.prototype.showHints = function() {
 		if (this.hints) {
 			tui.setPanels(false, true, undefined, infobuttonstpl.render({

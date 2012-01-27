@@ -56,14 +56,24 @@ define([
 			}
 			break;
 		case 'right':
-			if (step === 1) return;
+			if (step === 1) {
+				if (this.data.epg !== null) {
+					this.app.fire('epg-selection', true);
+				} 
+				return;
+			}
 			if (this.currentIndex + 1 < this.pointer.length) {
 				this.app.presentation.activate(this.currentIndex + 1);
 			}
 			break;
 		case 'left':
-			if (step === 1) return;
-			if (this.currentIndex > 0 ) {
+			if (step === 1) {  
+				if (this.data.epg !== null) {
+					this.app.fire('epg-selection', false);
+				} 
+				return;
+			}
+ 			if (this.currentIndex > 0 ) {
 				this.app.presentation.activate(this.currentIndex -1 );
 			}
 			break;

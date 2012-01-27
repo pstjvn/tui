@@ -25,7 +25,8 @@ var Epg = function(data_accessor) {
 	this.epgList_ = null;
 	this.dataAccessor_ = data_accessor;
 	this.isVisible_ = false;
-	this.currentProgramStartTimeAsOffset = 0;
+	this.currentEpgElement_ = null;
+	this.currentEpgPixelOffset_ = 0;
 	//
 	// this.events_;
 	// 
@@ -156,7 +157,8 @@ Epg.prototype.selectRow = function(index) {
  * @param {number} offset How much should we move to left
  */
 Epg.prototype.compileStyle_ = function(offset) {
-	var off = offset || this.initOffset_;
+	if (typeof offset !== 'undefined' ) this.currentEpgPixelOffset_ = offset;
+	var off = this.currentEpgPixelOffset_ + this.initOffset_;
 	return this.style_ + off + this.style2_;
 };
 Epg.prototype.selectRowInternal_ = function( index ) {
@@ -180,6 +182,40 @@ Epg.prototype.selectRowInternal_ = function( index ) {
 			this.setActiveChannel_( this.onscreen_[0]);
 		}
 	} 
+};
+Epg.prototype.setNextActiveEPG = function( el ) {
+	if (el===null) return;
+	if ( this.currentEpgElement_!==null) {
+		classes.removeClasses( this.currentEpgElement_, 'active');
+	}
+	classes.addClasses( el, 'active');
+	this.currentEpgElement_ = el;
+	this.fitEpgElementOnScreen();
+};
+Epg.prototype.fitEpgElementOnScreen = function() {
+	var el = this.currentEpgElement_;
+	var startPos = parseInt(el.style.left , 10);
+	var endPos = startPos + parseInt( el.style.width , 10 );
+	// calc currently visible fragment
+	var vstart = Math.abs(this.currentEpgPixelOffset_);
+	var visibleWidth = (parseInt(this.container_.style.width, 10) - this.initOffset_);
+	var vend = vstart + visibleWidth;
+	console.log('In FIT', startPos, endPos, vstart, vend, visibleWidth);
+	if ( startPos < vstart )  {
+		console.log('Start of epg is before the currently visible start');
+		this.styleElement_.textContent = this.compileStyle_( startPos * -1);
+	} else if ( endPos > vend ) {
+		console.log('End of epg is after the current visible zone');
+		this.styleElement_.textContent = this.compileStyle_( (endPos - visibleWidth) * -1 );
+	}
+
+};
+Epg.prototype.selectEpg = function(direction) {
+	if ( direction ) {
+		this.setNextActiveEPG(this.currentEpgElement_.nextElementSibling);
+	} else {
+		this.setNextActiveEPG( this.currentEpgElement_.previousElementSibling);
+	}
 };
 Epg.prototype.iterateRotationTimes_ = function( num, direction ) {
 	var i;
@@ -227,14 +263,27 @@ Epg.prototype.rotateDown_ = function() {
 			taken = this.beforescreen_.shift();	
 			avobject = this.channelList_[ this.dataPointer_ + this.rows_];
 			epgbody = this.getEpgDataByObject( avobject );
-			taken.style.webkitTransition = 'none'
+			taken.style.webkitTransition = 'none';
 			Epg.populateChannelItem(taken, avobject, epgbody ,this.timelineStart_, this.endTimeInterval_ );
 			this.afterscreen_.push(taken);
 		}
 	}
 };
 Epg.prototype.setActiveChannel_ = function( element ) {
-	if ( this.activeChannelElement_ !== null ) classes.removeClasses(this.activeChannelElement_, 'active');
+	var p;
+	if ( this.activeChannelElement_ !== null ) {
+		classes.removeClasses(this.activeChannelElement_, 'active');
+		p = dom.$('span.p.active', this.activeChannelElement_);
+		if (p!== null) classes.removeClasses( p, 'active');
+		p = null;
+	}
+	// find the first element and set it activeChannelElement_
+	console.log(element);
+	p = dom.$('span.p', element);
+	if (p !== null) { 
+		classes.addClasses(p, 'active');
+	}
+	this.currentEpgElement_ = p;
 	classes.addClasses( element, 'active');
 	this.activeChannelElement_ = element;
 };
@@ -440,6 +489,7 @@ Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
 		var startOffsetinMinutes = Xdate.getTimeDiffereceAsMinutes( timelinestart, timelinestart.getTime() + startOffsetAsMS );
 		var endMinutes = Xdate.getTimeDiffereceAsMinutes( epgdata[startIndex][2], epgdata[startIndex][1]);
 		result += epgRecordTemplate.render({
+			epgRecordIndex: startIndex,
 			leftOffset: Math.abs(startOffsetinMinutes * 3),
 			widthByDuration : endMinutes * 3,
 			progTitle: epgdata[startIndex][3]
@@ -451,6 +501,7 @@ Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
 			endMinutes = Xdate.getTimeDiffereceAsMinutes( epgdata[startIndex][2],
 				epgdata[startIndex][1]);
 			result += epgRecordTemplate.render({
+				epgRecordIndex: startIndex,
 				leftOffset: Math.abs(startOffsetinMinutes * 3),
 				widthByDuration : endMinutes * 3,
 				progTitle: epgdata[startIndex][3]
@@ -463,6 +514,7 @@ Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
 			Xdate.getTimeDiffereceAsMinutes( timelineend, epgdata[endIndex][1]) :
 			Xdate.getTimeDiffereceAsMinutes( epgdata[endIndex][2], epgdata[endIndex][1]);
 		result += epgRecordTemplate.render({
+			epgRecordIndex: startIndex,
 			leftOffset: Math.abs(startOffsetinMinutes * 3),
 			widthByDuration : endMinutes * 3,
 			progTitle: epgdata[startIndex][3]
