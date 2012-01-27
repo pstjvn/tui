@@ -23,8 +23,9 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	height: 50px;
-	background-color: green;
+}
+.tui-nflist-item.empty {
+	border: 2px solid transparent;
 }
 .tui-nflist-item.active {
 	border: 2px solid #1E69D1;

@@ -133,9 +133,14 @@ define([
 		return template;
 	};
 	NFList.prototype.populateItem = function( element, chanRecord ) {
-		if ( typeof chanRecord !== 'undefined')
+		if ( typeof chanRecord !== 'undefined') {
+			classes.removeClasses(element, 'empty');
 			element.innerHTML = this.getTemplate().render({channel: chanRecord});
-		else element.innerHTML = '';
+		} else {
+			classes.addClasses(element, 'empty');
+			element.innerHTML = '';
+		}
+
 	};
 	NFList.prototype.setVerticalTransformations = function() {
 		var i = 0;
