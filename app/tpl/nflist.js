@@ -4,8 +4,6 @@ var buf = [];
 with (locals || {}) {
 var interp;
 buf.push('<div');
-buf.push(attrs({ "class": ('item') }));
-buf.push('><div');
 buf.push(attrs({ "class": (((channel.thumbnail !== null)? "leftCont" : "leftContLong")) }));
 buf.push('>');
  if (channel.sortIndex !== '0' && channel.sortIndex !== 0 )
@@ -101,7 +99,7 @@ buf.push('<li');
 buf.push(attrs({ "class": ('icon') + ' ' + ('paid') }));
 buf.push('></li>');
 }
-buf.push('</ul></div>');
+buf.push('</ul>');
 }
 return buf.join("");
 }return { render: anonymous }; });
