@@ -239,7 +239,7 @@
 	display: table-cell;
 	vertical-align: middle;
 }
-.channel-settings-icons {
+.epgrow .channel-settings-icons {
 	left: 110px;
 	list-style-type: none;
 	position: absolute;
