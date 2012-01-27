@@ -5,8 +5,9 @@ define([
 	'dom/classes',
 	'utils/datetime',
 	'tpl/epgrecord',
-	'datetime/xdate'
-], function(events, dom, channelItemTemplate, classes, datetime, epgRecordTemplate, Xdate) {
+	'datetime/xdate',
+	'tpl/timeline'
+], function(events, dom, channelItemTemplate, classes, datetime, epgRecordTemplate, Xdate, timelinetemplate) {
 
 /**
  * @fileoverview Provides means to work with epg and visualize it in table tows on 
@@ -24,11 +25,12 @@ var Epg = function(data_accessor) {
 	this.epgList_ = null;
 	this.dataAccessor_ = data_accessor;
 	this.isVisible_ = false;
+	this.currentProgramStartTimeAsOffset = 0;
 	//
 	// this.events_;
 	// 
 	this.constructDom_();
-
+	
 	this.dataPointer_ = 0;
 	this.onscreen_ = [];
 	this.beforescreen_ = [];
@@ -53,15 +55,21 @@ Epg.prototype.constructDom_ = function() {
 	this.setupContainerInternal();
 	this.container_.style.zIndex = 1000;
 	this.transContainer_ = dom.create('div',{classes: this.transContainerClass});
+	this.timelineElement_ = dom.create('div', {
+		classes: 'timeline',
+		html: 'test'
+	});
 	this.detailsContainer_ = dom.create('div',{
 		classes: this.epgDetailContainerClass,
-		style: "height:" + this.detailsHeight_ + 'px'	
+		style: "height:" + this.detailsHeight_ + 'px'
 	});
 	this.setupContainerInternal(this.transContainer_);
 	this.transContainer_.style.position = 'relative';
 	this.transContainer_.style.height = (parseInt(this.transContainer_.style.height, 10 ) - this.detailsHeight_ ) + 'px';
+	this.timelineElement_.style.top = (this.detailsHeight_ - 20) + 'px';
 	this.container_.appendChild( this.detailsContainer_);
 	this.container_.appendChild( this.transContainer_);	
+	this.container_.appendChild( this.timelineElement_);
 };
 /**
  * Styling for the time offset and time line 
@@ -74,7 +82,7 @@ Epg.prototype.style2_ = 'px, 0px);}';
  * It should be updated whenever the style ( especially the width ) of the channel title is altered
  * @type {number}
  */
-Epg.prototype.initOffset_ = 100;
+Epg.prototype.initOffset_ = 140;
 /**
  * This is the height of the top box that visualizes all the channel details and current
  * selected program details
@@ -336,8 +344,16 @@ Epg.prototype.visuallyInitialize_ = function(timelinestart, timelineend) {
 		this.afterscreen_.push(this.elements_[i]);
 	}
 	this.setTranformationsForChannelsInternal();
+	this.populateTimeLine();
 	this.isVisuallyInitialized_ = true;
 	
+};
+Epg.prototype.populateTimeLine = function() {
+	this.timelineElement_.innerHTML = timelinetemplate.render({
+		start: parseInt(this.timelineStart_.getHours(),10),
+		pixelsPerHour: this.timelineHourDistance_,
+		hours: this.maxShownPeriod_/1000/60/60
+	});
 };
 Epg.prototype.setTranformationsForChannelsInternal = function() {
 	var i = 0;

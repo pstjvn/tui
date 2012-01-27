@@ -290,3 +290,16 @@
 .paid {
 	background-image: url('../imgs/icon_dollar.png');
 }
+.timeline {
+	height: 20px;
+	width: 1440px;
+	left: 0;
+	background-color: green;
+	position: absolute;
+
+}
+.anhour {
+		display: inline-block;
+		border-left: 2px solid red;
+}
+

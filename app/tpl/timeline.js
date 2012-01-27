@@ -3,9 +3,15 @@ var attrs = jade.attrs, escape = jade.escape, rethrow = jade.rethrow;
 var buf = [];
 with (locals || {}) {
 var interp;
-buf.push('<for>( var a = 0; a < 24; a++ )<span');
-buf.push(attrs({ '"class": hours + a':(true) }));
-buf.push('>;</span></for>');
+ for (var a = 0; a < hours; a++, start++)
+{
+buf.push('<span');
+buf.push(attrs({ 'style':("width:" + (pixelsPerHour - 2 )+ 'px;'), "class": ('anhour') }));
+buf.push('>');
+var __val__ = start
+buf.push(null == __val__ ? "" : __val__);
+buf.push('</span>');
+}
 }
 return buf.join("");
 }return { render: anonymous }; });
