@@ -126,6 +126,7 @@ define([
 	App.prototype.onStopRequested = function() {
 		this.screens[this.currentScreenIndex].attachEvents(false);
 		this.attachEvents(false);
+		this.container.innerHTML = '';
 	};
 	App.prototype.start = function() {
 		if (!this.depsLoaded_) {

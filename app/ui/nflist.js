@@ -1,9 +1,27 @@
+/**
+ * @fileoverview Provider for NetFlix listing type. It utilizes the webkit 
+ * transitions and transformation capabilities to minimize the dom access
+ * Optional animation is supported via CSS and is programitically enabled/
+ * disabled
+ *
+ * The listing implements the 'presentation' interface (i.e. can replace the 
+ * other listings)
+ */
+
 define([
 	'dom/dom',
 	'dom/classes',
 	'tpl/nflist'
 ], function(dom, classes, template) {
-
+	/**
+	 * Implements 'presentation' 
+	 * 
+	 * @param {ListingApp} app The app that will utilize the listings
+	 * @param {Storage} data_accessor The storage to use for data loading/access
+	 * @param {number} item_height The height desired for each item, should
+	 * 		match the height in the styling
+	 */
+	
 	var NFList = function( app, data_accessor, item_height ) {
 		this.app = app;
 		this.dataAccessor_ = data_accessor;
@@ -13,11 +31,12 @@ define([
 		this.onscreen_ = [];
 		this.beforescreen_ = [];
 		this.afterscreen_ = [];
-		this.activeChannelElement_ = null;
-//		this.constructDom();
+		this.activeChannelElement_ = null;	
+		if (NFList.enableAnimation_) {
+			dom.adopt(document.head, NFList.animationStyleElement);
+		}
 	};
-	NFList.enableAnimation_ = true;
-	NFList.animationDuration_ = 300;
+
 	NFList.prototype.contentBox_;
 	NFList.prototype.isDomConstructed_ = false;
 	NFList.prototype.isVisible_ = false;
@@ -29,7 +48,22 @@ define([
 	NFList.prototype.rows_ = 0;
 	NFList.prototype.horizontalPadding = 0;
 	NFList.prototype.verticalPadding = 0;
+	/** Static properties and function */
+	NFList.enableAnimation_ = false;
+	NFList.animationDuration_ = 300;
+	NFList.composeAnimationStyle = function() {
+		var res = '.' + NFList.prototype.listItemCssClass + '{ -webkit-transition: -webkit-transform ';
+		res += NFList.animationDuration_;
+		res += 'ms; }'
+		return res;
+	}
+	NFList.animationStyleElement = (function() {
+		return dom.create('style', {
+			text: NFList.composeAnimationStyle()
+		});
+	})();
 
+	/** END static */
 	NFList.prototype.enterDom = function(opt_cont_box, force) {
 		this.app.fire('show-start');
 		if ( opt_cont_box !== undefined ) {
@@ -99,8 +133,14 @@ define([
 		return template;
 	};
 	NFList.prototype.populateItem = function( element, chanRecord ) {
-		if ( typeof chanRecord !== 'undefined')
+		if ( typeof chanRecord !== 'undefined') {
+			classes.removeClasses(element, 'empty');
 			element.innerHTML = this.getTemplate().render({channel: chanRecord});
+		} else {
+			classes.addClasses(element, 'empty');
+			element.innerHTML = '';
+		}
+
 	};
 	NFList.prototype.setVerticalTransformations = function() {
 		var i = 0;
@@ -217,15 +257,32 @@ define([
 		classes.addClasses( element, this.listItemActiveCssClass);
 		this.activeChannelElement_ = element;
 	};
+	NFList.prototype.indexIsPresentation = function(n) {
+		if ( n >= this.dataPointer_ || n < this.dataPointer_ + this.rows_ ) {
+			return true;
+		}
+		var after = this.afterscreen_.length;
+		var before = this.beforescreen_.length;
+		if ( n < this.dataPointer_ + this.rows_ - 1 + after ) return true;
+		if ( n > this.dataPointer_ - before ) return true;
+		return false;
+	};
 	
 	/** public api*/
 	NFList.prototype.getStep = function() {return 1};
 	NFList.prototype.getHStep = function() {return 1};
 	NFList.prototype.reset = function(){};
 	NFList.prototype.activate = function() { this.selectRow.apply( this, arguments)};
-	NFList.prototype.unload = function(){};
+	NFList.prototype.unload = function(){
+		dom.dispose(this.container_);
+		this.isVisible_ = false;
+	};
 	NFList.prototype.show = function() { this.enterDom.apply(this, arguments)};
-	NFList.prototype.updateItem = function(){};
+	NFList.prototype.updateItem = function(index, channel){
+		if ( this.indexIsVisible(index) ) {
+			this.setItemsContent();
+		}
+	};
 	/** end public api */
 	
 	return NFList;

@@ -21,6 +21,11 @@
 	border: 2px solid #3E5170;
 	color: white;
 	position: absolute;
+	top: 0;
+	left: 0;
+}
+.tui-nflist-item.empty {
+	border: 2px solid transparent;
 }
 .tui-nflist-item.active {
 	border: 2px solid #1E69D1;
