@@ -2,13 +2,13 @@ div.title
 	- if (channel.thumbnail.length > 4)
 		div.imgcont
 			img(src=channel.thumbnail)
-		div.channel-name Discovery Channel
+		div.channel-name!= channel.publishName
 	- else 
-		div Discovery Science
+		div!= channel.publishName
 	ul.channel-settings-icons
-				- if (channel.isLocked)
-					li.icon.locked
-				- if (channel.isBookmarked)
-					li.icon.bookmarked
-				- if (channel.cost > 0) 
-					li.icon.paid
+		- if (channel.isLocked)
+			li.icon.locked
+		- if (channel.isBookmarked)
+			li.icon.bookmarked
+		- if (channel.cost > 0) 
+			li.icon.paid

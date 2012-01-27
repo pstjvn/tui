@@ -14,11 +14,17 @@ buf.push('><img');
 buf.push(attrs({ 'src':(channel.thumbnail) }));
 buf.push('/></div><div');
 buf.push(attrs({ "class": ('channel-name') }));
-buf.push('>Discovery Channel</div>');
+buf.push('>');
+var __val__ = channel.publishName
+buf.push(null == __val__ ? "" : __val__);
+buf.push('</div>');
 }
  else 
 {
-buf.push('<div>Discovery Science</div>');
+buf.push('<div>');
+var __val__ = channel.publishName
+buf.push(null == __val__ ? "" : __val__);
+buf.push('</div>');
 }
 buf.push('<ul');
 buf.push(attrs({ "class": ('channel-settings-icons') }));
