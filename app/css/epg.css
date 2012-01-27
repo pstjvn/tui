@@ -142,6 +142,7 @@
 	position: absolute;
 	top:0;
 	left:0;
+	overflow: hidden;
 /*	-webkit-transition: -webkit-transform 0.3s;*/
 }
 /*
@@ -197,20 +198,19 @@
 	width:140px;
 	height: 70px;
 	border-right: 1px solid #364C63;
-	display: table;
 	background: black;
 	background: url(../imgs/epg-inactive.png);
+	overflow: hidden;
 }
 .epgrow .title div {
-	text-align: right;
-	display: table-cell;
-	height: 65px;
-	vertical-align: middle;
+	text-align: center;
+	height: 70px;
 	border-bottom: 1px solid #364C63;
 	width: 80%;
 	position: relative;
-	padding: 0 6px 0 0;
 	font-weight: bold;
+	margin: auto;
+	line-height: 5.2;
 }
 .epgrow .title .imgcont img {
 	height: 90%;
@@ -245,13 +245,13 @@
 	list-style-type: none;
 	position: absolute;
 	bottom: 0px;
-	border-bottom: 1px solid #364C63;
+	/*border-bottom: 1px solid #364C63;*/
 	width: 30px;
 	padding-bottom: 6px;
 	z-index: 1;
 }
 .epgrow .title .channel-name {
-	width: 135px;
+	width: 140px;
 	height: 33px;
 	background: rgba(1, 1, 1, 0.6);
 	position: absolute;
