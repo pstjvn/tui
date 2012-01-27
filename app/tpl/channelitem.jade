@@ -2,5 +2,13 @@ div.title
 	- if (channel.thumbnail.length > 4)
 		div.imgcont
 			img(src=channel.thumbnail)
+		div.channel-name Discovery Channel
 	- else 
-		div No image
+		div Discovery Science
+	ul.channel-settings-icons
+				- if (channel.isLocked)
+					li.icon.locked
+				- if (channel.isBookmarked)
+					li.icon.bookmarked
+				- if (channel.cost > 0) 
+					li.icon.paid

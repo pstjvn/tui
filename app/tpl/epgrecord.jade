@@ -1,1 +1,5 @@
-span.p(style='left:'+ leftOffset + 'px;width:' + widthByDuration + 'px;')!= progTitle
+span.p(style='left:'+ leftOffset + 'px;width:' + widthByDuration + 'px;')
+		div(style='display: table;width: 100%;height: 100%;')
+			div.title-container
+				div.title-holder(style='width:' + (widthByDuration - 4) + 'px; margin: auto;')!= progTitle
+		div.title-background
