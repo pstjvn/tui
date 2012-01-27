@@ -3,19 +3,154 @@
 	left: 0;
 	position: absolute;
 	z-index: 1000;
-	
 }
 .tui-vertical-transition-container {
 	position: relative;
 }
 .tui-nflist-item {
+	margin: 14px 17px 0 17px;
+	width: 94%;
+	height: 3.4em;
+	text-align: left;
+	-moz-box-pack: center;
+	-webkit-box-pack: center;
+	border-radius: 0.3em;
+	-moz-border-radius: 0.3em;
+	-webkit-border-radius: 0.3em;
+	-ms-border-radius: 0.3em;
+	border: 2px solid #3E5170;
+	color: white;
 	position: absolute;
-	top: 0;
-	left: 0;
-	height: 50px;
-	background-color: green;
 }
 .tui-nflist-item.active {
-	background-color: red;
-	-webkit-transition: -webkit-transform 0.3s;
+	border: 2px solid #1E69D1;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(198, 222, 255, 0.9)), color-stop(4%,rgba(104, 151, 221, 0.75)), color-stop(5%,rgba(30, 105, 222, 0.45)), color-stop(50%,rgba(30, 105, 222, 0)), color-stop(96%,rgba(30, 105, 222, 0)), color-stop(96%,rgba(30, 105, 222, 0.45)), color-stop(98%,rgba(104, 151, 221, 0.75)), color-stop(100%,rgba(198, 222, 255, 0.9)));
+}
+.tui-vertical-transition-container.list-container {
+	text-align: center;
+	margin: 10px auto 10px auto;
+	position: absolute;
+}
+.tui-vertical-transition-container .item {
+	margin: 0.3em auto 0 auto;
+	width: 94%;
+	height: 3.4em;
+	text-align: left;
+	-moz-box-pack: center;
+	-webkit-box-pack: center;
+	border-radius: 0.3em;
+	-moz-border-radius: 0.3em;
+	-webkit-border-radius: 0.3em;
+	-ms-border-radius: 0.3em;
+	border: 2px solid #3E5170;
+	color: white;
+	position: relative;
+}
+.tui-vertical-transition-container.list-container .current {
+	border: 2px solid #1E69D1;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(198, 222, 255, 0.9)), color-stop(4%,rgba(104, 151, 221, 0.75)), color-stop(5%,rgba(30, 105, 222, 0.45)), color-stop(50%,rgba(30, 105, 222, 0)), color-stop(96%,rgba(30, 105, 222, 0)), color-stop(96%,rgba(30, 105, 222, 0.45)), color-stop(98%,rgba(104, 151, 221, 0.75)), color-stop(100%,rgba(198, 222, 255, 0.9)));
+}
+.tui-vertical-transition-container.list-container .current .number_id {
+	color: #d08b05;
+}
+.tui-vertical-transition-container .leftCont {
+	float: left;
+	width: 88%;
+	height: 80%;
+	padding: 0.5em;
+}
+.tui-vertical-transition-container .leftContLong {
+	float: left;
+	width: 99%;
+	height: 80%;
+	padding: 0.5em;
+}
+.tui-vertical-transition-container .rightCont {
+	height: 40px;
+	width: 53px;
+	text-align: right;
+	display: -webkit-inline-box;
+	margin-top:3px;
+}
+.tui-vertical-transition-container .rightCont-folder {
+	float: right;
+	width: 57px;
+	height: 38px;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	background: url(../imgs/folder.png) no-repeat;
+	background-size: contain;
+	margin: 4px 4px 0 0;
+}
+.tui-vertical-transition-container .leftCont .number_id {
+	color: #b4b3ae;
+    float: left;
+    font-size: 1.3em;
+    font-weight: bold;
+    height: 100%;
+    margin-right: 0.5em;
+    text-align: center;
+    width: 70px;
+    line-height: 1em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.tui-vertical-transition-container .leftContLong .number_id {
+	color: #b4b3ae;
+    float: left;
+    font-size: 1.3em;
+    font-weight: bold;
+    height: 100%;
+    margin-right: 0.5em;
+    text-align: center;
+    width: 70px;
+    line-height: 1em;
+}
+.tui-vertical-transition-container .item_name {
+    font-size: 1.1em;
+    font-weight: bold;
+    height: 50%;
+	-moz-box-pack:center;
+	-moz-box-align:center;
+	-webkit-box-pack:center;
+	-webkit-box-align:center;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.tui-vertical-transition-container .img_thumb {
+	border: 0;
+	width: 100%;
+	display: -webkit-box;
+}
+.tui-vertical-transition-container .description {
+	display: inline-block;
+	margin-right: 20px;
+}
+.tui-vertical-transition-container .channel-settings-icons {
+	left: 11px;
+    list-style-type: none;
+    position: absolute;
+    bottom: 2px;
+}
+.tui-vertical-transition-container .icon {
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 20px;
+    margin-right: 1px;
+    width: 20px;
+    float: left; 
+}
+.tui-vertical-transition-container .bookmarked {
+	background-image: url("../imgs/icon_favorite.png");
+}
+.tui-vertical-transition-container .recordable {
+	background-image: url("../imgs/icon_recording.png");
+}
+.tui-vertical-transition-container .locked {
+	background-image: url("../imgs/icon_lock.png");
+}
+.tui-vertical-transition-container .paid {
+	background-image: url('../imgs/icon_dollar.png');
 }
