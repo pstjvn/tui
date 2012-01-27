@@ -10,7 +10,7 @@ buf.push(attrs({ 'style':('display: table;width: 100%;height: 100%;') }));
 buf.push('><div');
 buf.push(attrs({ "class": ('title-container') }));
 buf.push('><div');
-buf.push(attrs({ 'style':('width:' + widthByDuration + 'px; margin: auto;'), "class": ('title-holder') }));
+buf.push(attrs({ 'style':('width:' + (widthByDuration - 4) + 'px; margin: auto;'), "class": ('title-holder') }));
 buf.push('>');
 var __val__ = progTitle
 buf.push(null == __val__ ? "" : __val__);

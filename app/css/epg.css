@@ -189,32 +189,100 @@
 .epgrow.active .title {
 	background: url(../imgs/epg-active.png);
 }
-.epgrow.active .title div{
-	background: url(../imgs/epg-active-h.png);
-}
 .epgrow .title {
 	position: relative;
 	top:-70px;
 	left:0;
-	width:100px;
+	width:140px;
 	height: 70px;
 	border-right: 1px solid #364C63;
 	display: table;
+	background: black;
+	background: url(../imgs/epg-inactive.png);
 }
 .epgrow .title div {
-	text-align: center;
+	text-align: right;
 	display: table-cell;
 	height: 65px;
 	vertical-align: middle;
 	border-bottom: 1px solid #364C63;
-	background: black;
+	width: 80%;
+	position: relative;
+	padding: 0 6px 0 0;
+	font-weight: bold;
 }
 .epgrow .title .imgcont img {
 	height: 90%;
+	width: 60%;
 	vertical-align: middle;
 	border-radius: 4px;
 }
 .epg-details {
 	background: black;
 	border-bottom: 1px solid #364C63;
+	display: table;
+}
+.epg-details-logo {
+	background: url(http://192.168.0.11/imgs/btv_logo_b.gif) no-repeat;
+	height: 80px;
+	width: 160px;
+	position: fixed;
+	top: 10px;
+	background-size: contain;
+	background-position: 50%;
+	margin-left: 7px;
+}
+.epg-details-text {
+	text-align: center;
+	position: relative;
+	padding: 0px 20px 0px 190px;
+	display: table-cell;
+	vertical-align: middle;
+}
+.channel-settings-icons {
+	left: 110px;
+	list-style-type: none;
+	position: absolute;
+	bottom: 0px;
+	border-bottom: 1px solid #364C63;
+	width: 30px;
+	padding-bottom: 6px;
+	z-index: 1;
+}
+.epgrow .title .channel-name {
+	width: 135px;
+	height: 33px;
+	background: rgba(1, 1, 1, 0.6);
+	position: absolute;
+	bottom: -38px;
+	-webkit-transition: all 850ms;
+	left: 0px;
+	text-align: center;
+	font-weight: bold;
+	line-height: 2;
+}
+.epgrow.active .channel-name {
+	bottom: 0px;
+	z-index: 2;
+}
+.icon {
+	/*background-color: #596876;*/
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 20px;
+    margin-right: 1px;
+    width: 20px;
+    float: left; 
+}
+.bookmarked {
+	background-image: url("../imgs/icon_favorite.png");
+}
+.recordable {
+	background-image: url("../imgs/icon_recording.png");
+}
+.locked {
+	background-image: url("../imgs/icon_lock.png");
+}
+.paid {
+	background-image: url('../imgs/icon_dollar.png');
 }
