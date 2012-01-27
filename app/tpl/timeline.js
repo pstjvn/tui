@@ -6,7 +6,7 @@ var interp;
  for (var a = 0; a < hours; a++, start++)
 {
 buf.push('<span');
-buf.push(attrs({ 'style':("width:" + (pixelsPerHour - 2 )+ 'px;'), "class": ('anhour') }));
+buf.push(attrs({ 'style':("width:" + (pixelsPerHour - 9 )+ 'px;'), "class": ('anhour') }));
 buf.push('>');
 var __val__ = start
 buf.push(null == __val__ ? "" : __val__);

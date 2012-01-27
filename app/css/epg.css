@@ -294,12 +294,13 @@
 	height: 20px;
 	width: 1440px;
 	left: 0;
-	background-color: green;
+	background-color: hsl(210, 40%, 15%);
 	position: absolute;
-
 }
 .anhour {
-		display: inline-block;
-		border-left: 2px solid red;
+	display: inline-block;
+	border-left: 2px solid hsla(0, 0%, 100%, 0.5);
+	height: 100%;
+	padding: 0 0px 0 7px;
+	line-height: 1.6;
 }
-
