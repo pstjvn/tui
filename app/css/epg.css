@@ -184,7 +184,7 @@
 	width: 100%;
 	vertical-align: middle;
 }
-.title-background.active {
+.epgrow .prog .p.active .title-background {
 	border: 2px solid #B3D1FE;
 	background: #114F8D;
 }
