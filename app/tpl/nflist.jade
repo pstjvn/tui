@@ -1,1 +1,27 @@
-span.title= channel.publishName
+div.item
+	div(class = ((channel.thumbnail !== null)? "leftCont" : "leftContLong"))
+		- if (channel.sortIndex !== '0' && channel.sortIndex !== 0 )
+			h1.number_id!= channel.sortIndex
+		- else 
+			h1.number_id
+		h2.item_name!= channel.publishName
+		- if (channel.genre)
+			div.description!= "Genre:" + channel.genre
+		- if (channel.time)
+			div.description!= "Time:" + channel.time
+		- if (channel.cost)
+			div.description!= "Cost:" + channel.cost
+		- if (channel.size) 
+			div.description!= "Size:" + channel.size
+	- if (channel.isDir !== false) 
+		div.rightCont-folder
+	- else if (channel.thumbnail.length > 5)
+		div.rightCont
+			img.img_thumb(src=channel.thumbnail)
+	ul.channel-settings-icons
+		- if (channel.isLocked)
+			li.icon.locked
+		- if (channel.isBookmarked)
+			li.icon.bookmarked
+		- if (channel.cost > 0) 
+			li.icon.paid

@@ -16,7 +16,7 @@ define([
 		this.activeChannelElement_ = null;
 //		this.constructDom();
 	};
-	NFList.enableAnimation_ = false;
+	NFList.enableAnimation_ = true;
 	NFList.animationDuration_ = 300;
 	NFList.prototype.contentBox_;
 	NFList.prototype.isDomConstructed_ = false;
@@ -56,6 +56,7 @@ define([
 			classes: this.transitionContainerCssClass
 		});
 		dom.adopt( this.container_, this.transContainer_ );
+		console.log(this.container_.innerHTML)
 		this.transWidth_ = parseInt(this.contentBox_.style.width, 10);
 		this.transHeight_ = parseInt(this.contentBox_.style.height, 10);
 		this.container_.style.width = this.transWidth_ +'px';
