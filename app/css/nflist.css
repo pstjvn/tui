@@ -14,8 +14,9 @@
 	left: 0;
 	height: 50px;
 	background-color: green;
+/*	-webkit-transition: -webkit-transform 0.3s;*/
 }
 .tui-nflist-item.active {
 	background-color: red;
-	-webkit-transition: -webkit-transform 0.3s;
+	
 }

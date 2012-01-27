@@ -24,6 +24,7 @@ define([
 	inherit(Weather, VisualApp);
 	Weather.prototype.onStopRequested = function() {
 //		TODO: Check to make sure everything is cleaned up
+		this.container.innerHTML = '';
 	};
 	Weather.prototype.onStartRequested = function() {
 		//fetch data if we do not have it yet

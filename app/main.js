@@ -89,7 +89,7 @@ require(['ui/throbber'], function(t) {
 			style: 'height: ' + window.innerHeight + 'px; width: ' + window.innerWidth + 'px; margin-top: 0; margin-bottom: 0'
 		}));
 		var tNow = (new Date()).getTime();
-		//Create the main Controller
+//		Create the main Controller
 		window.tui = {
 			DATA_TS: {
 				CONFIG: tNow,
@@ -145,11 +145,11 @@ require(['ui/throbber'], function(t) {
 				if (!window.exportedSymbols['appselector'].getState())
 					app.Start();
 			},
-			systemConfirm: function(options) {
-				// TODO: make those confirm panels work
-				var header = options.header.html;
-				this.rerouteEventsToPanel();
-			},
+//			systemConfirm: function(options) {
+//				// TODO: make those confirm panels work
+////				var header = options.header.html;
+////				this.rerouteEventsToPanel();
+//			},
 			stealEvents: function(newManager) {
 				response.setRemoteKeyHandler(newManager);
 				this.signals.eventsAreFetched = true;
@@ -172,6 +172,7 @@ require(['ui/throbber'], function(t) {
 				this.stealEvents(bind(dialog.eventHandler, dialog));
 			},
 			setPanels: function(top, bottom, opt_topContent, opt_bottomContent) {
+				return;
 				if (top) {
 	//				if (opt_topContent) {
 	//					this.panels.top.innerHTML = opt_topContent;
@@ -310,24 +311,6 @@ require(['ui/throbber'], function(t) {
 				func: tui.selectApp,
 				attached: false			
 			}
-			//
-			// globaldisplay: {
-			// 	name: 'display',
-			// 	func: function() {
-			// 		if (tui.globalPlayer.getState() !== player.STOPPED.STOPPED) {
-			// 			tui.stealEvents(
-			// }
-			// 
-//			displaykey: {
-//				name: 'display',
-//				func: function() {
-//					if (tui.signals.eventsAreFetched) {
-//						if (tui.globalPlayer.getState() !== player.STATES.STOPPED) {
-//							tui.signals.restoreEventTree();
-//						}
-//					}
-//				}
-//			}
 		});
 
 /**
