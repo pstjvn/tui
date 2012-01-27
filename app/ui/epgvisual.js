@@ -77,7 +77,7 @@ Epg.prototype.constructDom_ = function() {
  * @type {string}
  */
 Epg.prototype.style_ = '.prog, .timeline {-webkit-transform: translate(';
-Epg.prototype.style2_ = 'px, 0px);}';
+Epg.prototype.style2_ = 'px, 0px); }';
 /**
  * This is the initial offset of the timeline - enouight to make space for the channel header on the left
  * It should be updated whenever the style ( especially the width ) of the channel title is altered
@@ -286,6 +286,7 @@ Epg.prototype.setActiveChannel_ = function( element ) {
 	this.currentEpgElement_ = p;
 	classes.addClasses( element, 'active');
 	this.activeChannelElement_ = element;
+	this.styleElement_.textContent = this.compileStyle_(0);
 };
 Epg.prototype.getEvents_ = function() {
 	if ( this.events_ === null ) {
@@ -481,13 +482,15 @@ Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
 		endIndex = Epg.findProgramThatEndsAfterEndTimeFrame( epgdata, startIndex, timelineend);
 		var firstItemStartTime = new Xdate(epgdata[startIndex][1]);
 		var startOffsetAsMS;
+		var useTT = false;
 		if ( timelinestart.isLaterThan( firstItemStartTime ) ) {
 			startOffsetAsMS = 0;
+			useTT = true;
 		} else if ( timelinestart.isEarlierThan( firstItemStartTime ) ) {
 			startOffsetAsMS = firstItemStartTime.getTime() - timelinestart.getTime();
 		} else startOffsetAsMS = 0;
 		var startOffsetinMinutes = Xdate.getTimeDiffereceAsMinutes( timelinestart, timelinestart.getTime() + startOffsetAsMS );
-		var endMinutes = Xdate.getTimeDiffereceAsMinutes( epgdata[startIndex][2], epgdata[startIndex][1]);
+		var endMinutes = Xdate.getTimeDiffereceAsMinutes( epgdata[startIndex][2], useTT ? timelinestart.getTime():  epgdata[startIndex][1]);
 		result += epgRecordTemplate.render({
 			epgRecordIndex: startIndex,
 			leftOffset: Math.abs(startOffsetinMinutes * 3),
