@@ -19,6 +19,7 @@ define([
 				if (this.epgInstance.isVisible()) {
 					this.epgInstance.hide();
 				} else {
+					this.presentation.container_.style.visibility = 'hidden';
 					this.epgInstance.show();
 					this.epgInstance.selectRow( this.model.currentIndex );
 				}
