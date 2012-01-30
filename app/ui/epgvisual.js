@@ -6,8 +6,9 @@ define([
 	'utils/datetime',
 	'tpl/epgrecord',
 	'datetime/xdate',
-	'tpl/timeline'
-], function(events, dom, channelItemTemplate, classes, datetime, epgRecordTemplate, Xdate, timelinetemplate) {
+	'tpl/timeline',
+	'tpl/epg-details'
+], function(events, dom, channelItemTemplate, classes, datetime, epgRecordTemplate, Xdate, timelinetemplate, detailstemplate) {
 
 /**
  * @fileoverview Provides means to work with epg and visualize it in table tows on 
@@ -190,7 +191,33 @@ Epg.prototype.setNextActiveEPG = function( el ) {
 	}
 	classes.addClasses( el, 'active');
 	this.currentEpgElement_ = el;
+	this.setEpgDetails_();
 	this.fitEpgElementOnScreen();
+};
+Epg.prototype.setEpgDetails_ = function() {
+	if ( this.currentEpgElement_ === null ) {
+		this.detailsContainer_.innerHTML = detailstemplate.render({
+			noData: true
+		});	
+		return;
+	}
+	
+	var epgRecords = this.getEpgDataByObject(this.dataAccessor_.getItem());
+	console.log('EPG zapisi', epgRecords);
+	var epgdata = null;
+	if (epgRecords) {
+		epgdata = epgRecords[parseInt(dom.dataGet(this.currentEpgElement_, 'index'),10)];
+		this.detailsContainer_.innerHTML = detailstemplate.render({
+			startTime: epgdata[1],
+			endTime: epgdata[2],
+			title: epgdata[3],
+			noData: false
+		});
+	} else {
+		
+	}
+
+	console.log('Found epg', epgdata);
 };
 Epg.prototype.fitEpgElementOnScreen = function() {
 	var el = this.currentEpgElement_;
@@ -284,6 +311,7 @@ Epg.prototype.setActiveChannel_ = function( element ) {
 		classes.addClasses(p, 'active');
 	}
 	this.currentEpgElement_ = p;
+	this.setEpgDetails_();
 	classes.addClasses( element, 'active');
 	this.activeChannelElement_ = element;
 	this.styleElement_.textContent = this.compileStyle_(0);
@@ -594,6 +622,10 @@ Epg.prototype.getContainer_ = function() {
 		this.container_ = document.body;
 	}
 	return this.container_;
+};
+Epg.prototype.hide = function() {
+	dom.dispose(this.container_);
+	this.isVisible_ = false;
 };
 
 return Epg;

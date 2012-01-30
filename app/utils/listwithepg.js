@@ -18,6 +18,7 @@ define([
 			func: bind(function() {
 				if (this.epgInstance.isVisible()) {
 					this.epgInstance.hide();
+					this.presentation.container_.style.visibility = '';
 				} else {
 					this.presentation.container_.style.visibility = 'hidden';
 					this.epgInstance.show();
@@ -107,8 +108,9 @@ define([
 	};
 	
 	App.prototype.onStopRequested = function() {
-		if (this.epgInstance.isAttachedToDom()) {
-			this.epgInstance.exitDom();
+		if (this.epgInstance.isVisible()) {
+			this.epgInstance.hide();
+			this.presentation.container_.style.visibility = '';
 		}
 		App.superClass_.onStopRequested.call(this);
 	};

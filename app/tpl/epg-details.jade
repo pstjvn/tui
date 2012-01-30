@@ -1,3 +1,10 @@
 div.epg-details
 	div.epg-details-logo
 	div.epg-details-text
+	- if (noData === true)
+		div.noData
+	- else 
+		div.info
+			span.startTime!= startTime
+			span.endTime!= endTime
+		div.title!= title
