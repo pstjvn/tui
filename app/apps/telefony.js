@@ -1,3 +1,9 @@
+/**
+ * This code is deprecated and is not supported, it turns out the 
+ * Telephony module in recent Tornado M* devices is not working and will
+ * not be fixed by Sysmaster
+ * @deprecated
+ */
 define([
 	'utils/multiscreen',
 	'tpl/telephony_callcenter',

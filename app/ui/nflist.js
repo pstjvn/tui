@@ -270,7 +270,9 @@ define([
 	
 	/** public api*/
 	NFList.prototype.getStep = function() {return 1};
-	NFList.prototype.getHStep = function() {return 1};
+	NFList.prototype.getHStep = function() {
+		return this.rows_;
+	};
 	NFList.prototype.reset = function(){};
 	NFList.prototype.activate = function() { this.selectRow.apply( this, arguments)};
 	NFList.prototype.unload = function(){

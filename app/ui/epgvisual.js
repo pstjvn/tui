@@ -39,7 +39,7 @@ var Epg = function(data_accessor) {
 	this.afterscreen_ = [];
 	this.activeChannelElement_ = null;
 };
-Epg.enableAnimation_ = false;
+Epg.enableAnimation_ = true;
 Epg.animationDuration_ = 300;
 /**
  * Utilized class names
@@ -208,8 +208,8 @@ Epg.prototype.setEpgDetails_ = function() {
 	if (epgRecords) {
 		epgdata = epgRecords[parseInt(dom.dataGet(this.currentEpgElement_, 'index'),10)];
 		this.detailsContainer_.innerHTML = detailstemplate.render({
-			startTime: epgdata[1],
-			endTime: epgdata[2],
+			startTime: datetime.getParsedTime(epgdata[1]),
+			endTime:  datetime.getParsedTime(epgdata[2]),
 			title: epgdata[3],
 			noData: false
 		});
@@ -427,6 +427,8 @@ Epg.prototype.visuallyInitialize_ = function(timelinestart, timelineend) {
 	
 };
 Epg.prototype.populateTimeLine = function() {
+	console.log('\n\n\n\nPOPULATE TIMELINE')
+	console.log(this.timelineStart_.getHours());
 	this.timelineElement_.innerHTML = timelinetemplate.render({
 		start: parseInt(this.timelineStart_.getHours(),10),
 		pixelsPerHour: this.timelineHourDistance_,

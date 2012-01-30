@@ -1,12 +1,13 @@
-define(['types/types',
+//TODO: get rid of this screen, or alternatively port it to new design
+
+define([
 	'utils/baseapp', 
 	'dom/dom', 
-	'utils/events', 
-	'dom/attributes',
-	'text!css/start.css', 
-	'text!tpl/start.txt', 
-	'loader/loader'], function(types, appeng, dom, events, domattr, css, html, loader) {
-	//loader.loadCSSFromText(css, 'startCSS');
+	'text!tpl/start.txt'], function(appeng, dom, html) {
+	/**
+	 * This is the OLD app engine, do not use in new code@
+	 * @deprecated
+	 */
 	var APP = appeng({
 		config: {
 			name: 'start',	

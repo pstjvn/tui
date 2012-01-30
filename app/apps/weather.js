@@ -5,13 +5,19 @@ define([
 	'env/exports',
 	'loader/loader',
 	'tpl/weather',
-	'text!css/weather.css',
 	'transport/request',
-//	'transport/response'
 	'transport/grouprequest'
-], function(inherit, VisualApp, bind, exports, loader, template, css, request, GroupRequest){
-	//loader.loadCSSFromText(css);
+], function(inherit, VisualApp, bind, exports, loader, template, request, GroupRequest){
+	/**
+	 * The type of usints to use, 1 for Celsius, 0 for farenheight
+	 * @type {string}
+	 */
 	var units_ = '1';
+	/**
+	 * The city code to use, codes used are the international city codes
+	 * as per the WeatherBug's international city code listing
+	 * @type {string}
+	 */
 	var city_ = '104164';
 	var Weather = function(options) {
 		VisualApp.call(this, options);
@@ -22,12 +28,13 @@ define([
 		this.on('stop-requested', this.onStopRequested);
 	};
 	inherit(Weather, VisualApp);
+	
 	Weather.prototype.onStopRequested = function() {
-//		TODO: Check to make sure everything is cleaned up
 		this.container.innerHTML = '';
 	};
+	
 	Weather.prototype.onStartRequested = function() {
-		//fetch data if we do not have it yet
+//		fetch data if we do not have it yet
 		if (this.forecast === null || this.location === null) {
 			this.loadData();
 		} else {
@@ -57,6 +64,11 @@ define([
 		});
 		this.container.innerHTML = this.dom_;
 	};
+	/**
+	 * Loads the forecase information from weatherbug, this require network
+	 * access. Errors are not handled well
+	 * TODO: Handle errors from wb
+	 */
 	Weather.prototype.loadData = function(data) {
 		if (data) {
 			loader.loadJSONP('weatherlocation', 'http://i.wxbug.net/REST/Direct/GetLocation.ashx?api_key=u2bwf83unq43dt66ugm6t2fa&nf&f=exportedSymbols.weather.locationInfo&city=' + this.city);
@@ -65,17 +77,21 @@ define([
 		}
 		var req = request.create('calld', tui.options.paths.getPath(this.name, 'units'));
 		var req2 = request.create('calld', tui.options.paths.getPath(this.name, 'city'));
-		var a = new GroupRequest(bind(this.loadJSON, this), req2, req);
+		new GroupRequest(bind(this.loadJSON, this), req2, req);
 	};
+	
 	Weather.prototype.setLocationInfo = function(json) {
 		this.location = json;
 		if (this.forecast !== null) {
 			this.fire('start-ready');
 		}
 	};
-	Weather.prototype.noDataLoaded = function() {
-//		TODO: implement method where no data is returnedb by server
-	};
+	/**
+	 * Use this method for error handling on data load errors
+	 * TODO: implement method where no data is returnedb by server
+	 */ 		
+	Weather.prototype.noDataLoaded = function() {};
+	
 	Weather.prototype.load = function(jsonobj) {
 		if (jsonobj === null) {
 			this.noDataLoaded();
@@ -95,8 +111,7 @@ define([
 	    		this.forecast['forecastList'][i].humidity = / ([0-9]*%) /.exec(pred)[1];
 			}
 		}
-		if (this.location !== null)
-			this.fire('start-ready');
+		if (this.location !== null)	this.fire('start-ready');
 	};
 	Weather.prototype.disposeInternal = function() {
 		Weather.superClass_.disposeInternal.call(this);

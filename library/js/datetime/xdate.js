@@ -101,7 +101,7 @@ define(function() {
 	Xdate.fillToTwoSimbols = function( str ) {
 		str = ''+str;
 		if ( str.length < 2 ) {
-			str = str +'0';
+			str = "0" + str;
 		}
 		return str;
 	};
