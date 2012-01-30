@@ -1,10 +1,9 @@
-div.epg-details
-	div.epg-details-logo
-	div.epg-details-text
+div.epg-details-name Discovery Channel Science
+div.epg-details-text
 	- if (noData === true)
-		div.noData
+		div.noData No EPG information
 	- else 
-		div.info
+		div.epg-details-info
 			span.startTime!= startTime
 			span.endTime!= endTime
-		div.title!= title
+		div.epg-details-title!= title
