@@ -15,12 +15,7 @@
 	margin:auto;
 }
 .setup-container .icon {
-	width: 120px;
-	height: 90px;
-	text-align: center;
-	display: inline-block;
 	color: black;
-	-webkit-transition: 0.1s ease-in;
 }
 .setup-container .icon span {
 	z-index:1;
@@ -29,75 +24,81 @@
     margin: 0 auto;
 }
 .setup-container .icon div {
-	-webkit-transition: height 0.2s ease-in; 
-	-moz-transition: height 0.2s ease-in; 
-	-o-transition: height 0.2s ease-in; 
-	-ms-transition: height 0.2s ease-in;
 	position: relative;
 	width: 120px;
 	height: 104px;
 }
 .setup-container .active {
-	-webkit-transform: translate(0px,-30px); 
+	/*-webkit-transform: translate(0px,-30px); 
 	-moz-transform: translate(0px,-30px);
 	-o-transform: translate(0px,-30px);
 	-ms-transform: translate(0px,-30px);
 	color: white;
-	-webkit-transition: 0.1s ease-in;
+	-webkit-transition: 0.1s ease-in;*/
+}
+.icon .general, .icon .iptv-settings, .icon .LAN, .icon .WIFI, .icon .voip-settings,
+.active .general, .active .iptv-settings, .active .LAN, .active .WIFI, .active .voip-settings {
+	background-image: url('../imgs/setup.png');
+	background-repeat:no-repeat;
+	z-index: 5;
 }
 .setup-container .icon .general {
-	background-image: url('app/imgs/setup.png');
 	background-position: left -4px;
-	background-repeat:no-repeat;
-	z-index: 5;
+}
+.setup-container .active .general {
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
+	background-position: left -4px, 0 -535px;
 }
 .setup-container .icon .iptv-settings {
-	background-image: url('app/imgs/setup.png');
 	background-position: left -115px;
-	background-repeat:no-repeat;
-	z-index: 5;
+}
+.setup-container .active .iptv-settings {
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
+	background-position: left -115px, 0 -646px;
 }
 .setup-container .icon .LAN {
-	background-image: url('app/imgs/setup.png');
 	background-position: left -215px;
-	background-repeat: no-repeat;
-	z-index: 5;
+}
+.setup-container .active .LAN {
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
+	background-position: left -215px, 0 -746px;
 }
 .setup-container .icon .WIFI {
-	background-image: url('app/imgs/setup.png');
 	background-position: left -325px;
-	background-repeat:no-repeat;
-	z-index: 5;
+}
+.setup-container .active .WIFI {
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
+	background-position: left -325px, 0 -856px;
 }
 .setup-container .icon .voip-settings {
-	background-image: url('app/imgs/setup.png');
 	background-position: left -430px;
-	background-repeat:no-repeat;
-	z-index: 5;
 }
-
+.setup-container .active .voip-settings {
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
+	background-position: left -430px, 0 -644px;
+}
+/*
 .setup-container .icon .general .focus {
-	background-image: url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png');
 	background-position: left -535px;
 }
 .setup-container .icon .iptv-settings .focus {
-	background-image: url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png');
 	background-position: left -646px;
 }
 .setup-container .icon .LAN .focus {
-	background-image: url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png');
 	background-position: left -746px;
 }
 .setup-container .icon .WIFI .focus {
-	background-image: url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png');
 	background-position: left -856px;
 }
 .setup-container .icon .voip-settings .focus {
-	background-image: url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png');
 	background-position: 1px -644px;
 }
-
-
+*/
 
 /*------------------------ General ---------------------------*/
 
@@ -108,6 +109,9 @@
 	color: white;
 	height: 440px;
 	position: relative;
+	display: block;
+	width: auto;
+	background: transparent;
 }
 .general-wrapper > * {
 	margin: 0 auto;
@@ -120,7 +124,7 @@
 .general-wrapper .general-head {
 	margin: 10px 0px;
 	font-size: 110%;
-	color: #dadada;
+	color: #99BEFA;
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(139,139,147,1)), color-stop(49%,rgba(64,64,71,1)), color-stop(90%,rgba(11,11,12,1)));
 	border-radius: 5px;
 	border: thin solid #333;
@@ -132,7 +136,7 @@
 	width: 120px;
 	height: 90px;
 	z-index: 1;
-	background-image: url('app/imgs/setup.png');
+	background-image: url('../imgs/setup.png');
 	background-position: left 80px;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -190,7 +194,7 @@
 	color: #CCC;
 	margin: 0;
 	overflow: hidden;
-	background:rgba(255,255,255,0.2);
+	background: #111;
 	height: 0px;
 	margin: 0% 70%;
 	padding-top: 0;
@@ -198,17 +202,19 @@
 }
 .general-wrapper .general-content .section .row{
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(34, 35, 38, 1)), color-stop(81%,rgba(27, 28, 35, 1)), color-stop(100%,rgba(23, 25, 30, 1)));
-	border: solid 1px grey;
+	border: 1px solid #3E5170;
 	margin: 4px 3px 1px 50px;
 	color: gainsboro;
-	font-size: 20px;
+	font-size: 15px;
 	display: inline-block;
 	width: 46%;
 	float: right;
+	font-weight: bold;
+	padding: 7px 0;
 }
 .general-wrapper .general-content .section .active{
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(142,129,125,1)), color-stop(49%,rgba(66,53,50,1)), color-stop(50%,rgba(51,22,15,1)), color-stop(60%,rgba(51,22,15,1)), color-stop(100%,rgba(168,77,57,1)));
-	border: solid 1px grey;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(198, 222, 255, 0.9)), color-stop(4%,rgba(104, 151, 221, 0.75)), color-stop(5%,rgba(30, 105, 222, 0.45)), color-stop(34%,rgba(9, 25, 40, 0.72)), color-stop(50%,rgba(9, 25, 40, 0.87)), color-stop(80%,rgba(9, 25, 40, 0.6)), color-stop(96%,rgba(9, 25, 40, 0.45)), color-stop(98%,rgba(9, 25, 40, 0.75)), color-stop(100%,rgba(9, 25, 40, 0.9)));
+	border: 1px solid #1E69D1;
 }
 .general-wrapper .general-content .section.active {
 	height: auto;
@@ -281,28 +287,16 @@
 	line-height: 1.5;
 }
 .general-wrapper .general-content .general-item.active {
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(142,129,125,1)), color-stop(49%,rgba(66,53,50,1)), color-stop(50%,rgba(51,22,15,1)), color-stop(60%,rgba(51,22,15,1)), color-stop(100%,rgba(168,77,57,1)));
-	-moz-border-bottom-colors: #323232;
-	-moz-border-image: none;
-	-moz-border-left-colors: rgba(255,255,255,0.3);
-	-moz-border-right-colors: #323232;
-	-moz-border-top-colors: #c8c7cc;
-	
-	
-	border-bottom-color: #323232;
-	border-left-color: rgba(255,255,255,0.3);
-	border-right-color: #323232;
-	border-top-color: #c8c7cc; 
-	border-radius: 1px 1px 1px 1px;
-	border-style: solid;
-	border-width: 1px;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(198, 222, 255, 0.9)), color-stop(4%,rgba(104, 151, 221, 0.75)), color-stop(5%,rgba(30, 105, 222, 0.45)), color-stop(34%,rgba(9, 25, 40, 0.72)), color-stop(50%,rgba(9, 25, 40, 0.87)), color-stop(80%,rgba(9, 25, 40, 0.6)), color-stop(96%,rgba(9, 25, 40, 0.45)), color-stop(98%,rgba(9, 25, 40, 0.75)), color-stop(100%,rgba(9, 25, 40, 0.9)));
+	border: 1px solid #1E69D1;
+	border-radius: 2px;
 }
 .general-wrapper .general-content .general-item.inactive {
 	background: rgba(50, 50, 50, 0.5);
 	color: #999;
 }
 .general-wrapper .general-content .general-item.inactive.active {
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(114,105,102,1)), color-stop(50%,rgba(40,27,25,1)), color-stop(51%,rgba(40,27,24,1)), color-stop(60%,rgba(35,23,21,1)), color-stop(100%,rgba(51,35,30,1)));
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,rgba(63,77,107,1)), color-stop(50%,rgba(22,27,43,1)), color-stop(51%,rgba(22,27,38,1)), color-stop(60%,rgba(19,23,33,1)), color-stop(100%,rgba(26,36,61,1)));
 	color: #999;
 	border-bottom-color: #323232;
 	border-left-color: rgba(255, 255, 255, 0.1);

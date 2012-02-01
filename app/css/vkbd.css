@@ -47,36 +47,21 @@
     margin-left: 45px;
 }
 .tui-keyboard .kbdrow li {
-    -moz-border-radius: 3px;
-/*    webkit - our device*/
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-    width: 24px;
-    height: 20px;
-    background-color: white;
-    display: block;
+    border-radius: 3px;
+	width: 23px;
+	height: 20px;
+	display: block;
 	cursor: pointer;
-    margin: 3px;
-    float: left;
-    padding-top: 3px;
-    text-align: center;
-    color: black;
-	background-image: linear-gradient(bottom, rgb(138,136,138) 20%, rgb(176,176,176) 80%);
-	background-image: -o-linear-gradient(bottom, rgb(138,136,138) 20%, rgb(176,176,176) 80%);
-	background-image: -moz-linear-gradient(bottom, rgb(138,136,138) 20%, rgb(176,176,176) 80%);
-	background-image: -webkit-linear-gradient(bottom, rgb(138,136,138) 20%, rgb(176,176,176) 80%);
-	background-image: -ms-linear-gradient(bottom, rgb(138,136,138) 20%, rgb(176,176,176) 80%);
-
-	background-image: -webkit-gradient(
-		linear,
-		left bottom,
-		left top,
-		color-stop(0.2, rgb(138,136,138)),
-		color-stop(0.8, rgb(176,176,176))
-	);
+	margin: 3px;
+	float: left;
+	padding-top: 3px;
+	text-align: center;
+	color: #92B3E7;
+	border: 1px solid #3E5170;
+	font-weight: bold;
 }
 .tui-keyboard .kbdrow li.smallwidekey {
-    width: 55px;
+    width: 54px;
 }
 .tui-keyboard .kbdrow li.widekey {
     width: 84px;
@@ -85,16 +70,7 @@
     width: 143px;
 }
 .tui-keyboard .kbdrow li.activekey {
-	color: white;
-	font-weight: bold;
-	background: #bdbdbd;
-	
-	/*
-	 * -moz-box-shadow: 0 0 6px black;
-	 * -webkit-box-shadow: 0 0 6px black;
-	 * box-shadow: 0 0 6px black;
-	 */
-/*    webkit tweak as it does not support shoadows*/
-/*	margin: 2px;*/
-/*	border: 1px black solid;*/
+	color: #E4EDFB;
+	background: #001C3D;
+	border: 1px solid #AEC9F4;
 }

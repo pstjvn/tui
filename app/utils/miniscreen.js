@@ -66,6 +66,6 @@ define([
 		delete this.dom_;
 		delete this.name;
 		delete this.appEvents;
-	}
+	};
 	return Mini;
-})
+});

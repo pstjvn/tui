@@ -1,8 +1,9 @@
 define(['oop/inherit', 'utils/visualapp', 'model/listmodel2', 'view/mosaicpresentation', 'shims/bind',
 // 'net/simplexhr',
 'data/static-strings', 'transport/request', 'transport/response',
-'json/json', 'view/partials'], 
-function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, request, response, json, Partials) {
+'json/json', 'view/partials', 'oop/clone',
+	'ui/nflist'], 
+function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, request, response, json, Partials, cloner, NFList) {
 	var ListApp = function(options) {
 		VisualApp.call(this, options);
 		this.numericTimeout_ = null;
@@ -12,14 +13,28 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 		} else {
 			this.model = new ListModel(this);
 		}
-		if (options.usePagination) {
-			this.presentation = new Partials(this, options.listType, options.itemWidth, options.itemHeight, options.shouldJump);
-		} else {
+//		this.presentation = new NFList(this, this.model, 50);
+
+		if (options.listType && options.listType !== 'mosaic' && options.listType  !== 'list' ) {
 			this.presentation = new MosaicPresentation(this, options.listType, options.itemWidth, options.itemHeight, options.shouldJump);
+		} else if ( window.BACKEND_CONFIG && typeof window.BACKEND_CONFIG['LIST_TYPE'] === 'string' && options.listType !== 'mosaic' && options.listType  !== 'list' ) {
+			if ( window.BACKEND_CONFIG['LIST_TYPE'] === '0') {
+				this.presentation = new NFList(this, this.model, 50);
+			} else if ( window.BACKEND_CONFIG['LIST_TYPE'] === '1') {
+				this.presentation = new Partials(this, 'mosaic', options.itemWidth, options.itemHeight, options.shouldJump);
+			}
+		} else {
+			if (options.usePagination) {
+				this.presentation = new Partials(this, options.listType, options.itemWidth, options.itemHeight, options.shouldJump);
+			} else {
+				this.presentation = new MosaicPresentation(this, options.listType, options.itemWidth, options.itemHeight, options.shouldJump);
+			}			
 		}
+		
+
 		this.canResume = options.canResume;
 		this.registerDisposable(this.model);
-		this.registerDisposable(this.presentation);
+//		this.registerDisposable(this.presentation);
 		this.generateDefaultEvents();
 		this.appEvents.play = {
 			name : 'play',
@@ -40,8 +55,14 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 	ListApp.prototype.onShowComplete = function() {
 		this.attachEvents(true);
 	};
-	ListApp.prototype.onPlayRequest = function(resume) {
-		tui.globalPlayer.play(this.model.getItem(), resume);
+	ListApp.prototype.getEPGByID = function() {
+		return [];
+	};
+	ListApp.prototype.onPlayRequest = function(obj, resume) {
+		var clone = cloner(obj);
+        clone.title = clone.id + '. ' + clone.publishName;
+		clone.epg=[];
+		tui.globalPlayer.play(clone, resume);
 	};
 	ListApp.prototype.onSelectionChanged = function(objectWithIndex) {
 		this.model.currentIndex = objectWithIndex.index;
@@ -64,6 +85,7 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 	};
 	ListApp.prototype.onShowScreen = function() {
 		this.presentation.show(this.container);
+		if ( this.model.get().length > 0) this.presentation.activate(0);
 	};
 	ListApp.numerics_ = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
 	ListApp.prototype.defaultRemoteKeyHandler = function(key) {
@@ -211,7 +233,7 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 					this.acceptPass();
 					break;
 				case 'resume':
-					this.fire('try-play', true);
+					this.fire('try-play', this.model.getItem(), true);
 					this.dialogInstance = null;
 					delete this.dialogInstance;
 					break;

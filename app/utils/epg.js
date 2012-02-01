@@ -15,7 +15,7 @@ define([
 	'shims/bind',
 	'data/static-strings'
  ], function (inherit, Togglable, events, datetime, sizes, template, dom, css, loader, infobuttonstpl, classes, dom, Scrollable, bind, strings){
-	loader.loadCSSFromText(css);
+	//loader.loadCSSFromText(css);
 	var EPGModel = function(dataCollection, taint_list) {
 		Togglable.call(this);
 		this.dataAccessor = dataCollection;
@@ -59,17 +59,14 @@ define([
 	
 	EPGModel.prototype.current = 0;
 	EPGModel.prototype.findCurrent = function() {
-		var len = this.epgdata.length, i, now = datetime.getCurrentTime();
-		//EPG info should be ordered by time, ascending!
-		for (i = 0; i < len; i++) {
-			if( this.epgdata[i][2] > now ) {
-				this.current = i;
-				return;
-			}
+		var index = EPGModel.findCurrentProgramIndex( this.epgdata );
+		if ( index >= 0 ) {
+			this.current = index;
+		} else {
+			this.current = 0;
 		}
-//		If no currently playing is found reset the selected item - this is when we load new channel
-		this.current = 0;
 	};
+
 	EPGModel.prototype.enterListing = function(bool) {
 		tui.setPanels(false, true, false, infobuttonstpl.render({
 			things: {
@@ -164,6 +161,25 @@ define([
 		delete this.dom_;
 		delete this.epgdata;
 		delete this.current;
+	};
+	/**
+	* Static method to find the current prpgram if there is one
+	* @static
+	* @param {Array} EPG List of epg data
+	* @return {number}
+	*/
+	EPGModel.findCurrentProgramIndex = function( epgList ) {
+		var len = epgList.length, i, now = datetime.getCurrentTime();
+		//EPG info should be ordered by time, ascending!
+		for (i = 0; i < len; i++) {
+			if( epgList[i][2] > now ) {
+				return i;
+			}
+		}
+		return -1;
+	};
+	EPGModel.parseDateTimeToHoursAndMinutes = function( DTString ) {
+		return datetime.getParsedTime( DTString );
 	};
 	return EPGModel;
 });

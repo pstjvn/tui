@@ -11,7 +11,8 @@ html.browser .tui-mosaic.list-container {
 }
 .tui-mosaic.list-container .no-content {
 	margin: 30% auto;
-	border: 2px solid orange;
+	border: 2px solid #3E6EBB;
+	border-radius: 4px;
 	padding: 35px 0 35px 0;
 	color: white;
 	font-weight: inherit;
@@ -29,9 +30,9 @@ html.browser .tui-mosaic.list-container {
 	height: 190px;
 }
 .tui-mosaic .item {
-	/* do not use - attributes to +1/+2 px in positioning (offsetTop)
-    display: inline-block;
-    */
+/* do not use - attributes to +1/+2 px in positioning (offsetTop)
+	display: inline-block;
+*/
     float: left;
     text-align: center;
    	padding: 5px 5px 5px 5px;
@@ -44,11 +45,12 @@ html.browser .tui-mosaic.list-container {
 .tui-mosaic .regular .imgcont{
 	width: 140px;
 	height: 100px;
+	overflow: hidden;
 }
 /*------------ start-Rating-bar ----------------*/
 .tui-mosaic .regular .imgcont .video-bar {
-	height: 21px;
-	width: 85px;
+	height: 15px;
+	width: 70px;
 	background: rgba(0, 0, 0, 0.4);
 	border-radius: 3px;
 	position: absolute;
@@ -60,29 +62,30 @@ html.browser .tui-mosaic.list-container {
 	right: 9px;
 }
 .tui-mosaic .regular .imgcont .video-bar .rating_bar {
-  width: 79px;
-  background: url(imgs/icon-favorite-grey.png) 0 0 repeat-x;
+	width: 66px;
+	background: url(../imgs/icon-favorite-grey.png) 0 0 repeat-x;
+	background-size: 13px;
 }
 
 .tui-mosaic .regular .imgcont .video-bar  .rating_bar div {
-  height: 17px;
-  background: url(imgs/icon_favorite.png) 0 0 repeat-x;
+	height: 17px;
+	background: url(../imgs/icon_favorite.png) 0 0 repeat-x;
+	background-size: 13px;
 }
 /*------------- end-Ratin-bar -------------------*/
 .tui-mosaic .imgcont {
-	-webkit-transition-property: background-color;
-	-webkit-transition-duration: 1.2s;
-	-moz-transition-property: background-color;
-	-moz-transition-duration: 1.2s;
-	background-color: gray;
-	/* border: 1px solid gray; */
-	-moz-box-shadow: inset 0 0 8px #d9d9d9;
-	-webkit-box-shadow: inset 0 0 8px #D9D9D9;
-	box-shadow: inset 0 0 8px #d9d9d9;
-	-moz-border-radius: 3px;
+	-webkit-transition: background-color 1.2s;
 	-webkit-border-radius: 3px;
 	float: left;
 	margin-left: 5px;
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(51,78,114,0.9)), color-stop(4%,rgba(51,78,114,0)), color-stop(96%,rgba(51,78,114,0)), color-stop(100%,rgba(51,78,114,0.9)));
+}
+.tui-mosaic .imgcontin {
+	height: 100px;
+	width: 140px;
+	border-radius: 3px;
+	position:absolute;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(51,78,114,0.9)), color-stop(4%,rgba(51,78,114,0)), color-stop(96%,rgba(51,78,114,0)), color-stop(100%,rgba(51,78,114,0.9)));
 }
 .tui-mosaic .item.regular   img {
     /*width: 130px;*/
@@ -132,67 +135,62 @@ html.browser .tui-mosaic.list-container {
     font-weight: bold;
     padding: 2px 4px;
     position: absolute;
-    right: 10px;
-    top: 5px;
+	left: 10px;
+	top: 85px;
 }
 .tui-mosaic .item.current .imgcont {
-	background-color: rgba(227, 118, 48, 1);
-	-webkit-transition-property: background-color;
-	-webkit-transition-duration: 0.3s;
-	background-image: -o-linear-gradient(bottom, rgb(214,114,26) 10%, rgb(158,82,24) 19%, rgb(250,108,13) 87%);
-	background-image: -moz-linear-gradient(bottom, rgb(214,114,26) 10%, rgb(158,82,24) 19%, rgb(250,108,13) 87%);
-	background-image: -webkit-linear-gradient(bottom, rgb(214,114,26) 10%, rgb(158,82,24) 19%, rgb(250,108,13) 87%);
-	background-image: -ms-linear-gradient(bottom, rgb(214,114,26) 10%, rgb(158,82,24) 19%, rgb(250,108,13) 87%);
-	background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.07, rgb(222,101,7)), color-stop(0.67, rgb(158,82,24)) );
+background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(198,222,255,0.9)), color-stop(1%,rgba(104,151,221,0.75)), color-stop(3%,rgba(30,105,222,0.45)), color-stop(6%,rgba(30,105,222,0)), color-stop(94%,rgba(30,105,222,0)), color-stop(97%,rgba(30,105,222,0.45)), color-stop(99%,rgba(104,151,221,0.75)), color-stop(100%,rgba(198,222,255,0.9)));
+}
+.tui-mosaic .item.current .imgcontin {
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(198,222,255,0.9)), color-stop(1%,rgba(104,151,221,0.75)), color-stop(3%,rgba(30,105,222,0.45)), color-stop(6%,rgba(30,105,222,0)), color-stop(94%,rgba(30,105,222,0)), color-stop(97%,rgba(30,105,222,0.45)), color-stop(99%,rgba(104,151,221,0.75)), color-stop(100%,rgba(198,222,255,0.9)));
 }
 .tui-mosaic .item.current span {
-    color: #ffc4c4;
+    color: rgba(153, 206, 255, 1);
 }
 .tui-mosaic .icon.locked {
-	background-image: url('imgs/icon_lock.png');
+	background-image: url('../imgs/icon_lock.png');
 }
 .tui-mosaic .icon.bookmarked {
-	background-image: url('imgs/icon_favorite.png');
+	background-image: url('../imgs/icon_favorite.png');
 }
 .tui-mosaic .icon.recordable {
-	background-image: url('imgs/icon_recording.png');
+	background-image: url('../imgs/icon_recording.png');
 }
-
+.tui-mosaic .icon.paid {
+	background-image: url('../imgs/icon_dollar.png');
+}
 .item .imgcont .screen_default_icon_size {
 	width: 130px; 
 	height: 90px;
 	margin: 5px;
 }
+.item .default_icon {
+	background-image: url('../imgs/icon_set.png');
+}
 div[data-appid="iptv"] .item .default_icon {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: center -3px;
 }
 div[data-appid="ppv"] .item .default_icon {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: center -104px;
 }
 div[data-appid="vod"] .item .default_icon {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: center -205px;
 }
 div[data-appid="uvideo"] .item .default_icon {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: center -306px;
 }
 div[data-appid="radio"] .item .default_icon {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: center -407px;
 }
 div[data-appid="aod"] .item .default_icon {
-	background-image: url('app/imgs/icon_set.png');
 	background-position: center -508px;
 }
 .tui-mosaic div.folder-icon {
-    background-image: url('app/imgs/folder.png');
+	background: url('../imgs/folder.png') no-repeat;
 	background-size: contain;
 	position: absolute;
 	width: 43px;
 	height: 43px;
-	right: 9px;
-	top: 67px;  
+	right: 11px;
+	top: 73px;  
 }

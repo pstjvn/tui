@@ -23,6 +23,7 @@ define([
 		var content;
 		if (res.status.toLowerCase() === 'ok' && typeof res.content === 'string') {
 			content = json.parse(res.content);
+			console.log('PARSED DATA LOADER:', content);
 		}
 		ListModel.superClass_.load.call(this, content, o);
 	};

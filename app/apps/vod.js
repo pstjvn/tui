@@ -3,8 +3,13 @@ define([
 ], function(App){
 	return new App({
 		name: 'vod',
-		shouldJump: true,
-		canResume: true,
-		usePagination: true
+		/**
+		 * See other app examples for docs on what those mean and how 
+		 * to use them
+		 */
+//		shouldJump: true,
+		canResume: true
+//		,
+//		usePagination: true
 	});
 });

@@ -143,6 +143,7 @@ define([
 	MosaicPresentation.prototype.getStep = function() { return this.template.getStep(); };
 	MosaicPresentation.prototype.getHStep = function() { return this.template.getHStep();};
 	MosaicPresentation.prototype.unload = function() {
+		this.container.innerHTML = '';
 //		this.isRendered_ = false;
 	};
 	MosaicPresentation.prototype.disposeInternal = function() {

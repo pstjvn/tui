@@ -20,6 +20,8 @@ buf.push('>');
 buf.push('<div');
 buf.push(attrs({ "class": ('imgcont') }));
 buf.push('><div');
+buf.push(attrs({ "class": ('imgcontin') }));
+buf.push('></div><div');
 buf.push(attrs({ "class": ('default_icon') + ' ' + ('screen_default_icon_size') }));
 buf.push('></div></div>');
 }
@@ -27,7 +29,9 @@ buf.push('></div></div>');
 {
 buf.push('<div');
 buf.push(attrs({ "class": ('imgcont') }));
-buf.push('><img');
+buf.push('><div');
+buf.push(attrs({ "class": ('imgcontin') }));
+buf.push('></div><img');
 buf.push(attrs({ 'src':(data[i].thumbnail) }));
 buf.push('/></div>');
 }
@@ -51,10 +55,10 @@ buf.push('<li');
 buf.push(attrs({ "class": ('icon') + ' ' + ('bookmarked') }));
 buf.push('></li>');
 }
- if (data[i].personalRecordingOptions && data[i].personalRecordingOptions.canRecord) 
+ if (data[i].cost > 0 ) 
 {
 buf.push('<li');
-buf.push(attrs({ "class": ('icon') + ' ' + ('recordable') }));
+buf.push(attrs({ "class": ('icon') + ' ' + ('paid') }));
 buf.push('></li>');
 }
 buf.push('</ul>');

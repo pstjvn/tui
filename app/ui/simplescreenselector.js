@@ -44,6 +44,13 @@ function(tpl,applist, dom, classes, Mevents, sizes, exports) {
 			relocateTo(dom.dataGet(currenScreen, 'sequence'));
 		}
 	}
+	function selectApp( ) {
+		var a1 = dom.$('.obscure');
+		if (a1 !== null) classes.removeClasses(a1, 'obscure');
+		var a  = dom.dataGet(currenScreen, 'appname');
+		hideDOM();
+		tui.loadApp(applist[a]);		
+	}
 	function getState() {
 		return SelectorState;
 	}
@@ -73,15 +80,36 @@ function(tpl,applist, dom, classes, Mevents, sizes, exports) {
 		},
 		loadApp: {
 			name: 'ok',
-			func: function(key) {
-				var a1 = dom.$('.obscure');
-				if (a1 !== null) classes.removeClasses(a1, 'obscure');
-				var a  = dom.dataGet(currenScreen, 'appname');
-				hideDOM();
-				tui.loadApp(applist[a]);
-			},
+			func: selectApp,
 			attached: false
 		}
+//		loadiptv: {
+//			name: 'video',
+//			func: function() {
+//				if (typeof applist['iptv'] === 'object') {
+//					tui.loadApp(applist['iptv']);
+//				}
+//			},
+//			attached: false,
+//		},
+//		loadonlineradio: {
+//			name: 'setup',
+//			func: function() {
+//				if (typeof applist['radio'] === 'object') {
+//					tui.loadApp(applist['radio']);
+//				}
+//			},
+//			attached: false
+//		},
+//		loadsetup: {
+//			name: 'setup',
+//			func: function() {
+//				if (typeof applist['setup'] === 'object') {
+//					tui.loadApp(applist['setup']);
+//				}
+//			},
+//			attached: false			
+//		}
 	};
 	function showAppSel() {
 			tui.setContainerVisibility(true);
@@ -119,7 +147,10 @@ function(tpl,applist, dom, classes, Mevents, sizes, exports) {
 		remoteSelectScreen: function(apptag) {
 			for (var i = 0; i < internalAppList.length; i++ ) {
 				if (internalAppList[i].apptag === apptag) {
+					tui.setContainerVisibility(true);
+					tui.setPanels(false, false);
 					currenScreen = dom.$$('.approtator-item', DOM)[i];
+					selectApp();
 					return;
 				}
 			}

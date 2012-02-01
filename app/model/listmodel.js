@@ -56,14 +56,24 @@ define([
 			}
 			break;
 		case 'right':
-			if (step === 1) return;
+			if (step === 1) {
+				if (this.data.epg !== null) {
+					this.app.fire('epg-selection', true);
+				} 
+				return;
+			}
 			if (this.currentIndex + 1 < this.pointer.length) {
 				this.app.presentation.activate(this.currentIndex + 1);
 			}
 			break;
 		case 'left':
-			if (step === 1) return;
-			if (this.currentIndex > 0 ) {
+			if (step === 1) {  
+				if (this.data.epg !== null) {
+					this.app.fire('epg-selection', false);
+				} 
+				return;
+			}
+ 			if (this.currentIndex > 0 ) {
 				this.app.presentation.activate(this.currentIndex -1 );
 			}
 			break;
@@ -226,7 +236,7 @@ define([
 	Storage.prototype.enterDir = function() {
 		var item = this.getItem();
 		var url = {};
-		if (item.isDir !== false) {
+		if ( typeof item.isDir !== 'undefined' && item.isDir !== false) {
 			this.isLoading = true;
 			for (var k in item.isDir) {
 				url[k] = item.isDir[k];
@@ -325,11 +335,11 @@ define([
 			return null;
 		}
 		var itemByID = this.getPropertyFromItem('id',index);
-		if (itemByID && this.data.epg[itemByID]) {
-			return this.data.epg[itemByID].body;
-		} else {
-			return [];
-		}
+		return this.getEPGForItemByID( itemByID );
+	};
+	Storage.prototype.getEPGForItemByID = function( id ) {
+		if ( this.data.epg[ id ]) return this.data.epg[id].body;
+		return [];
 	};
 	Storage.prototype.unload = function(){};
 	Storage.prototype.disposeInternal = function() {

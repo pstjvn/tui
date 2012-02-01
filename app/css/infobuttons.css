@@ -1,133 +1,46 @@
 /*TODO: Make at least 4 info buttons apper at the same time working!*/
-.tui-infoblock .remoteOK {
-	background-image: url('app/imgs/remote-keys.png');
-	background-position: left 0px;
+.remoteOK, .remoteArrows, .remoteHome, .remoteInfo, .remoteDisplay, .remote-left-right, .remote-up-down,
+.remote-play-pause, .remote-save, .remote-delete, .remote-return {
+	background-image: url('../imgs/remote-keys.png');
 	background-repeat: no-repeat;
 	height: 40px;
 	display: inline-block;
-	padding-left: 50px;
+	padding-left: 45px;
 	color: white;
-	line-height: 36px;
-	margin: 10px;
-	font-size: 120%;
+	line-height: 40px;
+	margin: 2px 10px;
+	font-size: 110%;
+}
+.tui-infoblock .remoteOK {
+	background-position: left 0px;
 }
 .tui-infoblock .remoteArrows {
-	background-image: url('app/imgs/remote-keys.png');
 	background-position: left -40px;
-	background-repeat: no-repeat;
-	height: 40px;
-	display: inline-block;
-	padding-left: 50px;
-	color: white;
-	line-height: 36px;
-	margin: 10px;
-	font-size: 120%;
 }
 .tui-infoblock .remoteHome {
-	background-image: url('app/imgs/remote-keys.png');
 	background-position: left -80px;
-	background-repeat: no-repeat;
-	height: 40px;
-	display: inline-block;
-	padding-left: 50px;
-	color: white;
-	line-height: 36px;
-	margin: 10px;
-	font-size: 120%;
 }
 .tui-infoblock .remoteInfo {
-	background-image: url('app/imgs/remote-keys.png');
 	background-position: left -120px;
-	background-repeat: no-repeat;
-	height: 40px;
-	display: inline-block;
-	padding-left: 50px;
-	color: white;
-	line-height: 36px;
-	margin: 10px;
-	font-size: 120%;
 }
 .tui-infoblock .remoteDisplay {
-	background-image: url('app/imgs/remote-keys.png');
 	background-position: left -160px;
-	background-repeat: no-repeat;
-	height: 40px;
-	display: inline-block;
-	padding-left: 50px;
-	color: white;
-	line-height: 36px;
-	margin: 10px;
-	font-size: 120%;
 }
 .tui-infoblock .remote-left-right{
-	background-image: url('app/imgs/remote-keys.png');
 	background-position: left -200px;
-	background-repeat: no-repeat;
-	height: 40px;
-	display: inline-block;
-	padding-left: 50px;
-	color: white;
-	line-height: 36px;
-	margin: 10px;
-	font-size: 120%;
 }
 .tui-infoblock .remote-up-down{
-	background-image: url('app/imgs/remote-keys.png');
 	background-position: left -240px;
-	background-repeat: no-repeat;
-	height: 40px;
-	display: inline-block;
-	padding-left: 50px;
-	color: white;
-	line-height: 36px;
-	margin: 10px;
-	font-size: 120%;
 }
 .tui-infoblock .remote-play-pause{
-	background-image: url('app/imgs/remote-keys.png');
-	background-position: left -283px;
-	background-repeat: no-repeat;
-	height: 40px;
-	display: inline-block;
-	padding-left: 50px;
-	color: white;
-	line-height: 36px;
-	margin: 10px;
-	font-size: 120%;
+	background-position: left -280px;
 }
 .tui-infoblock .remote-save{
-	background-image: url('app/imgs/remote-keys.png');
-	background-position: left -323px;
-	background-repeat: no-repeat;
-	height: 40px;
-	display: inline-block;
-	padding-left: 50px;
-	color: white;
-	line-height: 36px;
-	margin: 10px;
-	font-size: 120%;
+	background-position: left -320px;
 }
 .tui-infoblock .remote-delete{
-	background-image: url('app/imgs/remote-keys.png');
-	background-position: left -363px;
-	background-repeat: no-repeat;
-	height: 40px;
-	display: inline-block;
-	padding-left: 50px;
-	color: white;
-	line-height: 36px;
-	margin: 10px;
-	font-size: 120%;
+	background-position: left -360px;
 }
 .tui-infoblock .remote-return{
-	background-image: url('app/imgs/remote-keys.png');
 	background-position: left -400px;
-	background-repeat: no-repeat;
-	height: 40px;
-	display: inline-block;
-	padding-left: 50px;
-	color: white;
-	line-height: 36px;
-	margin: 10px;
-	font-size: 120%;
 }

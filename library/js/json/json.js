@@ -4,7 +4,7 @@ define({
 		try {
 			result = JSON.parse(JSONString);
 		} catch (e) {
-//			console.log('CANNOT PARSE JSON STRING, try with eval', JSONString);
+			console.log('CANNOT PARSE JSON STRING, try with eval', JSONString);
 			try {
 				result = eval( '('+ JSONString +')');			
 			} catch (e) {

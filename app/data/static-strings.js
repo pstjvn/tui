@@ -28,9 +28,9 @@ define({
 	epg: {
 		panels: {
 			bottom: {
-				upDown: "Move",
+				upDown: "Scroll",
 				info: "Hide EPG",
-				ok: "Activate",
+				ok: "Select",
 				'return': "Deactivate",
 				ok_alternate: "Rec/Switch"
 			}
@@ -63,16 +63,16 @@ define({
 	screens: {
 		setup: {
 			header: {
-				settings: "Setting",
+				settings: "Parameter",
 				value: "Value"
-			}
+			}	
 		},
 		iptv: {
 			panels: {
 				bottom: {
 					info: 'Show EPG',
-					ok: 'Play',
-					playPause: 'Show menu',
+					ok: 'Select',
+					playPause: 'Options',
 					'return': "Apply changes"
 				}
 			}
@@ -182,8 +182,8 @@ define({
 		chooser: {
 			panels: {
 				bottom: {
-					leftRight: "Select task",
-					ok: "Go to task"
+					leftRight: "Scroll",
+					ok: "Select"
 				}
 			},
 			list: {

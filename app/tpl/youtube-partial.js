@@ -12,6 +12,8 @@ buf.push(attrs({ 'data-sequence':(i), "class": ('item '+ (alterClass ? 'larger':
 buf.push('><div');
 buf.push(attrs({ "class": ('imgcont') }));
 buf.push('><div');
+buf.push(attrs({ "class": ('imgcontin') }));
+buf.push('></div><div');
 buf.push(attrs({ "class": ('video-bar') }));
 buf.push('><div');
 buf.push(attrs({ "class": ('rating_bar') }));

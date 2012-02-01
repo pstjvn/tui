@@ -9,7 +9,7 @@ define([
 	'text!css/mosaic.css',
 	'data/static-strings'
 ], function( inherit, Disposable, dom, paginator, classes, srcTemplate, loader, css, strings) {
-	loader.loadCSSFromText( css );
+	//loader.loadCSSFromText( css );
 	/* START MODULE */
 /**
  * Implement the view component of an App with low end devices on mind, mosaic style
@@ -158,8 +158,27 @@ Partials.prototype.activate = function( data_index ) {
 //
 // TODO: implement this as in mosaic
 // 
-Partials.prototype.updateItem = function( data_index ) {
-
+Partials.prototype.updateItem = function( index, item ) {
+	if (index >= this.getStartIndex() && index < this.getStartIndex() + this.itemsPerPage_) {
+		var element = dom.$('div[data-sequence="'+ index + '"]');
+		var opts = dom.$('.channel-settings-icons', element);
+		var locked = dom.$('.locked', opts);
+		var bm = dom.$('.bookmarked', opts);
+		if (item.isLocked && locked === null) {
+			dom.adopt( opts , dom.create('li', {
+				classes: 'icon locked'
+			}));
+		} else if ( !item.isLocked && locked !== null ) {
+			dom.dispose(locked);
+		}
+		if (item.isBookmarked && bm === null) {
+			dom.adopt( opts , dom.create('li', {
+				classes: 'icon bookmarked'
+			}));
+		} else if ( !item.isBookmarked && bm !== null ) {
+			dom.dispose(bm);
+		}
+	}
 };
 Partials.prototype.reset = function(){};
 /**
@@ -172,6 +191,7 @@ Partials.prototype.show = function(container, force) {
 	this.app.fire('show-start');
 	if (typeof container != 'undefined' && container !== null) {
 		this.container = container;
+		this.container_ = this.container;
 		this.itemsPerPage_ = paginator.getItemsPerPage_(this.itemWidth, this.itemHeight);
 	}
 	this.rasterizeInternal(undefined, force);
@@ -192,11 +212,18 @@ Partials.prototype.disposeInternal = function() {
 	delete this.itemsPerPage_;
 	delete this.dataIndex;
 	delete this.page_;
+	delete this.container_;
 };
 Partials.prototype.getStep = function() {
-	return paginator.getItemsPerRow_(this.itemWidth, this.itemHeight);
+	if ( this.app.epgInstance && this.app.epgInstance.isVisible()) {
+		return 1;
+	} else 
+		return paginator.getItemsPerRow_(this.itemWidth, this.itemHeight);
 };
 Partials.prototype.getHStep = function() {
+	if ( this.app.epgInstance && this.app.epgInstance.isVisible()) {
+		return 1;
+	}
 	return paginator.getItemsPerColumn_(this.itemWidth, this.itemHeight );
 };
 /**

@@ -18,7 +18,8 @@ require.config({
 		"dom": "../library/js/dom",
 		"debug": "../library/js/debug",
 		"array": "../library/js/array",
-		"text": "../library/js/text"
+		"text": "../library/js/text",
+		"datetime/xdate": "../library/js/datetime/xdate"
 	},
 	urlArgs: "bust=" + (new Date()).getTime()
 });
@@ -70,8 +71,10 @@ require(['ui/throbber'], function(t) {
 		'ui/player',
 		'transport/response',
 		'appdebug/preload',
-		'utils/osd'
-	], function(globalevents, classes, dom, Dialogs, bind, player, response, preloads, OSD ) {
+		'utils/osd',
+        'transport/request',
+        'ui/simplescreenselector'
+	], function(globalevents, classes, dom, Dialogs, bind, player, response, preloads, OSD, request, AS ) {
 //		Let the response handler for transport layer know where to direct key presses on the remote
 		response.setRemoteKeyHandler(globalevents.defaultEventAccepter);
 //		Load images offscreen after we have loaded the deps to avoid trapping the JS in the max Concurent Reqs of the browsser
@@ -86,7 +89,18 @@ require(['ui/throbber'], function(t) {
 			style: 'height: ' + window.innerHeight + 'px; width: ' + window.innerWidth + 'px; margin-top: 0; margin-bottom: 0'
 		}));
 		var tNow = (new Date()).getTime();
-		//Create the main Controller
+
+		var lll = request.create('calld', {
+			run: 'backend_json',
+			newif: 1
+		}); 
+		response.register(lll, function(res) {
+			if ( res.status == 'OK')
+				eval(res.content);
+		});
+		lll.send();
+		
+//		Create the main Controller
 		window.tui = {
 			DATA_TS: {
 				CONFIG: tNow,
@@ -142,11 +156,11 @@ require(['ui/throbber'], function(t) {
 				if (!window.exportedSymbols['appselector'].getState())
 					app.Start();
 			},
-			systemConfirm: function(options) {
-				// TODO: make those confirm panels work
-				var header = options.header.html;
-				this.rerouteEventsToPanel();
-			},
+//			systemConfirm: function(options) {
+//				// TODO: make those confirm panels work
+////				var header = options.header.html;
+////				this.rerouteEventsToPanel();
+//			},
 			stealEvents: function(newManager) {
 				response.setRemoteKeyHandler(newManager);
 				this.signals.eventsAreFetched = true;
@@ -169,14 +183,15 @@ require(['ui/throbber'], function(t) {
 				this.stealEvents(bind(dialog.eventHandler, dialog));
 			},
 			setPanels: function(top, bottom, opt_topContent, opt_bottomContent) {
+				return;
 				if (top) {
 	//				if (opt_topContent) {
 	//					this.panels.top.innerHTML = opt_topContent;
 	//				}
 					this.panels.top.style.top = '0px';
-					this.mainContainer.style.marginTop = '60px';
+					this.mainContainer.style.marginTop = '40px';
 				} else {
-					this.panels.top.style.top = '-60px';
+					this.panels.top.style.top = '-40px';
 					this.mainContainer.style.marginTop = '0px';
 					//this.panels.top.innerHTML = '';
 				}
@@ -185,9 +200,9 @@ require(['ui/throbber'], function(t) {
 						this.panels.infoBlock.innerHTML = opt_bottomContent;
 					}
 					this.panels.bottom.style.bottom = '0px';
-					this.mainContainer.style.marginBottom = '60px';
+					this.mainContainer.style.marginBottom = '40px';
 				} else {
-					this.panels.bottom.style.bottom = '-60px';
+					this.panels.bottom.style.bottom = '-40px';
 					this.mainContainer.style.marginBottom = '0px';
 					this.panels.infoBlock.innerHTML = '';
 				}
@@ -259,6 +274,10 @@ require(['ui/throbber'], function(t) {
 				require([appobj.module], function(appmodule) {
 					tui.appModuleAdded(appmodule);
 				});
+			},
+			selectApp: function(apptag) {
+				console.log('Go select an app')
+				AS.remoteSelectScreen( apptag === 'video' ? 'iptv' : apptag === 'audio' ? 'radio': apptag );
 			}
 		};
 		
@@ -270,24 +289,39 @@ require(['ui/throbber'], function(t) {
 		
 		globalevents.addHandlers({
 			globalreturn: {
-				name: 'return',
+				name: 'display',
 				func: function() {
 					if (tui.globalPlayer.getState() !== player.STATES.STOPPED) {
 						tui.stealEvents(tui.globalPlayer.keyHandler);
+						if (!tui.globalPlayer.useVisualPlayer_) {
+							tui.globalPlayer.setVState(player.VSTATE.OPAQUE);
+						}
 					}
 				},
 				attached: false
-			}//,
-//			displaykey: {
-//				name: 'display',
-//				func: function() {
-//					if (tui.signals.eventsAreFetched) {
-//						if (tui.globalPlayer.getState() !== player.STATES.STOPPED) {
-//							tui.signals.restoreEventTree();
-//						}
-//					}
-//				}
-//			}
+			},
+			globalstop: {
+				name: 'stop',
+				func: function() {
+					tui.globalPlayer.stop();
+				},
+				attached: false
+			},
+			loadiptv: {
+				name: 'video',
+				func: tui.selectApp,
+				attached: false,
+			},
+			loadonlineradio: {
+				name: 'audio',
+				func: tui.selectApp,
+				attached: false
+			},
+			loadsetup: {
+				name: 'setup',
+				func: tui.selectApp,
+				attached: false			
+			}
 		});
 
 /**
@@ -336,6 +370,9 @@ require(['ui/throbber'], function(t) {
 					// page down
 					key = 'chdown';
 					break;
+                case 73: //info
+                    key = 'info';
+                    break;
 				default:
 					return;
 			}
@@ -383,11 +420,11 @@ require(['ui/throbber'], function(t) {
 		tui.panels = {
 			top: dom.create('div', {
 				classes: 'tui-component panels top-panel',
-				style: 'top : -60px;'
+				style: 'top : -40px;'
 			}),
 			bottom: dom.create('div', {
 				classes: 'tui-component panels bottom-panel',
-				style: 'bottom: -60px'
+				style: 'bottom: -40px'
 			})
 		};
 		//Setup clock 
@@ -409,9 +446,9 @@ require(['ui/throbber'], function(t) {
 		dom.adopt(tui.panels.bottom);
 		function preloadApps() {
 			console.log(preloads);
-			require(preloads.preloadsModules, function(varargs) {
-				console.log('Modules loaded...');
-			});
+//			require(preloads.preloadsModules, function(varargs) {
+//				console.log('Modules loaded...');
+//			});
 		}
 		
 		function loadTUI() {
@@ -437,7 +474,7 @@ require(['ui/throbber'], function(t) {
 						});
 						tui.setPanels(false, true, false, itpl.render({
 							things: {
-								home: 'Select App'
+								home: 'Home'
 							}
 						}));
 					});
@@ -451,7 +488,8 @@ require(['ui/throbber'], function(t) {
 			tui.logger.log('Load the intrinsic loader now..');
 			require(['loader/loader'], function(loader) {
 				tui.logger.log(['Loaded intrinsic loader', 'Should switch to jquery and net/xrh to be browser independent']);
-				loader.loadCSS(['app/css/reset.css', 'app/css/appselector3.css', 'app/css/infobuttons.css'], loadTUI);
+				//loader.loadCSS(['app/css/reset.css', 'app/css/appselector3.css', 'app/css/infobuttons.css'], loadTUI);
+				loadTUI();
 			});
 		});
 	});

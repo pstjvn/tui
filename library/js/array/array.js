@@ -1,7 +1,6 @@
 /**
- * info bla bla
- * @module array/array Provides useful methods for arrays, mostly copied from closure
- * @requires shims/indexof
+ * @fileoverview Utilities to work with Arrays
+ * @require shims/indexof
  */
 define(['shims/indexof'], function() {
 	return {

@@ -1,0 +1,11 @@
+div.epg-name-holder
+	div.epg-details-name!= channelname
+div.epg-details-text
+	- if (noData === true)
+		div.noData No EPG information
+	- else 
+		div.epg-details-info
+			span.startTime!= startTime
+			span &nbsp;&nbsp;- 
+			span.endTime!= endTime
+		div.epg-details-title!= title

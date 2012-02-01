@@ -1,7 +1,6 @@
 /**
- * Module to work with element classes
- * @module domattributes setters and getters for the dom
- * @requires domclasses
+ * @fileoverview Module to work with {Element} attributes
+ * @requires dom/domclasses
  */
 define(['dom/classes'], function(classes) {
 	function resolve(prop) {
@@ -16,10 +15,11 @@ define(['dom/classes'], function(classes) {
 	}
 	return {
 		/**
-		 * @method set Sets property to element
+		 * Sets property to element
+         * @static
 		 * @param {HTMLElement} The html element to set to
-		 * @param {String} The property to set (can be classes, html, text or any directly accessible property (i.e. dot notation property)
-		 * @param {String} Value to set on the property
+		 * @param {string} The property to set (can be classes, html, text or any directly accessible property (i.e. dot notation property)
+		 * @param {string} Value to set on the property
 		 */
 		set: function(element, prop, value) {
 			switch (prop) {
@@ -35,9 +35,12 @@ define(['dom/classes'], function(classes) {
 			}
 		},
 		/**
-		 * @method get Returns the value of the property if set
+		 * @Returns the value of the property if set
+         *
+         * @static
 		 * @param {HTMLElement} Element to look up prpeprty for
 		 * @param {String} Property/Attribute to look up
+         * @return {*}
 		 */
 		get: function(element, prop) {
 			switch (prop) {
@@ -48,7 +51,8 @@ define(['dom/classes'], function(classes) {
 			}
 		},
 		/**
-		 * @method remove Removes the property from element
+		 * Removes the property from element
+         * @static
 		 * @param {HTMLElement} Element to clear from attribute
 		 * @param {String} The property to remove
 		 */

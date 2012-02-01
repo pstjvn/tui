@@ -1,3 +1,9 @@
+/**
+ * This code is deprecated and is not supported, it turns out the 
+ * Telephony module in recent Tornado M* devices is not working and will
+ * not be fixed by Sysmaster
+ * @deprecated
+ */
 define([
 	'utils/multiscreen',
 	'tpl/telephony_callcenter',
@@ -20,7 +26,7 @@ define([
 	'tpl/telephony_incall',
 	'data/static-strings'
 ], function(App, template1, template2, template3, template4, template5, template6, css, loader, Mini, dom, classes, TeleMini, Scrollable, Dialler, bind, request, exports, template7, strings) {
-	loader.loadCSSFromText(css);
+	//loader.loadCSSFromText(css);
 	/**
 	* Mini screen chooser
 	*/

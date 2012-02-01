@@ -3,11 +3,32 @@ define([
 	'transport/response',
 	'shims/bind',
 	'data/static-strings',
-	'utils/events'
-], function(request, response, bind, strings, events) {
+	'utils/events',
+	'array/array',
+	'tpl/audio-player',
+	'text!css/audio-player.css',
+	'loader/loader',
+	'dom/dom',
+	'oop/mix'
+], function(request, response, bind, strings, events, array, tpl, css, loader, dom, mix) {
+	//loader.loadCSSFromText( css );
+//	var Theme = {
+//		"fontname" : window.BACKEND_CONFIG.THEME.fontname || "Tahoma",
+//        "fontsize" : window.BACKEND_CONFIG.THEME.fontsize || 15,
+//        "timefmt" : window.BACKEND_CONFIG.THEME.timefmt || "us"
+//	};
+	var Theme = {
+		"fontname" :  "Tahoma",
+        "fontsize" :  15,
+        "timefmt" : "us"
+	}
+
+	//
+	// TODO: finish implementation for recording
+	// 
 	/**
 	* Global player object to handle all playback in DSP
-	* @consructor
+	* @constructor
 	*/
 	var Player = function() {
 		this.state = Player.STATES.STOPPED;
@@ -17,7 +38,24 @@ define([
 		this.current_ = null;
 		this.playlist_ = null;
 		this.shufflePlayList_ = false;
+		this.visualPlayer = this.createPlayer();
+		this.vstate_ = Player.VSTATE.OPAQUE;
 	};
+	Player.prototype.recording_ = false;
+	Player.prototype.setRecording = function( bool ) {
+		this.recording_ = bool;
+	};
+	/**
+	 * Status if we should use the visual player, usually with audio files.
+	 * @type {boolean}
+	 * @private
+	 */
+	Player.prototype.useVisualPlayer_ = false;
+	/**
+	 * The parental password used on the particular device
+	 * @type {string}
+	 * @private
+	 */
 	Player.prototype.parentalPassword = '';
 	/**
 	* Internal player statuses, translated from DSP signals
@@ -29,6 +67,16 @@ define([
 		STOPPED: 0,
 		PLAYING: 1,
 		PAUSED: 2
+	};
+	/**
+	 * Indicates the player visibility, this is only for video player
+	 *
+	 * @enum {number}
+	 * @private
+	 */
+	Player.VSTATE = {
+		OPAQUE: 0,
+		TRANSLUSENT: 1
 	};
 	/**
 	* The strings returned by transport layer as player status
@@ -47,27 +95,83 @@ define([
 		playing: Player.STATES.PLAYING,
 		error: Player.STATES.STOPPED
 	};
-	Player.prototype.audioPlayerSetup = function(options) {
-		this.audioPlayerState = options.status;
-		
+	Player.prototype.vstateName_ = 'display';
+	//
+	// Player.prototype.requestVState = function(state) {
+	// 	var page;
+	// 	switch (state) {
+	// 		case Player.VISIBILITY.VISIBLE:
+	// 			page = 'media';
+	// 			break;
+	// 		case Player.VISIBILITY.TRANSLUSENT: 
+	// 			
+	// };
+	// 
+	Player.prototype.createPlayer = function() {
+		var that = {};
+		that.dom = dom.getInnerNodes(tpl.render({ }));
+		that.trackName = dom.$('.audio-title', that.dom);
+		that.timeElapsed = dom.$$('.audio-time span', that.dom)[0];
+		that.duration = dom.$$('.audio-time span', that.dom)[2];
+		that.progressBar = dom.$('.audio-fill-bar', that.dom);
+		that.statusIndicator = dom.$('.audio-icons div', that.dom);
+		that.update = function( name, elapsedTime, duration ) {
+			var progress;
+			if ( typeof duration !== 'number' || duration === 0 ) {
+				duration = elapsedTime || 'N/A';
+				elapsedTime = '';
+			} else if ( typeof elapsedTime == 'number' ) {
+				progress = parseInt( (duration / elapsedTime) * 100 , 10) ;
+			}
+			if (typeof name == 'string') {
+				this.trackName.innerHTML = name;
+			}
+			this.timeElapsed.innerHTML = elapsedTime;
+			this.duration.innerHTML = duration;
+			if (progress) {
+				this.progressBar.style.left = '-' + progress + '%';
+			}
+		};
+		that.clean = function() {
+			this.update( '', 0, 0);
+		};
+		that.setState = function(iconclass) {
+			this.statusIndicator.className = iconclass;
+		};
+		return that;
+
 	};
-	Player.prototype.autioPlayerUpdate = function(options) {
-		
+	Player.prototype.getVState = function() {
+		return this.vstate_;
+	};
+	Player.prototype.setVState = function(state) {
+		var req = request.create('display', { 'page': ( state === Player.VSTATE.OPAQUE ) ? 'media' : 'ui' });
+		req.send();
 	};
 	Player.prototype.setOSDState = function(state) {
 		var item = this.current_[0], id = '';
 		if (item.id.length < 5)
-			id = '[' + item.id + '] ';
+			id = '[' + item.sortIndex + '] ';
 		switch (state) {
 			case 'started':
 			case 'playing':
-				tui.osdInstance.setContent(strings.player.states.playing + id + item.publishName, 5, 'play');
+				if (this.useVisualPlayer_) {
+					this.visualPlayer.setState('play');
+				} else {
+					tui.osdInstance.setContent(strings.player.states.playing + id + item.publishName, 5, 'play');
+				}
 				break;
 			case 'buffering':
 				tui.osdInstance.setContent(strings.player.states.buffering + id +  item.publishName, 5, 'buffering');
 				break;
 			case 'paused':
-				tui.osdInstance.setContent(strings.player.states.paused, 5, 'pause');
+				if (this.useVisualPlayer_) {
+					this.visualPlayer.setState('pause');
+				} else {
+					tui.osdInstance.setContent(strings.player.states.paused, 5, 'pause');
+				}
+				break;
+			default: break;
 		}
 	};
 	/**
@@ -83,8 +187,22 @@ define([
 		if (old_state !== this.state) {
 			if (this.state === Player.STATES.STOPPED) {
 				tui.signals.restoreEventTree();
+				this.disableVisual();
 			} else if (this.state === Player.STATES.PLAYING) {
+				console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE');
 				tui.stealEvents(this.keyHandler);
+				if ( Player.AUDIO_TYPES.indexOf( this.current_[0]['type']) !== -1 ) {
+
+					this.enableVisual(this.current_[0]['publishName']);
+					this.visualPlayer.setState('play');
+				}
+				//
+				// if ( this.useVisualPlayer_ ) {
+				// 	console.log('JDdddddddddddddddddddddddddddddHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH');
+				// 	this.enableVisual();
+				// 	this.visualPlayer.setState('play');
+				// }
+				// 
 			}
 		}
 	};
@@ -122,6 +240,14 @@ define([
 			case 'display':
 				if (this.state !== Player.STATES.STOPPED) {
 					tui.signals.restoreEventTree();
+					if (!this.useVisualPlayer_) {
+						this.setVState( Player.VSTATE.TRANSLUSENT ) ;
+						//
+						// var req = request.create('display', {'page': 'ui'});
+						// this.vstate_ = Player.VSTATE.TRANSLUSENT;
+						// req.send();
+						// 
+					} 
 				}
 				break;
 			case 'recall':
@@ -145,6 +271,7 @@ define([
 				break;
 			case 'rec':
 				this.record();
+				break;
 			default:
 //				console.log('This is the player now accepting all events');
 				return;
@@ -160,16 +287,15 @@ define([
 		}
 		if (object.personalRecordingOptions && object.personalRecordingOptions.canRecord) {
 			var now = new Date();
-			var path = this.defaultRecordingPath + now.getFullYear();
+			var path = this.defaultRecordingPath + object.publishName;
+			path += this.pathSeparator;
+			path += now.getFullYear();
 			path += this.pathSeparator;
 			path += (now.getMonth() + 1);
 			path += this.pathSeparator;
 			path += now.getDate();
 			path += this.pathSeparator;
-			path += object.publishName;
-			path += this.pathSeparator;
 			path += (now.getHours() + ':' + now.getMinutes());
-			path += this.pathSeparator;
 			console.log('Configured path', path);
 		//
 		// var newreq = request.create('record',{
@@ -181,6 +307,9 @@ define([
 			return;
 		}
 	};
+	Player.AUDIO_TYPES = ['radio', 'music', 'useraudio'];
+	Player.VIDEO_TYPES = ['iptv', 'ppv', 'vod', 'uservideo'];
+	Player.IMAGE_TYPES = ['userpicture'];
 	Player.prototype.alterChannels = function() {
 		console.log(JSON.stringify(this.history_));
 		if (this.history_ && this.history_.length === 2) {
@@ -206,6 +335,7 @@ define([
 	*/
 	Player.prototype.play = function(obj, resume, password) {
 		console.log('Try to play uri: '+ obj.playURI + ' , pass:' + password);
+		var newreq;
 		if (obj.isLocked) {
 			//Prevent event stealing, set state manually so that when the event comes it 
 			//does not restore the event handler but leave it to the lock screen
@@ -214,7 +344,7 @@ define([
 				this.stop();
 			}
 			if (this.parentalPassword === '') {
-				var newreq = request.create('calld', {
+				newreq = request.create('calld', {
 					run: 'get_cfgval_json',
 					section: 'streaming',
 					'var': 'lockpass'
@@ -232,10 +362,42 @@ define([
 			}
 		}
 		var play_command = (obj.player ? 'play_youtube':'play');
+		var isAudio = false;
 		this.addToHistory( [obj, password] );
-		var newreq = request.create(play_command, {"url": obj.playURI, 'resume': resume});
-		response.register(newreq, bind(this.requestResultHandle, this, obj.publishName, 'play') );
+		if (array.has(Player.AUDIO_TYPES, obj.type)) {
+			this.enableVisual(obj.publishName);
+			isAudio = true;
+		} else if ( array.has(Player.VIDEO_TYPES, obj.type )) {
+			this.notifyOSD( obj );
+			this.disableVisual();
+		}
+
+		newreq = request.create(play_command, {"url": obj.playURI, 'resume': resume, 'audio': isAudio});
+		response.register(newreq, bind(this.requestResultHandle, this, obj.sortIndex,  obj.publishName, 'play') );
 		newreq.send();
+	};
+	Player.prototype.notifyOSD = function( obj ) {
+		mix( obj, Theme);
+		var req = request.create('mediainfo', obj);
+		req.send( obj );
+	};
+	/**
+	 * Call when we want to show visual player, usually when we start playing audio
+	 * @param {string} title Optional title for the playing track
+	 */
+	Player.prototype.enableVisual = function(title) {
+		console.log('Visual mode enabled');
+		this.useVisualPlayer_ = true;
+		dom.adopt(this.visualPlayer.dom);
+		this.visualPlayer.update( title );
+	};
+	/**
+	 * Called when we stop playback, clean the mess after the previous track
+	 */
+	Player.prototype.disableVisual = function() {
+		this.useVisualPlayer_ = false;
+		dom.dispose(this.visualPlayer.dom);
+		this.visualPlayer.clean();
 	};
 	Player.prototype.addToHistory = function(newSet) {
 		this.history_ = this.current_;
@@ -272,8 +434,8 @@ define([
 	* Handle for the request result (i.e. transport layer debug, no useful application yet)
 	* @param {JSONObject} data The data returned by transport layer response
 	*/
-	Player.prototype.requestResultHandle = function(title, icon) {
-		tui.osdInstance.setContent(strings.player.states.starting + title, 10, icon);
+	Player.prototype.requestResultHandle = function( index, title, icon) {
+		tui.osdInstance.setContent(strings.player.states.starting + '[' + index + '] ' + title, 10, icon);
 	};
 	/**
 	* Handles the events coming from transport layer communication, called via tui.globalPlayer.handleEvent, no need for context
@@ -286,13 +448,29 @@ define([
 			break;
 		case 'player':
 			this.handlePlaybackInfo(JSONObj['event']);
+			break;
+		default: break;
 		}
 	};
 	Player.prototype.handlePlaybackInfo = function(event) {
 		var audio = event['has_audio'] || false;
 		var video = event['has_video'] || false;
-		//Handle this further
+		if (this.useVisualPlayer_) {
+			this.visualPlayer.update( undefined, event['current_position'], event['duration']);
+		}
+		
 	};
-	
+	// Notify osd for theme
+//    var r = request.create('set_osdcolors', {
+//    	"textcolor" : "#FFFFFF",
+//        "bgcolor" : "#00000000",
+//        "hlcolor" : "#9f00004c",
+//        "barcolor" : "#9f00004c",
+//        "bordercolor" : "#004c00",
+//        "seekbarcolor" : "#ffff00",
+//        "titlecolor" : "#ffff00",
+//        "opacity" : 0.85
+//    });
+//    r.send();
 	return Player;
 });

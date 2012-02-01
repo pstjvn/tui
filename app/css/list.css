@@ -4,7 +4,7 @@
 	position: absolute;
 }
 .tui-list .item {
-	margin: 0.7em auto 0 auto;
+	margin: 0.3em auto 0 auto;
 	width: 94%;
 	height: 3.4em;
 	text-align: left;
@@ -14,10 +14,10 @@
 	-moz-border-radius: 0.3em;
 	-webkit-border-radius: 0.3em;
 	-ms-border-radius: 0.3em;
-	border: 2px solid gray;	
+	border: 2px solid #3E5170;
 	color: white;
 	position: relative;
-	
+	/*
 	background-image: linear-gradient(bottom, rgb(74,80,92) 4%, rgb(39,44,52) 49%, rgb(74,80,92) 93%);
 	background-image: -o-linear-gradient(bottom, rgb(74,80,92) 4%, rgb(39,44,52) 49%, rgb(74,80,92) 93%);
 	background-image: -moz-linear-gradient(bottom, rgb(74,80,92) 4%, rgb(39,44,52) 49%, rgb(74,80,92) 93%);
@@ -31,17 +31,20 @@
 		color-stop(0.04, rgb(74,80,92)),
 		color-stop(0.49, rgb(39,44,52)),
 		color-stop(0.93, rgb(74,80,92))
-	);	
+	);	*/
 }
 .tui-list.list-container .current {
-	background-color: gray;
+	/*background-color: gray;
 	background-image: none;
 	border: 2px solid #b74e02;
 	
     box-shadow:inset 0 0 10px #000000;
 	-moz-box-shadow:inset 0 0 10px #000000;
    	-webkit-box-shadow:inset 0 0 10px #000000;
-	-ms-box-shadow:inset 0 0 10px #000000;
+	-ms-box-shadow:inset 0 0 10px #000000;*/
+	border: 2px solid #1E69D1;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(198, 222, 255, 0.9)), color-stop(4%,rgba(104, 151, 221, 0.75)), color-stop(5%,rgba(30, 105, 222, 0.45)), color-stop(50%,rgba(30, 105, 222, 0)), color-stop(96%,rgba(30, 105, 222, 0)), color-stop(96%,rgba(30, 105, 222, 0.45)), color-stop(98%,rgba(104, 151, 221, 0.75)), color-stop(100%,rgba(198, 222, 255, 0.9)));
+
 }
 .tui-list.list-container .current .number_id {
 	color: #d08b05;
@@ -66,22 +69,21 @@
 }
 
 .tui-list .rightCont {
-float: left;
-height: 43px;
-width: 43px;
-overflow-x: hidden;
-overflow-y: hidden;
-text-align: right;
+	height: 40px;
+	width: 53px;
+	text-align: right;
+	display: -webkit-inline-box;
+	margin-top:3px;
 }
 .tui-list .rightCont-folder {
 	float: right;
-	width: 39px;
-	height: 40px;
+	width: 57px;
+	height: 38px;
 	overflow-x: hidden;
 	overflow-y: hidden;
-	background: url(app/imgs/folder.png) no-repeat;
-	background-size: cover;
-	margin: 3px 3.8% 0px 0%;
+	background: url(../imgs/folder.png) no-repeat;
+	background-size: contain;
+	margin: 4px 4px 0 0;
 }
 .tui-list .leftCont .number_id {
 	color: #b4b3ae;
@@ -123,22 +125,23 @@ text-align: right;
 	text-overflow: ellipsis;
 }
 .tui-list .img_thumb {
-	height: 100%;
 	border: 0;
+	width: 100%;
+	display: -webkit-box;
 }
 .tui-list .description {
 	display: inline-block;
 	margin-right: 20px;
 }
 .tui-list .channel-settings-icons {
-	left: 2px;
+	left: 11px;
     list-style-type: none;
     position: absolute;
     bottom: 2px;
 }
 
 .tui-list.list-container .icon {
-	background-color: #596876;
+	/*background-color: #596876;*/
     background-position: center center;
     background-repeat: no-repeat;
     height: 20px;
@@ -147,11 +150,14 @@ text-align: right;
     float: left; 
 }
 .tui-list.list-container .bookmarked {
-	background-image: url("imgs/icon_favorite.png");
+	background-image: url("../imgs/icon_favorite.png");
 }
 .tui-list.list-container .recordable {
-	background-image: url("imgs/icon_recording.png");
+	background-image: url("../imgs/icon_recording.png");
 }
 .tui-list.list-container .locked {
-	background-image: url("imgs/icon_lock.png");
+	background-image: url("../imgs/icon_lock.png");
+}
+.tui-list.list-container .paid {
+	background-image: url('../imgs/icon_dollar.png');
 }
