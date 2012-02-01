@@ -227,14 +227,22 @@ html.m55 .bordered {
 	display: table;
 }
 .epg-details-name {
-	height: 80px;
+	max-height: 72px;
 	width: 160px;
-	top: -10px;
+	top: 10px;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 20px;
+	position: relative;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.epg-name-holder {
+	top: -18px;
 	padding-left: 8px;
 	display: table-cell;
 	vertical-align: middle;
 	text-align: center;
-	font-size: 20px;
 	position: relative;
 }
 .epg-details-text {

@@ -4,11 +4,13 @@ var buf = [];
 with (locals || {}) {
 var interp;
 buf.push('<div');
+buf.push(attrs({ "class": ('epg-name-holder') }));
+buf.push('><div');
 buf.push(attrs({ "class": ('epg-details-name') }));
 buf.push('>');
 var __val__ = channelname
 buf.push(null == __val__ ? "" : __val__);
-buf.push('</div><div');
+buf.push('</div></div><div');
 buf.push(attrs({ "class": ('epg-details-text') }));
 buf.push('>');
  if (noData === true)
