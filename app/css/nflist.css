@@ -159,3 +159,9 @@
 .tui-vertical-transition-container .paid {
 	background-image: url('../imgs/icon_dollar.png');
 }
+.tui-vertical-transition-container .no-content {
+	text-align: center;
+	padding: 15px 0 15px 0;
+	font-size: 135%;
+	height: auto;
+}

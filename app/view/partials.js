@@ -191,6 +191,7 @@ Partials.prototype.show = function(container, force) {
 	this.app.fire('show-start');
 	if (typeof container != 'undefined' && container !== null) {
 		this.container = container;
+		this.container_ = this.container;
 		this.itemsPerPage_ = paginator.getItemsPerPage_(this.itemWidth, this.itemHeight);
 	}
 	this.rasterizeInternal(undefined, force);
@@ -211,11 +212,18 @@ Partials.prototype.disposeInternal = function() {
 	delete this.itemsPerPage_;
 	delete this.dataIndex;
 	delete this.page_;
+	delete this.container_;
 };
 Partials.prototype.getStep = function() {
-	return paginator.getItemsPerRow_(this.itemWidth, this.itemHeight);
+	if ( this.app.epgInstance && this.app.epgInstance.isVisible()) {
+		return 1;
+	} else 
+		return paginator.getItemsPerRow_(this.itemWidth, this.itemHeight);
 };
 Partials.prototype.getHStep = function() {
+	if ( this.app.epgInstance && this.app.epgInstance.isVisible()) {
+		return 1;
+	}
 	return paginator.getItemsPerColumn_(this.itemWidth, this.itemHeight );
 };
 /**

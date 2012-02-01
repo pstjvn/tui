@@ -89,6 +89,7 @@ define([
 		this.transContainer_ = dom.create('div', {
 			classes: this.transitionContainerCssClass
 		});
+		
 		dom.adopt( this.container_, this.transContainer_ );
 		console.log(this.container_.innerHTML)
 		this.transWidth_ = parseInt(this.contentBox_.style.width, 10);
@@ -106,11 +107,21 @@ define([
 		return this.dataAccessor_.get();
 	};
 	NFList.prototype.setItemsContent = function() {
-		var data = this.getDataList();
-		for ( i = 0; i < this.elements_.length; i++ ) {
-			this.populateItem( this.elements_[i], data[this.dataPointer_ + i]);
-		}		
-	}
+		var data = this.getDataList(), i;
+		if ( data.length === 0 ) {
+			for ( i = 0; i < this.elements_.length; i++ ) {
+				classes.addClasses(this.elements_[i], 'empty');
+			}
+			var eelem = this.elements_[Math.floor((this.elements_.length-2)/2)-2];
+			eelem.innerHTML = 'No content';
+			classes.addRemoveClasses(eelem,['no-content'], 'empty');
+		} else {
+			for ( i = 0; i < this.elements_.length; i++ ) {
+				this.populateItem( this.elements_[i], data[this.dataPointer_ + i]);
+			}			
+		}
+		
+	};
 	NFList.prototype.createTransElements_ = function() {
 		var i;
 		this.rows_ = Math.floor( parseInt(this.transHeight_, 10) / this.itemHeight_ );
