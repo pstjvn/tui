@@ -57,7 +57,8 @@ Epg.prototype.epgDetailContainerClass = 'epg-details';
 Epg.prototype.constructDom_ = function() {
 	this.container_ = dom.create('div',{classes: this.mainContainerClass});
 	this.setupContainerInternal();
-	this.container_.style.zIndex = 1000;
+//    Not really usedful
+//	this.container_.style.zIndex = 1000;
 	this.transContainer_ = dom.create('div',{classes: this.transContainerClass});
 	this.timelineElement_ = dom.create('div', {
 		classes: 'timeline',

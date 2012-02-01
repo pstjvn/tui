@@ -167,14 +167,17 @@
 	width: 96%;
 	overflow: hidden;
 }
-.title-background {
-	position: absolute;
-	top: 0;
-	left: 0;
-	background: hsl(210, 50%, 15%);
-	height: 70%;
-	z-index: -1;
-	border-image: url("../imgs/epg-focus.png") 25 stretch;
+html.m55 .bordered {
+	border: 10px;
+}
+.title-background,  .bordered {
+	/*position: absolute;*/
+	/*top: 0;
+	left: 0;*/
+	background-color: hsl(210, 50%, 15%);
+	height: 50px;
+	/*z-index: -1;*/
+	-webkit-border-image: url("../imgs/epg-focus.png") 25 stretch;
 	border-width: 10px;
 	opacity: 0.6;
 }
@@ -184,8 +187,8 @@
 	width: 100%;
 	vertical-align: middle;
 }
-.epgrow .prog .p.active .title-background {
-	border-image: url("../imgs/epg-focus.png") 10 stretch;
+.epgrow .prog .p.active .title-background, .p.active .bordered{
+	-webkit-border-image: url("../imgs/epg-focus.png") 10 stretch;
 	opacity: 1;
 }
 .epgrow.active .title {

@@ -7,8 +7,9 @@ define([
 	'shims/bind',
 	'tpl/infobuttons',
 	'oop/clone',
-    'utils/datetime'
-], function(inherit, Disposable, ListApp, Epg,bind, infobuttonstpl, cloner, datetime){
+    'utils/datetime',
+    'dom/dom', 'datetime/xdate'
+], function(inherit, Disposable, ListApp, Epg,bind, infobuttonstpl, cloner, datetime, dom, Xdate){
 	var App = function(opts){
 		ListApp.call(this, opts);
 		this.epgInstance = new Epg(this.model, ListApp.remoteKeys_);
@@ -66,7 +67,10 @@ define([
 			this.epgInstance.selectRow(obj.index);
 		}
 	};
-	
+    
+	/**
+     * @deprecated
+     */
 	App.prototype.getEPGByID = function( obj ) {
 		if ( obj && obj.id ) {
 			var epg = this.model.getEPGForItemByID( obj.id );
@@ -88,23 +92,40 @@ define([
 			});
 		}
 	};
-	
+	App.prototype.scheduleSwitch = function() {
+        console.log('Takovata',arguments);
+	};
 	App.prototype.epgFrameSeparator_ = ' - ';
 	App.prototype.onPlayRequest = function(obj,  resume ) {
 		var clone = cloner( obj );
-		var epgdata = this.getEPGByID( clone );
+		var epgdata = this.model.get('epg')[ clone.id ].body;
 		var epg = [], i;
-		if ( epgdata.length > 0 ) {
-			for ( i = 0; i < epgdata.length; i++ ) {
-				epg.push({
-					Prog: datetime.getParsedTime( epgdata[i][1]) + this.epgFrameSeparator_  + 
-					datetime.getParsedTime( epgdata[i][2] ) + ' ' +  epgdata[i][3]
-				});
-			}
-		}
-		clone.epg = epg;
+        console.log('URAAAAAAAAAAA');
+        if ( this.epgInstance.isVisible()) {
+            if ( this.epgInstance.currentEpgElement_ !== null ) {
+                var index = parseInt(dom.dataGet(this.epgInstance.currentEpgElement_, 'index'),10);
+                var startTime = epgdata[ index ][1];
+                if ( (Xdate.now()).isEarlierThan( startTime ) ) {
+                    tui.createDialog('confirm',undefined, bind(this.scheduleSwitch), 'Shedule program switch');
+                    return;
+                } 
+            } 
+        }
+        if ( epgdata.length > 0 ) {
+            for (i = 0; i < epgdata.length; i++) {
+                epg.push({
+                    Prog: datetime.getParsedTime(epgdata[i][1]) + 
+                        this.epgFrameSeparator_ + 
+                        datetime.getParsedTime(epgdata[i][2]) + 
+                        ' ' + epgdata[i][3]
+                });
+            }
+        }
+        clone.epg = epg;
         clone.title = clone.id + '. ' + clone.publishName;
-		tui.globalPlayer.play(clone, resume);
+        tui.globalPlayer.play(clone, resume);          
+
+
 	};
 	
 	App.prototype.onStopRequested = function() {

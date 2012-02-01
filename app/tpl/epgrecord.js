@@ -6,17 +6,11 @@ var interp;
 buf.push('<span');
 buf.push(attrs({ 'style':('left:'+ leftOffset + 'px;width:' + widthByDuration + 'px;'), 'data-index':(epgRecordIndex), "class": ('p') }));
 buf.push('><div');
-buf.push(attrs({ 'style':('display: table;width: 100%;height: 100%;') }));
-buf.push('><div');
-buf.push(attrs({ "class": ('title-container') }));
-buf.push('><div');
-buf.push(attrs({ 'style':('width:' + (widthByDuration - 3) + 'px; margin: auto;'), "class": ('title-holder') }));
-buf.push('>');
+buf.push(attrs({ 'style':('display: block; overflow: hidden; width:' + ( widthByDuration - 20 ) + 'px;'), "class": ('bordered') }));
+buf.push('><div>');
 var __val__ = progTitle
 buf.push(null == __val__ ? "" : __val__);
-buf.push('</div></div></div><div');
-buf.push(attrs({ 'style':('width:' + (widthByDuration - 20) + 'px;'), "class": ('title-background') }));
-buf.push('></div></span>');
+buf.push('</div></div></span>');
 }
 return buf.join("");
 }return { render: anonymous }; });

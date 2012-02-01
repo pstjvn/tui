@@ -359,6 +359,9 @@ require(['ui/throbber'], function(t) {
 					// page down
 					key = 'chdown';
 					break;
+                case 73: //info
+                    key = 'info';
+                    break;
 				default:
 					return;
 			}
