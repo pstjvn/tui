@@ -227,7 +227,7 @@ html.m55 .bordered {
 	display: table;
 }
 .epg-details-name {
-	max-height: 70px;
+	max-height: 72px;
 	width: 160px;
 	top: 10px;
 	vertical-align: middle;
@@ -238,7 +238,7 @@ html.m55 .bordered {
 	text-overflow: ellipsis;
 }
 .epg-name-holder {
-	top: -10px;
+	top: -18px;
 	padding-left: 8px;
 	display: table-cell;
 	vertical-align: middle;
