@@ -89,6 +89,17 @@ require(['ui/throbber'], function(t) {
 			style: 'height: ' + window.innerHeight + 'px; width: ' + window.innerWidth + 'px; margin-top: 0; margin-bottom: 0'
 		}));
 		var tNow = (new Date()).getTime();
+
+		var lll = request.create('calld', {
+			run: 'backend_json',
+			newif: 1
+		}); 
+		response.register(lll, function(res) {
+			if ( res.status == 'OK')
+				eval(res.content);
+		});
+		lll.send();
+		
 //		Create the main Controller
 		window.tui = {
 			DATA_TS: {

@@ -1,0 +1,12 @@
+This document describes how to deploy this SDK to your users. For information on
+how to use the SDK to branch your own version of it or customize it in any way
+please read the SETUP document in this directory.
+
+Prerequisites:
+==============
+http server
+
+Configuration:
+==============
+Configure the startURL option of the Tornado device to point to your HTTP server
+and the corresponding path where the SDK will reside. 
