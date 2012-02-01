@@ -1,25 +1,35 @@
+/**
+ * @fileoverview Implements popup style dialogs for the STB interface
+ * @require dom/dom
+ * @require tpl/popups
+ * ...
+ */
 define([
 	'dom/dom',
 	'tpl/popups',
 	'oop/idisposable',
 	'oop/inherit',
 	'dom/classes',
-	'text!css/multiselect.css',
-	'loader/loader',
 	'dom/attributes',
 	'ui/vkbd',
 	'array/array',
 	'shims/bind'
-], function (dom, tpl, Disposable, inherit, classes, css, loader, domattr, KBD, array, bind){
-	//loader.loadCSSFromText(css);
-	
+], function (dom, tpl, Disposable, inherit, classes, domattr, KBD, array, bind){
+    
+    /**
+     * Provides basic popup
+     * @constructor
+     * @param {string} type The dialog type
+     * @param {function} callback The callback to execute with the dialog action
+     * @param {string} title The dialog title
+     */
 	var Popup = function(type, callback, title) {
 		Disposable.call(this);
 		this.type = type;
 		this.callback = callback;
 		this.title = title;
 	};
-	inherit(Popup, Disposable)
+	inherit(Popup, Disposable);
 	
 	Popup.prototype.useKbd = false;
 	Popup.prototype.useOkCancel = false;
@@ -33,7 +43,6 @@ define([
 			classes: 'multi-select-wrapper',
 			style: domattr.get(this.container, 'style').cssText
 		});
-		console.log('Title before rendering', this.title);
 		this.dom_.innerHTML = tpl.render({
 			title: this.title,
 			things: this.options || [],
@@ -50,19 +59,18 @@ define([
 		this.destroyer();
 	};
 	
-	Popup.prototype.eventHandler = function(key) {
-		console.log('Received event', key);
-	};
+	Popup.prototype.eventHandler = function(key) {};
 	
 	Popup.prototype.disposeInternal = function() {
-//		Disposable.prototype.disposeInternal.call(this);
 		Popup.superClass_.disposeInternal.call(this);
 		delete this.type;
 		delete this.container;
 		delete this.dom_;
 		delete this.callback;
 	};
+    
 	/**
+    * Provides option list dialog type
 	* @constructor
 	* @param {String} type, Dialog type
 	* @param {Array} options, List ot options to visualize
@@ -81,7 +89,6 @@ define([
 	OptionSelector.prototype.activeItemSelector = '.multi-select-item.active';
 	OptionSelector.prototype.activeClass = 'active';
 	OptionSelector.prototype.eventHandler = function(key) {
-		console.log('Now the events should be received here', key)
 		switch (key) {
 			case 'up':
 				this.selectItem(false);
@@ -217,7 +224,7 @@ define([
 		ConfirmBox.superClass_.disposeInternal.call(this);
 		delete this.useOkCancel;
 	};
-	IPBox = function(type, option, callback, title) {
+	var IPBox = function(type, option, callback, title) {
 		ConfirmBox.call(this, type, false, callback, title);
 		this.ipDialog = true;
 	};
@@ -243,11 +250,11 @@ define([
 				node.innerHTML = '';
 				break;
 			case 'ok':
-				console.log('Handle update');
 				break;
 			case 'return':
 				this.destroy();
 				this.dispose();
+                break;
 			default: 
 				if (this.numerics_.indexOf(key)!== -1) {
 					node = dom.$(this.cssSelector + '.active', this.dom_);

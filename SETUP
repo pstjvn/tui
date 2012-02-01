@@ -15,12 +15,17 @@ Configuration:
 if you want to use server (streamer/contentMGT) settings options,	
 it makes those available as global option object, it can be skipped )), following 
 example is for lighttpd, other http server might require different options):
-
 	proxy.server = ( "/cgi-bin/" => ( "m55" => ( "host" => "192.168.2.64" ))) 
-
 where the host should be the hostname or IP of your m55 device.
 + The Tornado m55 device should be correctly configured itself (i.e. 
 streaming server and PIN number as a minimum)
++ Set the debug device option in your copy of the SDK: add the file config.js
+in app/appdebug with the followinf content:
+    define({
+        socket: 'ws://192.168.2.64:7681'
+    });
+Substitute the IP with the one configured on your development Tornado device
+
 
 At this point your development environment should be ready, start your Tornado 
 device, using the URL of your http server that hosts the SDK as startURL option

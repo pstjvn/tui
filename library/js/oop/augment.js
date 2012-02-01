@@ -1,11 +1,13 @@
 /**
- * @module oop/augment Module to provide convenient access to the augmentors
+ * @fileoverview Module to provide convenient access to the augmentors
+ * @require oop/events
  */
 define(['oop/events'], function() {
 
 	var augmentors = {
 		events: arguments[0]
 	};
+    
 	/**
 	 * @method {Module} call the whole module with Constructor functions and the desired augmentation
 	 * @param {Function} obj. Should be a constructor function (i.e. protptypal inheritance is used
@@ -14,7 +16,6 @@ define(['oop/events'], function() {
 	 */
 	return function(obj, augmentation) {
 		if (typeof augmentors[augmentation] === 'function') {
-			console.log('da');
 			augmentors[augmentation](obj);
 		}
 	};
