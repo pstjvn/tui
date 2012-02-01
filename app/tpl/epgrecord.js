@@ -10,12 +10,12 @@ buf.push(attrs({ 'style':('display: table;width: 100%;height: 100%;') }));
 buf.push('><div');
 buf.push(attrs({ "class": ('title-container') }));
 buf.push('><div');
-buf.push(attrs({ 'style':('width:' + (widthByDuration - 4) + 'px; margin: auto;'), "class": ('title-holder') }));
+buf.push(attrs({ 'style':('width:' + (widthByDuration - 3) + 'px; margin: auto;'), "class": ('title-holder') }));
 buf.push('>');
 var __val__ = progTitle
 buf.push(null == __val__ ? "" : __val__);
 buf.push('</div></div></div><div');
-buf.push(attrs({ "class": ('title-background') }));
+buf.push(attrs({ 'style':('width:' + (widthByDuration - 20) + 'px;'), "class": ('title-background') }));
 buf.push('></div></span>');
 }
 return buf.join("");
