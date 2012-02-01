@@ -5,7 +5,10 @@ with (locals || {}) {
 var interp;
 buf.push('<div');
 buf.push(attrs({ "class": ('epg-details-name') }));
-buf.push('>Discovery Channel Science</div><div');
+buf.push('>');
+var __val__ = channelname
+buf.push(null == __val__ ? "" : __val__);
+buf.push('</div><div');
 buf.push(attrs({ "class": ('epg-details-text') }));
 buf.push('>');
  if (noData === true)
@@ -23,7 +26,7 @@ buf.push(attrs({ "class": ('startTime') }));
 buf.push('>');
 var __val__ = startTime
 buf.push(null == __val__ ? "" : __val__);
-buf.push('</span><span');
+buf.push('</span><span>&nbsp;&nbsp;- </span><span');
 buf.push(attrs({ "class": ('endTime') }));
 buf.push('>');
 var __val__ = endTime
