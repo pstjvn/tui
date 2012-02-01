@@ -11,12 +11,6 @@ Web browser with WebSocket support (for in browser development)
 Configuration:
 ==============
 + Download the source and put it in a path that can be served by your http server
-+ Configure the proxy mode of your server (The following step is only required 
-if you want to use server (streamer/contentMGT) settings options,	
-it makes those available as global option object, it can be skipped )), following 
-example is for lighttpd, other http server might require different options):
-	proxy.server = ( "/cgi-bin/" => ( "m55" => ( "host" => "192.168.2.64" ))) 
-where the host should be the hostname or IP of your m55 device.
 + The Tornado m55 device should be correctly configured itself (i.e. 
 streaming server and PIN number as a minimum)
 + Set the debug device option in your copy of the SDK: add the file config.js
