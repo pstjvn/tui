@@ -1,5 +1,5 @@
 define([
-	'utils/events',
+//	'utils/events',
 	'dom/dom',
 	'tpl/channelitem',
 	'dom/classes',
@@ -8,7 +8,9 @@ define([
 	'datetime/xdate',
 	'tpl/timeline',
 	'tpl/epg-details'
-], function(events, dom, channelItemTemplate, classes, datetime, epgRecordTemplate, Xdate, timelinetemplate, detailstemplate) {
+], function(
+    //events, 
+    dom, channelItemTemplate, classes, datetime, epgRecordTemplate, Xdate, timelinetemplate, detailstemplate) {
 
 /**
  * @fileoverview Provides means to work with epg and visualize it in table tows on 
@@ -197,42 +199,38 @@ Epg.prototype.setNextActiveEPG = function( el ) {
 Epg.prototype.setEpgDetails_ = function() {
 	if ( this.currentEpgElement_ === null ) {
 		this.detailsContainer_.innerHTML = detailstemplate.render({
+			channelname: this.dataAccessor_.getItem().publishName,
 			noData: true
 		});	
 		return;
 	}
 	
 	var epgRecords = this.getEpgDataByObject(this.dataAccessor_.getItem());
-	console.log('EPG zapisi', epgRecords);
 	var epgdata = null;
 	if (epgRecords) {
 		epgdata = epgRecords[parseInt(dom.dataGet(this.currentEpgElement_, 'index'),10)];
 		this.detailsContainer_.innerHTML = detailstemplate.render({
+			channelname: this.dataAccessor_.getItem().publishName,
 			startTime: datetime.getParsedTime(epgdata[1]),
 			endTime:  datetime.getParsedTime(epgdata[2]),
 			title: epgdata[3],
 			noData: false
 		});
 	} else {
-		
+	    //TODO: Make something smart here	
 	}
-
-	console.log('Found epg', epgdata);
 };
 Epg.prototype.fitEpgElementOnScreen = function() {
 	var el = this.currentEpgElement_;
 	var startPos = parseInt(el.style.left , 10);
 	var endPos = startPos + parseInt( el.style.width , 10 );
-	// calc currently visible fragment
+
 	var vstart = Math.abs(this.currentEpgPixelOffset_);
 	var visibleWidth = (parseInt(this.container_.style.width, 10) - this.initOffset_);
 	var vend = vstart + visibleWidth;
-	console.log('In FIT', startPos, endPos, vstart, vend, visibleWidth);
 	if ( startPos < vstart )  {
-		console.log('Start of epg is before the currently visible start');
 		this.styleElement_.textContent = this.compileStyle_( startPos * -1);
 	} else if ( endPos > vend ) {
-		console.log('End of epg is after the current visible zone');
 		this.styleElement_.textContent = this.compileStyle_( (endPos - visibleWidth) * -1 );
 	}
 
@@ -305,7 +303,6 @@ Epg.prototype.setActiveChannel_ = function( element ) {
 		p = null;
 	}
 	// find the first element and set it activeChannelElement_
-	console.log(element);
 	p = dom.$('span.p', element);
 	if (p !== null) { 
 		classes.addClasses(p, 'active');
@@ -320,41 +317,41 @@ Epg.prototype.getEvents_ = function() {
 	if ( this.events_ === null ) {
 		this.constructEvents_();
 	}
-	return events_;
+	return this.events_;
 };
-Epg.prototype.eventHandler_ = function( key ) {
+Epg.prototype.eventHandler_ = function( ) {
 	console.log(arguments);
 };
-Epg.prototype.constructEvents_ = function() {
-	var bound = bind( this.eventHandler_, this);
-	this.events_ = {
-		up: {
-			name: 'up',
-			func: bound,
-			attached: false
-		},
-		down: {
-			name: 'down',
-			func: bound,
-			attached: false
-		},
-		left: {
-			name: 'left',
-			func: bound,
-			attached: false
-		},
-		right: { 
-			name: 'right',
-			func: bound,
-			attached: false
-		},
-		ok: {
-			name: 'ok',
-			func: bound,
-			attached: false
-		}
-	};
-};
+//Epg.prototype.constructEvents_ = function() {
+//	var bound = bind( this.eventHandler_, this);
+//	this.events_ = {
+//		up: {
+//			name: 'up',
+//			func: bound,
+//			attached: false
+//		},
+//		down: {
+//			name: 'down',
+//			func: bound,
+//			attached: false
+//		},
+//		left: {
+//			name: 'left',
+//			func: bound,
+//			attached: false
+//		},
+//		right: { 
+//			name: 'right',
+//			func: bound,
+//			attached: false
+//		},
+//		ok: {
+//			name: 'ok',
+//			func: bound,
+//			attached: false
+//		}
+//	};
+//};
 /**
  * Updates the internal state of time, current time is set to now,
  * start and end times are set accordingly,
@@ -406,12 +403,10 @@ Epg.prototype.visuallyInitialize_ = function(timelinestart, timelineend) {
 	this.elements_ = Epg.createElements(this.rows_, this.transContainer_);
 
 	var epgbody;
-	
 	for (i = 0; i < this.elements_.length; i++) {
 		if ( this.epgList_[ this.channelList_[ this.dataPointer_ + i ].id ] ) {
 			epgbody = this.epgList_[ this.channelList_[ this.dataPointer_ + i ].id ].body;
 		} else epgbody = undefined;
-
 		Epg.populateChannelItem( this.elements_[i], this.channelList_[this.dataPointer_ + i], epgbody, timelinestart, timelineend);
 	}
 	
@@ -427,8 +422,6 @@ Epg.prototype.visuallyInitialize_ = function(timelinestart, timelineend) {
 	
 };
 Epg.prototype.populateTimeLine = function() {
-	console.log('\n\n\n\nPOPULATE TIMELINE')
-	console.log(this.timelineStart_.getHours());
 	this.timelineElement_.innerHTML = timelinetemplate.render({
 		start: parseInt(this.timelineStart_.getHours(),10),
 		pixelsPerHour: this.timelineHourDistance_,
@@ -470,7 +463,6 @@ Epg.setTranformationsY = function( el, position ) {
 
 };
 Epg.populateChannelItem = function( element, data, epgdata, timelinestart,timelineend ) {
-	console.log('At populate channel item data ', arguments);
 	// Here we need to construct all the shit!
 //	first, construct the title
 	var titlediv = channelItemTemplate.render({
@@ -480,10 +472,13 @@ Epg.populateChannelItem = function( element, data, epgdata, timelinestart,timeli
 	var progs = Epg.populatePrograms( epgdata, timelinestart, timelineend );
 	element.innerHTML = progs + titlediv;
 };
-Epg.findProgramThatFinishesAfterNow = function( epgdata, xdate ) {
+Epg.findProgramThatFinishesAfterNow = function( epgdata, xdate, endxdate ) {
 	var i;
 	for (i = 0; i < epgdata.length; i++  ) {
 		if ( xdate.isEarlierThan( epgdata[i][2]) ) {
+			if (endxdate.isEarlierOrSameThan( epgdata[i][1])) {
+				return -1;
+			}
 			return i;
 		}
 	}
@@ -492,8 +487,8 @@ Epg.findProgramThatFinishesAfterNow = function( epgdata, xdate ) {
 Epg.findProgramThatEndsAfterEndTimeFrame = function( epgdata, starti, xdate ) {
 	var i;
 	for ( i = starti; i < epgdata.length; i++ ) {
-
-		if ( xdate.isEarlierOrSameThan( epgdata[i][1]) ) {
+		if ( xdate.isEarlierOrSameThan( epgdata[i][2]) ) {
+			if ( i < 1 ) return i;
 			return i - 1;
 		}
 	}
@@ -504,11 +499,8 @@ Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
 	if ( typeof epgdata == 'undefined') return result + '</div>';
 	var startIndex, endIndex;
 	
-	startIndex = Epg.findProgramThatFinishesAfterNow( epgdata, timelinestart );
-	console.log('aa', startIndex);
+	startIndex = Epg.findProgramThatFinishesAfterNow( epgdata, timelinestart, timelineend );
 	if ( startIndex > -1 ) {
-		
-		console.log(epgdata);
 		endIndex = Epg.findProgramThatEndsAfterEndTimeFrame( epgdata, startIndex, timelineend);
 		var firstItemStartTime = new Xdate(epgdata[startIndex][1]);
 		var startOffsetAsMS;
@@ -519,6 +511,7 @@ Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
 		} else if ( timelinestart.isEarlierThan( firstItemStartTime ) ) {
 			startOffsetAsMS = firstItemStartTime.getTime() - timelinestart.getTime();
 		} else startOffsetAsMS = 0;
+
 		var startOffsetinMinutes = Xdate.getTimeDiffereceAsMinutes( timelinestart, timelinestart.getTime() + startOffsetAsMS );
 		var endMinutes = Xdate.getTimeDiffereceAsMinutes( epgdata[startIndex][2], useTT ? timelinestart.getTime():  epgdata[startIndex][1]);
 		result += epgRecordTemplate.render({
@@ -527,6 +520,7 @@ Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
 			widthByDuration : endMinutes * 3,
 			progTitle: epgdata[startIndex][3]
 		});
+
 		startIndex++;
 		for (; startIndex < endIndex; startIndex++ ) {
 			startOffsetinMinutes = Xdate.getTimeDiffereceAsMinutes( timelinestart,
@@ -542,10 +536,10 @@ Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
 		}
 		startOffsetinMinutes = Xdate.getTimeDiffereceAsMinutes( timelinestart,
 				epgdata[endIndex][1]);
-		
 		endMinutes = timelineend.isEarlierThan( epgdata[endIndex][2]) ? 
 			Xdate.getTimeDiffereceAsMinutes( timelineend, epgdata[endIndex][1]) :
 			Xdate.getTimeDiffereceAsMinutes( epgdata[endIndex][2], epgdata[endIndex][1]);
+
 		result += epgRecordTemplate.render({
 			epgRecordIndex: startIndex,
 			leftOffset: Math.abs(startOffsetinMinutes * 3),
@@ -553,6 +547,7 @@ Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
 			progTitle: epgdata[startIndex][3]
 		});
 	}
+
 	return result + '</div>';
 	
 
