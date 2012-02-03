@@ -14,16 +14,20 @@ define([
 		ListApp.call(this, opts);
 		this.epgInstance = new Epg(this.model, ListApp.remoteKeys_);
 		this.hints = opts.hints || null;
-		this.appEvents['info'] = {
+		this.appEvents.info = {
 			name: 'info',
 			func: bind(function() {
+				console.log('And index is ;',this.model.currentIndex)
 				if (this.epgInstance.isVisible()) {
 					this.epgInstance.hide();
-					this.presentation.container_.style.display = 'block';
+					this.presentation.unhide();
+					this.presentation.activate( this.model.currentIndex );
+//					this.presentation.container_.style.display = 'block';
 				} else {
-					this.presentation.container_.style.display = 'none';
+//					this.presentation.container_.style.display = 'none';
 					this.epgInstance.show();
 					this.epgInstance.selectRow( this.model.currentIndex );
+					this.presentation.unload();
 				}
 			},this),
 			attached: false
@@ -142,7 +146,7 @@ define([
 	App.prototype.updateItem = function( index, obj ) {
 		App.superClass_.updateItem.call( this, index, obj );
 		if (this.epgInstance.isVisible()) {
-			
+//			TODO: implement update channel record in EPG view
 		}
 	};
 	App.prototype.onStopRequested = function() {

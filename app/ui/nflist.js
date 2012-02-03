@@ -64,6 +64,10 @@ define([
 	})();
 
 	/** END static */
+	NFList.prototype.reEnterDom = function() {
+		dom.adopt(this.contentBox_, this.container_);
+		this.isVisible_ = true;
+	};
 	NFList.prototype.enterDom = function(opt_cont_box, force) {
 		this.app.fire('show-start');
 		if ( opt_cont_box !== undefined ) {
@@ -191,24 +195,26 @@ define([
 		return this.isVisible_;
 	};
 	NFList.prototype.selectRow = function(index) {
-		var jumps;
-		if ( index >= this.dataPointer_ && index <= this.dataPointer_ + this.rows_ -1 ) {
-			this.setActiveChannel(this.onscreen_[index - this.dataPointer_ ]);
-		} else {
-			if ( index > this.dataPointer_ + this.rows_ - 1) {
-				//selectirame posledniq element v vidimata chast
-				this.setActiveChannel(this.onscreen_[this.onscreen_.length-1]);
-				//namirame kolko sled posledniq element e tyrseniq
-				jumps = index - ( this.dataPointer_ + this.rows_ - 1);
-				this.iterateRotationTimes_( jumps, 'down');
-				this.setActiveChannel(this.onscreen_[this.onscreen_.length-1]);
-			} else if ( index < this.dataPointer_ ) {
-				//selectirame purviq element v vidimata zona
-				this.setActiveChannel( this.onscreen_[0]);
-				//namirame kolko predi purviq kanal tr da rotirame
-				jumps = this.dataPointer_ - index;
-				this.iterateRotationTimes_( jumps, 'up');
-				this.setActiveChannel( this.onscreen_[0]);
+		if ( this.isVisible() ) {
+			var jumps;
+			if ( index >= this.dataPointer_ && index <= this.dataPointer_ + this.rows_ -1 ) {
+				this.setActiveChannel(this.onscreen_[index - this.dataPointer_ ]);
+			} else {
+				if ( index > this.dataPointer_ + this.rows_ - 1) {
+					//selectirame posledniq element v vidimata chast
+					this.setActiveChannel(this.onscreen_[this.onscreen_.length-1]);
+					//namirame kolko sled posledniq element e tyrseniq
+					jumps = index - ( this.dataPointer_ + this.rows_ - 1);
+					this.iterateRotationTimes_( jumps, 'down');
+					this.setActiveChannel(this.onscreen_[this.onscreen_.length-1]);
+				} else if ( index < this.dataPointer_ ) {
+					//selectirame purviq element v vidimata zona
+					this.setActiveChannel( this.onscreen_[0]);
+					//namirame kolko predi purviq kanal tr da rotirame
+					jumps = this.dataPointer_ - index;
+					this.iterateRotationTimes_( jumps, 'up');
+					this.setActiveChannel( this.onscreen_[0]);
+				}
 			}
 		}
 		this.app.fire('selection-changed', { index: index });
@@ -294,7 +300,10 @@ define([
 		dom.dispose(this.container_);
 		this.isVisible_ = false;
 	};
-	NFList.prototype.show = function() { this.enterDom.apply(this, arguments)};
+	NFList.prototype.show = function() { this.enterDom.apply(this, arguments);};
+	NFList.prototype.unhide = function() {
+		this.reEnterDom();
+	};
 	NFList.prototype.updateItem = function(index, channel){
 		if ( this.indexIsVisible(index) ) {
 			this.setItemsContent();

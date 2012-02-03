@@ -7,10 +7,11 @@ define([
 	'tpl/epgrecord',
 	'datetime/xdate',
 	'tpl/timeline',
-	'tpl/epg-details'
+	'tpl/epg-details',
+	'shims/bind'
 ], function(
     //events, 
-    dom, channelItemTemplate, classes, datetime, epgRecordTemplate, Xdate, timelinetemplate, detailstemplate) {
+    dom, channelItemTemplate, classes, datetime, epgRecordTemplate, Xdate, timelinetemplate, detailstemplate, bind) {
 
 /**
  * @fileoverview Provides means to work with epg and visualize it in table tows on 
@@ -30,6 +31,7 @@ var Epg = function(data_accessor) {
 	this.isVisible_ = false;
 	this.currentEpgElement_ = null;
 	this.currentEpgPixelOffset_ = 0;
+	this.styleisDirty = false;
 	//
 	// this.events_;
 	// 
@@ -41,7 +43,7 @@ var Epg = function(data_accessor) {
 	this.afterscreen_ = [];
 	this.activeChannelElement_ = null;
 };
-Epg.enableAnimation_ = true;
+Epg.enableAnimation_ = false;
 Epg.animationDuration_ = 300;
 /**
  * Utilized class names
@@ -162,7 +164,10 @@ Epg.prototype.selectRow = function(index) {
  * @param {number} offset How much should we move to left
  */
 Epg.prototype.compileStyle_ = function(offset) {
-	if (typeof offset !== 'undefined' ) this.currentEpgPixelOffset_ = offset;
+	if (typeof offset !== 'undefined' ) { 
+		if ( offset === 0 ) this.styleisDirty = false;
+		this.currentEpgPixelOffset_ = offset;
+	}
 	var off = this.currentEpgPixelOffset_ + this.initOffset_;
 	return this.style_ + off + this.style2_;
 };
@@ -228,6 +233,7 @@ Epg.prototype.setEpgDetails_ = function() {
 	}
 };
 Epg.prototype.fitEpgElementOnScreen = function() {
+	this.styleisDirty = true;
 	var el = this.currentEpgElement_;
 	var startPos = parseInt(el.style.left , 10);
 	var endPos = startPos + parseInt( el.style.width , 10 );
@@ -301,24 +307,53 @@ Epg.prototype.rotateDown_ = function() {
 		}
 	}
 };
+Epg.timeOut_ = null;
 Epg.prototype.setActiveChannel_ = function( element ) {
+//	var p, oldElement = null;
+//	if ( this.activeChannelElement_ !== null ) {
+//		oldElement = this.activeChannelElement_;
+//		window.setTimeout(function() {
+//		    classes.removeClasses(oldElement, 'active');
+//		    p = dom.$('span.p.active', oldElement);
+//		    if ( p !== null ) classes.removeClasses( p, 'active');
+//		}, 400 );
+//		classes.removeClasses(this.activeChannelElement_, 'active');
+//		p = dom.$('span.p.active', this.activeChannelElement_);
+//	}
+	this.currentEpgElement_ = null;
+//	if ( p !== null ) window.setTimeout(function() {
+//	    classes.removeClasses( p, 'active');
+//	}, 100);
+	window.clearTimeout( this.timeout_ );
+	this.timeout_ = window.setTimeout( bind( this.setFirtProgramAsActive, this, element ), 180);
+	// find the first element and set it activeChannelElement_
+	//p = dom.$('span.p', element);
+	//if (p !== null) { 
+	//	classes.addClasses(p, 'active');
+	//}
+	//this.currentEpgElement_ = p;
+	//this.setEpgDetails_();
+	//classes.addClasses( element, 'active');
+	//this.activeChannelElement_ = element;
+	
+};
+Epg.prototype.setFirtProgramAsActive = function(newEl) {
 	var p;
 	if ( this.activeChannelElement_ !== null ) {
 		classes.removeClasses(this.activeChannelElement_, 'active');
 		p = dom.$('span.p.active', this.activeChannelElement_);
-		if (p!== null) classes.removeClasses( p, 'active');
-		p = null;
+		if ( p !== null ) classes.removeClasses( p, 'active');
 	}
-	// find the first element and set it activeChannelElement_
-	p = dom.$('span.p', element);
+	this.activeChannelElement_ = newEl;
+//	classes.addClasses( elem, 'active');
+	p = dom.$('span.p', this.activeChannelElement_ );
 	if (p !== null) { 
 		classes.addClasses(p, 'active');
 	}
 	this.currentEpgElement_ = p;
 	this.setEpgDetails_();
-	classes.addClasses( element, 'active');
-	this.activeChannelElement_ = element;
-	this.styleElement_.textContent = this.compileStyle_(0);
+	classes.addClasses(this.activeChannelElement_, 'active' );
+	if (this.styleisDirty) this.styleElement_.textContent = this.compileStyle_(0);
 };
 Epg.prototype.getEvents_ = function() {
 	if ( this.events_ === null ) {
@@ -503,7 +538,7 @@ Epg.findProgramThatEndsAfterEndTimeFrame = function( epgdata, starti, xdate ) {
 };
 Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
 	var result = '<div class="prog">';
-	if ( typeof epgdata == 'undefined') return result + '</div>';
+	if ( typeof epgdata == 'undefined') return result + '<div class="spoofgrid"></div></div>';
 	var startIndex, endIndex;
 	
 	startIndex = Epg.findProgramThatFinishesAfterNow( epgdata, timelinestart, timelineend );
