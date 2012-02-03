@@ -19,14 +19,19 @@ define([
 			func: bind(function() {
 				if (this.epgInstance.isVisible()) {
 					this.epgInstance.hide();
-					this.presentation.container_.style.visibility = '';
+					this.presentation.container_.style.display = 'block';
 				} else {
-					this.presentation.container_.style.visibility = 'hidden';
+					this.presentation.container_.style.display = 'none';
 					this.epgInstance.show();
 					this.epgInstance.selectRow( this.model.currentIndex );
 				}
 			},this),
 			attached: false
+		};
+		this.appEvents.play = {
+			name : 'play',
+			func : bind(this.handlePlayButton, this),
+			attached : false
 		};
 		//Override the OK event to handle EPG also
 //		this.appEvents['ok'] = {
@@ -48,6 +53,13 @@ define([
 		this.on('epg-selection', this.onEpgSelection);
 	};
 	inherit(App, ListApp);
+	App.prototype.handlePlayButton = function() {
+		if (this.epgInstance.isVisible()) {
+			return;
+		} else {
+			App.superClass_.handlePlayButton.call(this);
+		}
+	};
 	App.prototype.onEpgSelection = function( bool ) {
 		console.log('Epg direction',bool);
 		if ( this.epgInstance.isVisible()) {
@@ -127,11 +139,16 @@ define([
 
 
 	};
-	
+	App.prototype.updateItem = function( index, obj ) {
+		App.superClass_.updateItem.call( this, index, obj );
+		if (this.epgInstance.isVisible()) {
+			
+		}
+	};
 	App.prototype.onStopRequested = function() {
 		if (this.epgInstance.isVisible()) {
 			this.epgInstance.hide();
-			this.presentation.container_.style.visibility = '';
+			this.presentation.container_.style.display = 'block';
 		}
 		App.superClass_.onStopRequested.call(this);
 	};
