@@ -1,10 +1,10 @@
 /**
- * @fileoverview Provider for NetFlix listing type. It utilizes the webkit 
+ * @fileoverview Provider for NetFlix listing type. It utilizes the webkit
  * transitions and transformation capabilities to minimize the dom access
  * Optional animation is supported via CSS and is programitically enabled/
  * disabled
  *
- * The listing implements the 'presentation' interface (i.e. can replace the 
+ * The listing implements the 'presentation' interface (i.e. can replace the
  * other listings)
  */
 
@@ -14,14 +14,14 @@ define([
 	'tpl/nflist'
 ], function(dom, classes, template) {
 	/**
-	 * Implements 'presentation' 
-	 * 
+	 * Implements 'presentation'
+	 *
 	 * @param {ListingApp} app The app that will utilize the listings
 	 * @param {Storage} data_accessor The storage to use for data loading/access
 	 * @param {number} item_height The height desired for each item, should
 	 * 		match the height in the styling
 	 */
-	
+
 	var NFList = function( app, data_accessor, item_height ) {
 		this.app = app;
 		this.dataAccessor_ = data_accessor;
@@ -31,7 +31,7 @@ define([
 		this.onscreen_ = [];
 		this.beforescreen_ = [];
 		this.afterscreen_ = [];
-		this.activeChannelElement_ = null;	
+		this.activeChannelElement_ = null;
 		if (NFList.enableAnimation_) {
 			dom.adopt(document.head, NFList.animationStyleElement);
 		}
@@ -89,7 +89,7 @@ define([
 		this.transContainer_ = dom.create('div', {
 			classes: this.transitionContainerCssClass
 		});
-		
+
 		dom.adopt( this.container_, this.transContainer_ );
 		console.log(this.container_.innerHTML)
 		this.transWidth_ = parseInt(this.contentBox_.style.width, 10);
@@ -118,9 +118,9 @@ define([
 		} else {
 			for ( i = 0; i < this.elements_.length; i++ ) {
 				this.populateItem( this.elements_[i], data[this.dataPointer_ + i]);
-			}			
+			}
 		}
-		
+
 	};
 	NFList.prototype.createTransElements_ = function() {
 		var i;
@@ -229,7 +229,7 @@ define([
 		var avobject,
 			taken = this.onscreen_.pop(),
 			data = this.getDataList();
-		
+
 		this.afterscreen_.unshift(taken);
 		taken = this.beforescreen_.pop();
 		this.onscreen_.unshift(taken);
@@ -248,14 +248,14 @@ define([
 		var avobject,
 			data = this.getDataList(),
 			taken = this.onscreen_.shift();
-		
+
 		this.beforescreen_.push(taken);
 		taken = this.afterscreen_.shift();
 		this.onscreen_.push(taken);
 		this.dataPointer_++;
 		if (this.afterscreen_.length < 1) {
 			if ( data.length > (this.dataPointer_ + this.rows_) ) {
-				taken = this.beforescreen_.shift();	
+				taken = this.beforescreen_.shift();
 				avobject = data[ this.dataPointer_ + this.rows_];
 				taken.style.webkitTransition = 'none'
 				this.populateItem(taken, avobject);
@@ -278,14 +278,18 @@ define([
 		if ( n > this.dataPointer_ - before ) return true;
 		return false;
 	};
-	
+	NFList.prototype.indexIsVisible = function( index ) {
+		if ( index < this.dataPointer_ )  return false;
+		if ( index > this.dataPointer_ + this.rows_ - 1 ) return false;
+		return true;
+	};
 	/** public api*/
-	NFList.prototype.getStep = function() {return 1};
+	NFList.prototype.getStep = function() {return 1;};
 	NFList.prototype.getHStep = function() {
 		return this.rows_;
 	};
 	NFList.prototype.reset = function(){};
-	NFList.prototype.activate = function() { this.selectRow.apply( this, arguments)};
+	NFList.prototype.activate = function() { this.selectRow.apply( this, arguments); };
 	NFList.prototype.unload = function(){
 		dom.dispose(this.container_);
 		this.isVisible_ = false;
@@ -296,7 +300,8 @@ define([
 			this.setItemsContent();
 		}
 	};
+
 	/** end public api */
-	
+
 	return NFList;
 });
