@@ -140,6 +140,7 @@ Epg.prototype.isVisuallyInitialized_ = false;
 Epg.prototype.show = function() {
 	this.showInternal_();
 };
+
 /**
  * Checks the visual state of the EPG collection
  * @return {boolean} true if the EPG is visible, otherwise false
@@ -164,6 +165,11 @@ Epg.prototype.compileStyle_ = function(offset) {
 	if (typeof offset !== 'undefined' ) this.currentEpgPixelOffset_ = offset;
 	var off = this.currentEpgPixelOffset_ + this.initOffset_;
 	return this.style_ + off + this.style2_;
+};
+Epg.prototype.updateChannelItem = function( index ) {
+	if ( index >= this.dataPointer_ && index <= this.dataPointer_ + this.rows_ -1 ) {
+		
+	}
 };
 Epg.prototype.selectRowInternal_ = function( index ) {
 	var jumps;
