@@ -2,7 +2,7 @@ define(['oop/inherit', 'utils/visualapp', 'model/listmodel2', 'view/mosaicpresen
 // 'net/simplexhr',
 'data/static-strings', 'transport/request', 'transport/response',
 'json/json', 'view/partials', 'oop/clone',
-	'ui/nflist'], 
+	'ui/nflist'],
 function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, request, response, json, Partials, cloner, NFList) {
 	var ListApp = function(options) {
 		VisualApp.call(this, options);
@@ -28,9 +28,9 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 				this.presentation = new Partials(this, options.listType, options.itemWidth, options.itemHeight, options.shouldJump);
 			} else {
 				this.presentation = new MosaicPresentation(this, options.listType, options.itemWidth, options.itemHeight, options.shouldJump);
-			}			
+			}
 		}
-		
+
 
 		this.canResume = options.canResume;
 		this.registerDisposable(this.model);
@@ -189,6 +189,8 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 		var item = this.model.getItem(objIndex);
 		var options = [];
 		var actions = [];
+		options.push(strings.lists.play);
+		actions.push('play');
 		if (this.canResume === true) {
 			options.push(strings.lists.resumePlay);
 			actions.push('resume');
@@ -237,10 +239,15 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 					this.dialogInstance = null;
 					delete this.dialogInstance;
 					break;
-				default: 
+				case 'play':
+					this.fire('try-play', this.model.getItem());
 					this.dialogInstance = null;
 					delete this.dialogInstance;
-					break;		
+					break;
+				default:
+					this.dialogInstance = null;
+					delete this.dialogInstance;
+					break;
 			}
 		}
 	};
@@ -277,12 +284,14 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 					break;
 				default: break;
 			}
-			this.presentation.updateItem(index, obj);
+			this.updateItem(index, obj);
 		} else {
-			tui.createDialog('optionlist', [strings.components.dialogs.ok], function() {
-			}, strings.lists.actionFailed);
+			tui.createDialog('message', undefined, undefined, strings.lists.actionFailed);
 		}
 
+	};
+	ListApp.prototype.updateItem = function( index, obj) {
+		this.presentation.updateItem(index, obj);
 	};
 	ListApp.prototype.disposeInternal = function() {
 		this.constructor.superClass_.disposeInternal.call(this);
