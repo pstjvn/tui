@@ -8,7 +8,7 @@ var interp;
 buf.push('<span');
 buf.push(attrs({ 'style':("width:" + (pixelsPerHour - 9 )+ 'px;'), "class": ('anhour') }));
 buf.push('>');
-var __val__ = start
+var __val__ = start + ':00'
 buf.push(null == __val__ ? "" : __val__);
 buf.push('</span>');
 }
