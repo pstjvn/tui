@@ -275,7 +275,7 @@ define([
 	inherit(MessageBox, Popup);
 	MessageBox.prototype.eventHandler = function(key) {
 		if (key == 'ok') {
-			this.destroyer();
+			this.destroy();
 			this.dispose();
 		}
 	};
