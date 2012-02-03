@@ -1,139 +1,3 @@
-/*TODO: Make the epg listing look better in general, better indication of current item*/
-.epgwrapper {
-	text-align: left;
-	position: absolute;
-	top: 0;
-	left: 0;
-	display: -moz-box;
-	-moz-box-pack: start;
-	-moz-box-align: center;
-	display: -webkit-box;
-	-webkit-box-pack: start;
-	-webkit-box-align: center;
-	display: box;
-	box-pack: start;
-	box-align: center;
-	vertical-align: middle;
-}
-
-@media all and (min-width: 1281px) {
-	.epg {
-		font-size: 20px;
-	}
-	.epg .header .channelTitle {
-		width: 85%;
-	}
-}
-
-@media all and (min-width: 701px) and (max-width: 1280px) {
-	.epg {
-		font-size: 16px;
-	}
-	.epg .header .channelTitle {
-		width: 78%;
-	}
-}
-
-@media all and (max-width: 700px) {
-	.epg {
-		font-size: 11px;
-	}
-	.epg .header .channelTitle {
-		width: 70%;
-	}
-}
-
-.epg {
-	width: 100%;
-	height: 100%;
-	color: white;
-	background-color: #1A1A1A;
-	position: relative;
-}
-.epg .active {
-	background-color: #595b69;
-}
-.epg .header {
-	width: 100%;
-	height: 70px;
-	vertical-align: middle;
-	padding: 10px;
-	position: relative;
-}
-.epg .header .screenImg {
-	height: 70px;
-	margin: 1px;
-	float: left;
-	text-align: center;
-}
-.epg .header .screenImg img {
-	height: 70px;
-	margin: 0 auto;
-}
-.epg .header .channelTitle {
-	display: inline-block;
-	height: 70px;
-	font-size: 200%;
-	text-align: left;
-	line-height: 70px;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	width: 61%;
-	margin-left: 25px;
-}
-.epg .epgProgram {
-	overflow-x: hidden;
-	overflow-y: auto;
-	position:relative;
-}
-.epg .epgProgram .epgLoading {
-	text-align: center;
-}
-.epg .epgProgram .epgItem {
-	width: 100%;
-	font-size: 110%;
-	border-bottom: 2px solid #3E5170;
-	padding: 8px;
-	clear: both;
-	background-color:#111;
-}
-.epg .epgProgram .epgItem .epgItemTime {
-	width: 18%;
-	font-size: 110%;
-	padding: 5px;
-	display: inline-block;
-	border-right: solid #38B 2px;
-	border-radius: 2px;
-}
-.epg .epgProgram .epgItem .epgItemTitle {
-	display: inline-block;
-	font-size: 150%;
-	margin-left: 22px;
-	width: 75%;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	margin-bottom: 6px;
-}
-.epg .epg-currently-playing {
-	background-color: #595b69;
-}
-.epg .epg-selected {
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(198, 222, 255, 1)), color-stop(3%,rgba(104, 151, 221, 1)), color-stop(10%,rgba(21, 74, 153, 1)), color-stop(50%,rgba(0, 0, 0, 1)), color-stop(82%,rgba(0, 0, 0, 1)), color-stop(98%,rgba(104, 151, 221, 1)), color-stop(100%,rgba(198, 222, 255, 1)));
-}
-.epg .no-epg-available {
-	margin: 17% auto;
-	border: 2px solid #3E6EBB;
-	border-radius: 4px;
-	color: white;
-	font-weight: inherit;
-	padding: 4% 14%;
-	text-align: center;
-	font-size: 135%;
-	width: 55%;
-}
-
 /* FOR NEW EPG */
 .epgrow {
 	background: black;
@@ -170,16 +34,19 @@
 html.m55 .bordered {
 	border: 10px;
 }
-.title-background,  .bordered {
-	/*position: absolute;*/
-	/*top: 0;
-	left: 0;*/
+.title-background, .bordered {
 	background-color: hsl(210, 50%, 15%);
 	height: 50px;
-	/*z-index: -1;*/
-	-webkit-border-image: url("../imgs/epg-focus.png") 25 stretch;
-	border-width: 10px;
-	opacity: 0.6;
+	border: 2px solid hsl(210, 40%, 35%);
+	opacity: 0.8;
+	padding: 8px;
+}
+html.m55 .title-background, html.m55  .bordered {
+	background-color: hsl(210, 50%, 15%);
+	height: 50px;
+	border: 2px solid hsl(210, 40%, 35%);
+	opacity: 0.8;
+	padding: 8px;
 }
 .title-container {
 	display: table-cell;
@@ -187,9 +54,18 @@ html.m55 .bordered {
 	width: 100%;
 	vertical-align: middle;
 }
-.epgrow .prog .p.active .title-background, .p.active .bordered{
-	-webkit-border-image: url("../imgs/epg-focus.png") 10 stretch;
+html.m55 .epgrow .prog .p.active .title-background, .p.active .bordered {
 	opacity: 1;
+	border: 2px solid hsl(210, 50%, 75%);
+}
+.epgrow .prog .p.active .title-background, .p.active .bordered {
+	opacity: 1;
+	border: 2px solid hsl(210, 50%, 75%);
+	box-shadow: inset 0 1px 17px 3px hsl(210, 90%, 55%);
+}
+.epgrow .prog .spoofgrid {
+	background: hsl(211, 29%, 40%);
+	height: 1px;
 }
 .epgrow.active .title {
 	background: url(../imgs/epg-active.png);
@@ -280,7 +156,7 @@ html.m55 .bordered {
 	background: rgba(1, 1, 1, 0.6);
 	position: absolute;
 	bottom: -38px;
-	-webkit-transition: all 850ms;
+	/*-webkit-transition: all 850ms;*/
 	left: 0px;
 	text-align: center;
 	font-weight: bold;
