@@ -9,7 +9,7 @@ define({
 			playing: 'Playing: ',
 			buffering: 'Buffering: ',
 			paused: 'Paused: ',
-			starting: 'Starting: ' 
+			starting: 'Starting: '
 		}
 	},
 	lists: {
@@ -23,7 +23,8 @@ define({
 		bookmark: "Bookmark",
 		unbookmark: "Unbookmark",
 		actionFailed: "The selected action cannot be completed",
-		resumePlay: 'Resume'
+		resumePlay: 'Resume',
+		play: 'Play'
 	},
 	epg: {
 		panels: {
@@ -65,7 +66,7 @@ define({
 			header: {
 				settings: "Parameter",
 				value: "Value"
-			}	
+			}
 		},
 		iptv: {
 			panels: {
@@ -80,11 +81,11 @@ define({
 		callcenter: {
 			panels: {
 				bottom: {
-					
+
 				}
 			},
 			list: {
-				
+
 			}
 		},
 		general: {
@@ -123,7 +124,7 @@ define({
 			},
 			list: {
 				header: {
-					
+
 				},
 				body: {
 					to: "To:",
@@ -156,7 +157,7 @@ define({
 			},
 			list: {
 				header: {
-					
+
 				},
 				body: {
 					caller: "Call from",
@@ -188,14 +189,14 @@ define({
 			},
 			list: {
 				header: {
-					
+
 				},
 				body: {
 					callcenter: "Call Centre",
 					history: "Call History",
 					voicemail: "Voice Mail",
 					sms: "Send SMS",
-					phonebook: "Phonebook"			
+					phonebook: "Phonebook"
 				}
 			}
 		},
@@ -208,7 +209,7 @@ define({
 			},
 			list: {
 				header: {
-					
+
 				},
 				body: {
 					statuses: {
