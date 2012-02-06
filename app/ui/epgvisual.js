@@ -588,6 +588,8 @@ Epg.populatePrograms = function( epgdata, timelinestart, timelineend ) {
 			widthByDuration : endMinutes * 3,
 			progTitle: epgdata[startIndex][3]
 		});
+	} else {
+        return result + '<div class="spoofgrid"></div></div>';
 	}
 
 	return result + '</div>';
