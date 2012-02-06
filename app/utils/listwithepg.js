@@ -113,12 +113,12 @@ define([
 	};
 	App.prototype.epgFrameSeparator_ = ' - ';
 	App.prototype.onPlayRequest = function(obj,  resume ) {
-		var clone = cloner( obj );
-		var epgdata = this.model.get('epg')[ clone.id ].body;
+		var clone = cloner( obj ), epgdata = null;
+        var epgraw = this.model.get('epg')[clone.id];
+        if ( epgraw ) epgdata = epgraw.body;
 		var epg = [], i;
-        console.log('URAAAAAAAAAAA');
         if ( this.epgInstance.isVisible()) {
-            if ( this.epgInstance.currentEpgElement_ !== null ) {
+            if ( this.epgInstance.currentEpgElement_ !== null && epgdata !== null ) {
                 var index = parseInt(dom.dataGet(this.epgInstance.currentEpgElement_, 'index'),10);
                 var startTime = epgdata[ index ][1];
                 if ( (Xdate.now()).isEarlierThan( startTime ) ) {
@@ -127,7 +127,7 @@ define([
                 } 
             } 
         }
-        if ( epgdata.length > 0 ) {
+        if ( epgdata !== null && epgdata.length > 0 ) {
             for (i = 0; i < epgdata.length; i++) {
                 epg.push({
                     Prog: datetime.getParsedTime(epgdata[i][1]) + 
@@ -140,8 +140,6 @@ define([
         clone.epg = epg;
         clone.title = clone.id + '. ' + clone.publishName;
         tui.globalPlayer.play(clone, resume);          
-
-
 	};
 	App.prototype.updateItem = function( index, obj ) {
 		App.superClass_.updateItem.call( this, index, obj );
