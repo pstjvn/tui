@@ -189,6 +189,8 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 	ListApp.prototype.handlePlayButton = function() {
 		var objIndex = this.model.currentIndex;
 		var item = this.model.getItem(objIndex);
+        //avoid up links
+        if ( item.id === null ) return;
 		var options = [];
 		var actions = [];
 		options.push(strings.lists.play);
