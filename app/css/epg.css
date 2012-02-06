@@ -166,6 +166,9 @@ html.m55 .epgrow .prog .p.active .title-background, .p.active .bordered {
 	bottom: 0px;
 	z-index: 2;
 }
+.epgrow.active .prog {
+	background: hsl(220, 50%, 70%);
+}
 .epgrow .icon {
 	/*background-color: #596876;*/
     background-position: center center;
