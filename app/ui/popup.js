@@ -30,7 +30,7 @@ define([
 		this.title = title;
 	};
 	inherit(Popup, Disposable);
-	
+	Popup.prototype.numerics_ = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
 	Popup.prototype.useKbd = false;
 	Popup.prototype.useOkCancel = false;
 	Popup.prototype.useOkOnly = false;
@@ -53,7 +53,9 @@ define([
 //		this.dom_.style.top = '-' +window.innerHeight + 'px';
 		dom.adopt(this.container, this.dom_);
 	};
-	
+	Popup.prototype.getNumberFromName = function(keyname) {
+        return this.numerics_.indexOf(keyname);
+	};
 	Popup.prototype.destroy = function() {
 		dom.dispose(this.dom_);
 		this.destroyer();
@@ -157,6 +159,7 @@ define([
 		this.value = '';
 		this.input = dom.$('.tui-kbd-container', this.dom_);
 		if (this.useKbd) {
+            this.input = dom.$('.tui-kbd-container', this.dom_);
 			this.kbd = KBD.getInstance();
 			this.kbd.show(this.input, bind(this.kbdSubmit, this));
 			this.kbd.bindToElement(dom.$('.textarea', this.dom_), (this.type === 'password')?true:false);
@@ -165,25 +168,63 @@ define([
 				var ch = String.fromCharCode(ev.charCode);
 				this.kbd.addCharacter(ch);
 			}, this));
+		} else {
+            this.input = dom.$('.textarea', this.dom_);
 		}
 	};
 	Input.prototype.kbdSubmit = function(value) {
 		if (this.useKbd) {
 			tui.resetKeyboardInputHandler();
 		}
-		this.destroy();
-		this.callback(value);
-		this.dispose();
+        this.submit(value);
 	};
+    Input.prototype.submit = function(value) {
+        if ( typeof value == 'undefined' ) value = this.value;
+        this.destroy();
+        this.callback(value);
+        this.dispose();      
+    };
+    Input.prototype.updateElement = function() {
+        if ( this.type === 'password') {
+            this.input.textContent = new Array(this.value.length+1).join('*');
+        } else {
+            this.input.textContent = this.value;
+        }
+    };
 	Input.prototype.eventHandler = function(key) {
-		if (array.has(KBD.knownKeys_, key)) {
-			this.kbd.eventHandler(key);
-		} else  {
-			if (key === 'delete') { 
-				this.kbd.deleteCharacter();
-			}
-//			TODO: Handle the submit button on text area with ff fw
-		}
+        console.log(1);
+        if ( !this.useKbd ) {
+            console.log(2);
+            if ( this.getNumberFromName( key ) > -1 ) {
+                console.log(3);
+                this.value = this.value + '' + this.getNumberFromName( key );
+                this.updateElement();
+            } else {
+                switch (key) {
+                    case 'delete': 
+                        this.value = this.value.substr(0,this.value.length-1);
+                        this.updateElement();
+                        break;
+                    case 'ok':
+                        this.submit();
+                        break;
+                    default: 
+                        break;
+                        
+                }
+            }
+        } else {
+    		if (array.has(KBD.knownKeys_, key)) {
+    			this.kbd.eventHandler(key);
+    		} else  {
+    			if (key === 'delete') { 
+    				this.kbd.deleteCharacter();
+    			} else if ( this.getNumberFromName( key ) > -1 ) {
+                    this.kbd.addCharacter( this.getNumberFromName( key ) );
+    			}
+    //			TODO: Handle the submit button on text area with ff fw
+    		}
+        }
 	};
 	var ConfirmBox = function(type, useButtons, callback, title) {
 		Popup.call(this, type, callback, title);
@@ -230,7 +271,7 @@ define([
 	};
 	inherit(IPBox, ConfirmBox);
 	IPBox.prototype.cssSelector = '.input-box';
-	IPBox.prototype.numerics_ = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+	
 	IPBox.prototype.disposeInternal = function() {
 		IPBox.superClass_.disposeInternal.call(this);
 		delete this.ipDialog;

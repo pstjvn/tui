@@ -334,7 +334,7 @@ define([
 	* @param {?String} password The password the user has enetered when queried about the parental lock pass
 	*/
 	Player.prototype.play = function(obj, resume, password) {
-		console.log('Try to play uri: '+ obj.playURI + ' , pass:' + password);
+		console.log('Try to play uri: '+ obj.playURI + ' , pass:' + password + ', resume:' + resume);
 		var newreq;
 		if (obj.isLocked) {
 			//Prevent event stealing, set state manually so that when the event comes it 

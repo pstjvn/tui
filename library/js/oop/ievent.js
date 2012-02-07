@@ -14,9 +14,13 @@ define(['oop/inherit', 'oop/idisposable'], function(inherit, Disposable) {
 		}
 		this.eventRegistry_[type].push(Handler);
 	};
-	EventBase.prototype.fire = function(event, params) {
+	EventBase.prototype.fire = function(event) {
 		var array, func, handler, i, type = typeof event === 'string' ? event : event.type;
-
+        
+        var callparams;
+        if (arguments.length > 1 ) {
+            callparams = Array.prototype.slice.call(arguments, 1);
+        }
 		if (this.eventRegistry_.hasOwnProperty(type)) {
 			array = this.eventRegistry_[type];
 			for (i = 0; i < array.length; i++ ) {
@@ -25,7 +29,7 @@ define(['oop/inherit', 'oop/idisposable'], function(inherit, Disposable) {
 				if (typeof func === 'string') {
 					func = this[func];
 				}
-				func.apply(this,  [params] || handler.parameters || [event]);
+				func.apply(this, callparams || handler.parameters || [event]);
 			}
 		}
 	};

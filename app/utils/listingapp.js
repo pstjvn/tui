@@ -60,7 +60,9 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 	};
 	ListApp.prototype.onPlayRequest = function(obj, resume) {
 		var clone = cloner(obj);
-        clone.title = clone.id + '. ' + clone.publishName;
+        if ( !isNaN(parseInt(clone.id, 10)) ) {
+            clone.title = clone.id + '. ' + clone.publishName;
+        } else clone.title = clone.publishName;
 		clone.epg=[];
 		tui.globalPlayer.play(clone, resume);
 	};
@@ -187,6 +189,8 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 	ListApp.prototype.handlePlayButton = function() {
 		var objIndex = this.model.currentIndex;
 		var item = this.model.getItem(objIndex);
+        //avoid up links
+        if ( item.id === null ) return;
 		var options = [];
 		var actions = [];
 		options.push(strings.lists.play);
@@ -227,7 +231,7 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 			switch (this.dialogInstance.action) {
 				case 'lock':
 				case 'unlock':
-					tui.createDialog('password', true, bind(this.acceptPass, this), strings.components.dialogs.lock);
+					tui.createDialog('password', false, bind(this.acceptPass, this), strings.components.dialogs.lock);
 					break;
 
 				case 'bookmark':
