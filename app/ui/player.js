@@ -110,27 +110,47 @@ define([
 	Player.prototype.createPlayer = function() {
 		var that = {};
 		that.dom = dom.getInnerNodes(tpl.render({ }));
+        that.trackname_ = '';
 		that.trackName = dom.$('.audio-title', that.dom);
-		that.timeElapsed = dom.$$('.audio-time span', that.dom)[0];
-		that.duration = dom.$$('.audio-time span', that.dom)[2];
+		that.timeIndicator = dom.$('.audio-time', that.dom);
 		that.progressBar = dom.$('.audio-fill-bar', that.dom);
 		that.statusIndicator = dom.$('.audio-icons div', that.dom);
+        that.focus = function(bool) {
+            if ( bool ) {
+                this.dom.style.opacity = 1;
+            } else {
+                this.dom.style.opacity = 0.5;
+            }
+        };
 		that.update = function( name, elapsedTime, duration ) {
-			var progress;
-			if ( typeof duration !== 'number' || duration === 0 ) {
-				duration = elapsedTime || 'N/A';
-				elapsedTime = '';
-			} else if ( typeof elapsedTime == 'number' ) {
-				progress = parseInt( (duration / elapsedTime) * 100 , 10) ;
-			}
-			if (typeof name == 'string') {
-				this.trackName.innerHTML = name;
-			}
-			this.timeElapsed.innerHTML = elapsedTime;
-			this.duration.innerHTML = duration;
-			if (progress) {
-				this.progressBar.style.left = '-' + progress + '%';
-			}
+            
+            var progress = 0,
+                timeString = '',
+                elapsedTime = parseInt( elapsedTime, 10 ),
+                duration = parseInt( duration, 10),
+                updateEls = [this.timeIndicator],
+                updateName = false;
+                
+            if ( !isNaN( elapsedTime ) ) {
+                timeString += elapsedTime;
+                if (!isNaN( duration ) ) {
+                    timeString += ' / ';
+                    timeString += duration;
+                    progress = parseInt( (elapsedTime / duration) * 100 , 10);
+                }
+            } else {
+                timeString = '0 / ' + (isNaN( duration )) ? '0': duration;
+            }
+            this.timeIndicator.textContent = timeString;
+            if ( name !== undefined && name !== this.trackname_ ) {
+                this.trackname_ = name;
+                this.trackName.textContent = this.trackname_;
+                updateName = true;
+            }
+            if ( updateName ) {
+                updateEls.push(this.trackName);
+            }
+			this.progressBar.style.left = ( -100 + progress ) + '%';
 		};
 		that.clean = function() {
 			this.update( '', 0, 0);
@@ -181,7 +201,8 @@ define([
 	*/
 	Player.prototype.setState = function(state) {
 		var old_state = this.state;
-		this.setOSDState(state);
+		if ( Player.AUDIO_TYPES.indexOf( this.current_[0]['type']) === -1   ) 
+			this.setOSDState(state);
 		this.state = Player.dspStates[state];
 		console.log('**************PLAYER STATE UPDATE : ' + this.state);
 		if (old_state !== this.state) {
@@ -189,7 +210,6 @@ define([
 				tui.signals.restoreEventTree();
 				this.disableVisual();
 			} else if (this.state === Player.STATES.PLAYING) {
-				console.log('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE');
 				tui.stealEvents(this.keyHandler);
 				if ( Player.AUDIO_TYPES.indexOf( this.current_[0]['type']) !== -1 ) {
 
@@ -247,7 +267,9 @@ define([
 						// this.vstate_ = Player.VSTATE.TRANSLUSENT;
 						// req.send();
 						// 
-					} 
+					} else {
+                        this.visualPlayer.focus(false);
+					}
 				}
 				break;
 			case 'recall':
@@ -389,6 +411,7 @@ define([
 		console.log('Visual mode enabled');
 		this.useVisualPlayer_ = true;
 		dom.adopt(this.visualPlayer.dom);
+        this.visualPlayer.focus(true);
 		this.visualPlayer.update( title );
 	};
 	/**

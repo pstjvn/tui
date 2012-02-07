@@ -21,7 +21,7 @@ buf.push('></div></div><div');
 buf.push(attrs({ "class": ('audio-bar-bg') }));
 buf.push('></div></div><div');
 buf.push(attrs({ "class": ('audio-time') }));
-buf.push('><span></span><span>/</span><span></span></div></div><div');
+buf.push('></div></div><div');
 buf.push(attrs({ "class": ('audio-title') }));
 buf.push('></div></div>');
 }
