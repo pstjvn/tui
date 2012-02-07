@@ -83,6 +83,8 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 				this.presentation.activate(data.index);
 			else if (this.model.pointer.length > 1)
 				this.presentation.activate(1);
+            else if (this.model.pointer.length === 1 )
+                this.presentation.activate(0);
 		}
 	};
 	ListApp.prototype.onShowScreen = function() {

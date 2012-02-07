@@ -68,19 +68,26 @@ define([
 		dom.adopt(this.contentBox_, this.container_);
 		this.isVisible_ = true;
 	};
+
 	NFList.prototype.enterDom = function(opt_cont_box, force) {
 		this.app.fire('show-start');
-		if ( opt_cont_box !== undefined ) {
-			if ( opt_cont_box !== this.contentBox_ ) {
-				this.contentBox_ = opt_cont_box;
-				this.constructDom( true );
-			}
-		} else if ( !this.contentBox_ ) {
-			this.contentBox_ = document.body;
-			this.constructDom( true );
-		} else {
-			this.setItemsContent();
-		}
+        if ( force ) {
+            console.log('Bybas enter dom');
+            this.dataPointer_ = 0;
+            this.createTransElements_();
+        } else {
+    		if ( opt_cont_box !== undefined ) {
+    			if ( opt_cont_box !== this.contentBox_ ) {
+    				this.contentBox_ = opt_cont_box;
+    				this.constructDom( true );
+    			}
+    		} else if ( !this.contentBox_ ) {
+    			this.contentBox_ = document.body;
+    			this.constructDom( true );
+    		} else {
+    			this.setItemsContent();
+    		}
+        }
 		this.isVisible_ = true;
 		dom.adopt(this.contentBox_, this.container_);
 		this.app.fire('show-complete');
@@ -111,7 +118,9 @@ define([
 		return this.dataAccessor_.get();
 	};
 	NFList.prototype.setItemsContent = function() {
-		var data = this.getDataList(), i;
+		var data = this.getDataList(),
+            i;
+            
 		if ( data.length === 0 ) {
 			for ( i = 0; i < this.elements_.length; i++ ) {
 				classes.addClasses(this.elements_[i], 'empty');
@@ -128,10 +137,14 @@ define([
 	};
 	NFList.prototype.createTransElements_ = function() {
 		var i;
+        this.onscreen_.length = 0;// = [];
+        this.beforescreen_.length = 0;// = [];
+        this.afterscreen_.length = 0;// = [];
+        
 		this.rows_ = Math.floor( parseInt(this.transHeight_, 10) / this.itemHeight_ );
 //		TODO: make sure we assimilate the elements when changing the container
 		if ( this.elements_.length === 0) {
-			this.elements_ = NFList.createElements(this.rows_ + 2, this.transContainer_, this.listItemCssClass );
+			this.elements_ = NFList.createElements(this.rows_, this.transContainer_, this.listItemCssClass );
 		}
 		this.setItemsContent();
 		for ( i = 0; i < this.rows_; i++ ) {
