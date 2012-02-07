@@ -76,7 +76,11 @@ define({
 					playPause: 'Options',
 					'return': "Apply changes"
 				}
-			}
+			},
+            errors: {
+                cannotSchedule: "Scheduling failed",
+                scheduled: "Schedule saved"
+            }
 		},
 		callcenter: {
 			panels: {

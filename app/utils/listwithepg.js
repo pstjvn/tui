@@ -10,9 +10,10 @@ define([
     'utils/datetime',
     'dom/dom', 'datetime/xdate',
     'transport/request', 'transport/response',
-    'json/json'
+    'json/json',
+    'data/static-strings'
 ], function(inherit, Disposable, ListApp, Epg,bind, infobuttonstpl, cloner, datetime, dom, Xdate,
-request, response, json){
+request, response, json, strings){
 	var App = function(opts){
 		ListApp.call(this, opts);
 		this.epgInstance = new Epg(this.model, ListApp.remoteKeys_);
@@ -120,7 +121,8 @@ request, response, json){
                 'chan' : chanid,
                 'stime' : epgrecord[1],
                 'etime' : epgrecord[2],
-                'newif' : 1
+                'newif' : 1,
+                'action' : 1
             });
             response.register(req, bind(this.handleScheduleSave, this));
             req.send();
@@ -132,10 +134,12 @@ request, response, json){
         if ( res.status === 'OK' ) {
             var cont = json.parse(res.content);
             if ( cont.status !== 'OK' ) {
-                tui.createDialog( 'message', undefined, undefined, 'Schedule failed');
+                tui.createDialog( 'message', undefined, undefined, strings.screens.iptv.errors.cannotSchedule );
             } else {
-                tui.createDialog( 'message', undefined, undefined, 'Schedule saved');
+                tui.createDialog( 'message', undefined, undefined, strings.screens.iptv.errors.scheduled );
             }
+        } else {
+            tui.createDialog( 'message', undefined, undefined, strings.screens.iptv.errors.cannotSchedule );
         }
     };
 	App.prototype.epgFrameSeparator_ = ' - ';
