@@ -8,8 +8,11 @@ define([
 	'tpl/infobuttons',
 	'oop/clone',
     'utils/datetime',
-    'dom/dom', 'datetime/xdate'
-], function(inherit, Disposable, ListApp, Epg,bind, infobuttonstpl, cloner, datetime, dom, Xdate){
+    'dom/dom', 'datetime/xdate',
+    'transport/request', 'transport/response',
+    'json/json'
+], function(inherit, Disposable, ListApp, Epg,bind, infobuttonstpl, cloner, datetime, dom, Xdate,
+request, response, json){
 	var App = function(opts){
 		ListApp.call(this, opts);
 		this.epgInstance = new Epg(this.model, ListApp.remoteKeys_);
@@ -108,9 +111,33 @@ define([
 			});
 		}
 	};
-	App.prototype.scheduleSwitch = function() {
+	App.prototype.scheduleSwitch = function(chanid, epgrecord, should) {
         console.log('Takovata',arguments);
-	};
+        if ( should === 1) {
+            var req = request.create('calld', {
+                'run' : 'sched_save_json',
+			    'sig' : 'save_tv_scheduler',
+                'chan' : chanid,
+                'stime' : epgrecord[1],
+                'etime' : epgrecord[2],
+                'newif' : 1
+            });
+            response.register(req, bind(this.handleScheduleSave, this));
+            req.send();
+        }
+        
+    };
+    App.prototype.handleScheduleSave = function(res) {
+        console.log( 'Handle save schedule ', arguments );
+        if ( res.status === 'OK' ) {
+            var cont = json.parse(res.content);
+            if ( cont.status !== 'OK' ) {
+                tui.createDialog( 'message', undefined, undefined, 'Schedule failed');
+            } else {
+                tui.createDialog( 'message', undefined, undefined, 'Schedule saved');
+            }
+        }
+    };
 	App.prototype.epgFrameSeparator_ = ' - ';
 	App.prototype.onPlayRequest = function(obj,  resume ) {
 		var clone = cloner( obj ), epgdata = null;
@@ -122,10 +149,10 @@ define([
                 var index = parseInt(dom.dataGet(this.epgInstance.currentEpgElement_, 'index'),10);
                 var startTime = epgdata[ index ][1];
                 if ( (Xdate.now()).isEarlierThan( startTime ) ) {
-                    tui.createDialog('confirm',undefined, bind(this.scheduleSwitch), 'Shedule program switch');
+                    tui.createDialog('confirm',undefined, bind(this.scheduleSwitch, this, clone.id, epgdata[index]), 'Shedule program switch');
                     return;
                 } 
-            } 
+            }
         }
         if ( epgdata !== null && epgdata.length > 0 ) {
             for (i = 0; i < epgdata.length; i++) {
