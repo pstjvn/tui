@@ -295,6 +295,8 @@ require(['ui/throbber'], function(t) {
 						tui.stealEvents(tui.globalPlayer.keyHandler);
 						if (!tui.globalPlayer.useVisualPlayer_) {
 							tui.globalPlayer.setVState(player.VSTATE.OPAQUE);
+						} else {
+                            tui.globalPlayer.visualPlayer.focus(true);
 						}
 					}
 				},
