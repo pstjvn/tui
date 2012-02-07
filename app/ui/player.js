@@ -386,11 +386,11 @@ define([
 		var play_command = (obj.player ? 'play_youtube':'play');
 		var isAudio = false;
 		this.addToHistory( [obj, password] );
+        this.notifyOSD( obj );
 		if (array.has(Player.AUDIO_TYPES, obj.type)) {
 			this.enableVisual(obj.publishName);
 			isAudio = true;
 		} else if ( array.has(Player.VIDEO_TYPES, obj.type )) {
-			this.notifyOSD( obj );
 			this.disableVisual();
 		}
 
