@@ -10,7 +10,9 @@ buf.push(attrs({ 'style':('display: block; overflow: hidden; width:' + ( widthBy
 buf.push('><div>');
 var __val__ = progTitle
 buf.push(null == __val__ ? "" : __val__);
-buf.push('</div></div></span>');
+buf.push('</div></div><div');
+buf.push(attrs({ "class": ('highlight') }));
+buf.push('></div></span>');
 }
 return buf.join("");
 }return { render: anonymous }; });
