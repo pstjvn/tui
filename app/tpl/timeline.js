@@ -1,4 +1,4 @@
-define(["support/runtime"],function(jade){function anonymous(locals, attrs, escape, rethrow) {
+define(["support/runtime", "utils/datetime"],function(jade, datetime){function anonymous(locals, attrs, escape, rethrow) {
 var attrs = jade.attrs, escape = jade.escape, rethrow = jade.rethrow;
 var buf = [];
 with (locals || {}) {

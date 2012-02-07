@@ -18,7 +18,7 @@ var filelist = fs.readdir(PATH, function(err, list) {
 					compileDebug: false,
 					client: true
 				});
-				a = 'define(["support/runtime"],function(jade){' + a.toString();
+				a = 'define(["support/runtime", "utils/datetime"],function(jade, datetime){' + a.toString();
 				a = a + 'return { render: anonymous }; });';
 				fs.writeFile(PATH + item.replace(/\.jade/, '.js'), a, encoding = 'utf8', function(err) {
 					if (err) {

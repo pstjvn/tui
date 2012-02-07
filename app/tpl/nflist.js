@@ -1,4 +1,4 @@
-define(["support/runtime"],function(jade){function anonymous(locals, attrs, escape, rethrow) {
+define(["support/runtime", "utils/datetime"],function(jade, datetime){function anonymous(locals, attrs, escape, rethrow) {
 var attrs = jade.attrs, escape = jade.escape, rethrow = jade.rethrow;
 var buf = [];
 with (locals || {}) {
@@ -41,7 +41,7 @@ buf.push('</div>');
 buf.push('<div');
 buf.push(attrs({ "class": ('description') }));
 buf.push('>');
-var __val__ = "Time:" + channel.time
+var __val__ = "Time:" + datetime.parseTimeFromSeconds( channel.time )
 buf.push(null == __val__ ? "" : __val__);
 buf.push('</div>');
 }

@@ -7,7 +7,7 @@ div(class = ((channel.thumbnail !== null)? "leftCont" : "leftContLong"))
 	- if (channel.genre)
 		div.description!= "Genre:" + channel.genre
 	- if (channel.time)
-		div.description!= "Time:" + channel.time
+		div.description!= "Time:" + datetime.parseTimeFromSeconds( channel.time )
 	- if (channel.cost)
 		div.description!= "Cost:" + channel.cost
 	- if (channel.size) 
