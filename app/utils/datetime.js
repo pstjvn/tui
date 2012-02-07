@@ -50,5 +50,15 @@ define({
 			result = result + separator + this.parseSecondsFromDateTime( dt );
 		}
 		return result;
-	}
+	},
+    SECOND: 60,
+    MINUTE: 3600,
+    parseTimeFromSeconds: function( secs ) {
+        var s = parseInt( secs, 10);
+        var ostatuk;
+        var seconds = s % this.SECOND;
+        ostatuk = s - seconds;
+        var minutes = parseInt( ostatuk / this.SECOND , 10);
+        return this.fillMinutes(minutes) + ':' + this.fillMinutes(seconds);
+    }
 });

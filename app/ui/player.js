@@ -9,8 +9,9 @@ define([
 	'text!css/audio-player.css',
 	'loader/loader',
 	'dom/dom',
-	'oop/mix'
-], function(request, response, bind, strings, events, array, tpl, css, loader, dom, mix) {
+	'oop/mix',
+    'utils/datetime'
+], function(request, response, bind, strings, events, array, tpl, css, loader, dom, mix, datetime) {
 	//loader.loadCSSFromText( css );
 //	var Theme = {
 //		"fontname" : window.BACKEND_CONFIG.THEME.fontname || "Tahoma",
@@ -132,11 +133,12 @@ define([
                 updateName = false;
                 
             if ( !isNaN( elapsedTime ) ) {
-                timeString += elapsedTime;
+                timeString += datetime.parseTimeFromSeconds(elapsedTime);
                 if (!isNaN( duration ) ) {
                     timeString += ' / ';
-                    timeString += duration;
+                    timeString += datetime.parseTimeFromSeconds( duration );
                     progress = parseInt( (elapsedTime / duration) * 100 , 10);
+                    timeString += '  ' + progress + '%';
                 }
             } else {
                 timeString = '0 / ' + (isNaN( duration )) ? '0': duration;
