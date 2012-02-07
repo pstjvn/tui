@@ -64,8 +64,13 @@ html.m55 .epgrow .prog .p.active .title-background, .p.active .bordered {
 	box-shadow: inset 0 1px 17px 3px hsl(210, 90%, 55%);
 }
 .epgrow .prog .spoofgrid {
-	background: hsl(211, 29%, 40%);
-	height: 1px;
+	height: 100%;
+	border-top: 1px solid hsl(211, 29%, 40%);
+}
+.epgrow.active .prog .spoofgrid {
+	height: 100%;
+	border-top: 1px solid hsl(211, 29%, 40%);
+	background: hsl(210, 70%, 20%);
 }
 .epgrow.active .title {
 	background: url(../imgs/epg-active.png);
@@ -166,8 +171,17 @@ html.m55 .epgrow .prog .p.active .title-background, .p.active .bordered {
 	bottom: 0px;
 	z-index: 2;
 }
-.epgrow.active .prog {
-	background: hsl(220, 50%, 70%);
+.epgrow.active .prog .p .highlight{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: hsl(210, 70%, 50%);
+	z-index: -2;
+}
+.epgrow.active .prog .p {
+	z-index: 5;
 }
 .epgrow .icon {
 	/*background-color: #596876;*/
