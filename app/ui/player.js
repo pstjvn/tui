@@ -352,11 +352,11 @@ define([
 				newreq.send();
 			}
 			if (typeof password !== 'string') {
-				tui.createDialog('password', true, bind(this.play, this, obj, resume), strings.components.dialogs.lock);
+				tui.createDialog('password', false, bind(this.play, this, obj, resume), strings.components.dialogs.lock);
 				return;
 			}
 			else if ( password !== this.parentalPassword ) {
-				tui.createDialog('optionlist', [strings.components.dialogs.ok], function(){}, strings.components.dialogs.wrongPassword);
+				tui.createDialog('message', undefined, undefined, strings.components.dialogs.wrongPassword);
 				return;
 			}
 		}

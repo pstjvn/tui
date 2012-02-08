@@ -227,8 +227,8 @@ define({
 		dialogs: {
 			confirmApply: "Save changes?",
 			select: "Select action",
-			lock: "Parental control password",
-			wrongPassword: "The password was incorrect",
+			lock: "Password",
+			wrongPassword: "The password is incorrect",
 			ok: 'OK',
 			cancel: 'Cancel',
 			updateFailed: 'Update failed<br>',
