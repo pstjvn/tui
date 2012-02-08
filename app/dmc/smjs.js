@@ -13,7 +13,6 @@ define(['window/window', 'net/socket', 'appdebug/config'], function(windows, soc
 		return window.smjs;
 	} else {
 		document.querySelector('html').className='browser';
-		windows.create('app/support/remote.html');
 		window.smjs = {
 			socket: null,
 			set_json_handler: function(string) {
