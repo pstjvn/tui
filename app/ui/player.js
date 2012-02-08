@@ -173,7 +173,9 @@ define([
 	Player.prototype.setOSDState = function(state) {
 		var item = this.current_[0], id = '';
 		if (item.id.length < 5)
-			id = '[' + item.sortIndex + '] ';
+            if ( !isNaN( parseInt( item.id ) ) ) {
+                id = '[' + item.id + '] ';
+            } else id = '';
 		switch (state) {
 			case 'started':
 			case 'playing':
@@ -433,7 +435,7 @@ define([
 	* @param {JSONObject} data The data returned by transport layer response
 	*/
 	Player.prototype.requestResultHandle = function( index, title, icon) {
-		tui.osdInstance.setContent(strings.player.states.starting + '[' + index + '] ' + title, 10, icon);
+		tui.osdInstance.setContent(strings.player.states.starting + ( (!isNaN( parseInt (index,10 ))) ? '[' + index + '] ' : '') + title, 10, icon);
 	};
 	/**
 	* Handles the events coming from transport layer communication, called via tui.globalPlayer.handleEvent, no need for context
