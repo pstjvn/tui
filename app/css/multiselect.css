@@ -185,3 +185,6 @@
 .multi-select-wrapper .multi-select-shadow .multi-select-container .kbd-submitBtn.active {
 	border: 2px solid #f4a01c;
 }
+.multi-select-container .title table {
+    text-align: left;
+}

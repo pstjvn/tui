@@ -122,23 +122,22 @@ require(['ui/throbber'], function(t) {
 					}
 				},
 				restoreEventTree: function() {
-                    if ( this.queue_.length > 0 ) {
-                        response.setRemoteKeyHandler( this.queue_.shift() );
-                    } else {
-					    response.setRemoteKeyHandler(globalevents.defaultEventAccepter);
-					    this.eventsAreFetched = false;
+                    if ( this.queue_.length > 0 )  {
+                        response.setRemoteKeyHandler( this.queue_.shift());
+                        return;
                     }
+				    response.setRemoteKeyHandler(globalevents.defaultEventAccepter);
+				    this.eventsAreFetched = false;
 				},
 				eventsAreFetched: false
 
 			},
             stealEvents: function(newManager) {
-                if (this.signals.eventsAreFetched ) {
-                    this.signals.queue_.push( newManager );
-                } else {
-				    response.setRemoteKeyHandler(newManager);
-				    this.signals.eventsAreFetched = true;
+                if ( this.signals.eventsAreFetched ) {
+                    this.signals.queue_.push( response.getRemoteKeyHandler());
                 }
+			    response.setRemoteKeyHandler(newManager);
+			    this.signals.eventsAreFetched = true;
 			},
 			osdInstance: new OSD(),
 			keyboardIgnoredKeys: [34, 8, 46, 37, 38, 39, 40, 13, 36],
@@ -188,14 +187,18 @@ require(['ui/throbber'], function(t) {
 				} else if (type === 'message') {
 					dialog = new Dialogs.MessageBox(type, title);
 				}
-                if (this.globalPlayer.getState() !== player.STATES.STOPPED) {
-                    this.globalPlayer.stop(bind(function(d){
-                        d.show();
-                        this.stealEvents(bind(d.eventHandler, d));
-                    }, this, dialog));
+                var bound = bind(dialog.eventHandler, dialog);
+                dialog.show();
+                this.stealEvents(bound);
+                return;
+                if ( this.signals.eventsAreFetched )  {
+                    this.signals.queue_.push( bind( function() {
+                        dialog.show();
+                        this.stealEvents( bound );
+                    }, this)); 
                 } else {
-				    dialog.show();
-                    this.stealEvents(bind(dialog.eventHandler, dialog));
+                    dialog.show();
+                    this.stealEvents(bound);
                 }
 			},
 			setPanels: function(top, bottom, opt_topContent, opt_bottomContent) {

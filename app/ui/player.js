@@ -6,12 +6,11 @@ define([
 	'utils/events',
 	'array/array',
 	'tpl/audio-player',
-	'text!css/audio-player.css',
-	'loader/loader',
 	'dom/dom',
 	'oop/mix',
-    'utils/datetime'
-], function(request, response, bind, strings, events, array, tpl, css, loader, dom, mix, datetime) {
+    'utils/datetime',
+    'data/static-strings'
+], function(request, response, bind, strings, events, array, tpl,  dom, mix, datetime, strings) {
 	//loader.loadCSSFromText( css );
 //	var Theme = {
 //		"fontname" : window.BACKEND_CONFIG.THEME.fontname || "Tahoma",
@@ -171,23 +170,18 @@ define([
 		req.send();
 	};
 	Player.prototype.setOSDState = function(state) {
-		var item = this.current_[0], id = '';
-		if (item.id.length < 5) {
-            if ( !isNaN( parseInt( item.id ) ) ) {
-                id = '[' + item.id + '] ';
-            } else id = '';
-		}
+		var item = this.current_[0];
 		switch (state) {
 			case 'started':
 			case 'playing':
 				if (this.useVisualPlayer_) {
 					this.visualPlayer.setState('play');
 				} else {
-					tui.osdInstance.setContent(strings.player.states.playing + id + item.title, 5, 'play');
+					tui.osdInstance.setContent(strings.player.states.playing + item.title, 5, 'play');
 				}
 				break;
 			case 'buffering':
-				tui.osdInstance.setContent(strings.player.states.buffering + id + item.title, 5, 'buffering');
+				tui.osdInstance.setContent(strings.player.states.buffering + item.title, 5, 'buffering');
 				break;
 			case 'paused':
 				if (this.useVisualPlayer_) {
@@ -331,9 +325,10 @@ define([
 	/**
 	* Try to play object from listings
 	* @param {Object} obj A channel/Video/Audio object with playURI property
+    * @param {boolean} resume Should we try to resume
 	* @param {?String} password The password the user has enetered when queried about the parental lock pass
 	*/
-	Player.prototype.play = function(obj, resume, password) {
+	Player.prototype.play = function(obj, resume, password, should_pay) {
 		console.log('Try to play uri: '+ obj.playURI + ' , pass:' + password + ', resume:' + resume);
 		var newreq;
 		if (obj.isLocked) {
@@ -361,8 +356,26 @@ define([
 				return;
 			}
 		}
+        if ( typeof obj.cost !== 'undefined' && obj.cost > 0 ) {
+            if (typeof should_pay === 'undefined' ) {
+                if (this.state !== Player.STATES.STOPPED) {
+    				this.state = Player.STATES.STOPPED;
+    				this.stop();
+    			}
+                tui.createDialog( 'confirm', null, bind( this.play, this, obj, resume, password),
+                    strings.components.dialogs.confirmPay + obj.cost + obj.currency + '<br>'+obj.publishName
+                );
+                return;
+            } else {
+                if ( should_pay !== 1 )
+                    return;
+	        }
+        }
+        
 		var play_command = (obj.player ? 'play_youtube':'play');
 		var isAudio = false;
+        
+        
 		this.addToHistory( [obj, password] );
         this.notifyOSD( obj );
 		if (array.has(Player.AUDIO_TYPES, obj.type)) {
@@ -373,7 +386,7 @@ define([
 		}
 
 		newreq = request.create(play_command, {"url": obj.playURI, 'resume': resume, 'audio': isAudio});
-		response.register(newreq, bind(this.requestResultHandle, this, obj.sortIndex,  obj.title, 'play') );
+		response.register(newreq, bind(this.requestResultHandle, this,  obj.title, 'play') );
 		newreq.send();
 	};
 	Player.prototype.notifyOSD = function( obj ) {
@@ -421,8 +434,6 @@ define([
 	Player.prototype.stop = function(callback) {
 //		if (this.state !== Player.STATES.STOPPED) {
 			var newreq = request.create('stop', {});
-            if (callback ) 
-                response.register(newreq, callback);
 			newreq.send();
 //		}
 	};
@@ -438,8 +449,8 @@ define([
 	* Handle for the request result (i.e. transport layer debug, no useful application yet)
 	* @param {JSONObject} data The data returned by transport layer response
 	*/
-	Player.prototype.requestResultHandle = function( index, title, icon) {
-		tui.osdInstance.setContent(strings.player.states.starting + ( (!isNaN( parseInt (index,10 ))) ? '[' + index + '] ' : '') + title, 10, icon);
+	Player.prototype.requestResultHandle = function( title, icon) {
+		tui.osdInstance.setContent(strings.player.states.starting + title, 10, icon);
 	};
 	/**
 	* Handles the events coming from transport layer communication, called via tui.globalPlayer.handleEvent, no need for context

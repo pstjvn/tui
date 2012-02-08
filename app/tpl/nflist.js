@@ -11,7 +11,7 @@ buf.push('>');
 buf.push('<h1');
 buf.push(attrs({ "class": ('number_id') }));
 buf.push('>');
-var __val__ = channel.sortIndex
+var __val__ = channel.id
 buf.push(null == __val__ ? "" : __val__);
 buf.push('</h1>');
 }

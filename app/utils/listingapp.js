@@ -61,7 +61,7 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 	ListApp.prototype.onPlayRequest = function(obj, resume) {
 		var clone = cloner(obj);
         if ( !isNaN(parseInt(clone.id, 10)) ) {
-            clone.title = clone.id + '. ' + ( clone.publishName || '');
+            clone.title = '[' + clone.id + '] ' + ( clone.publishName || '');
         } else clone.title = (clone.publishName || '');
 		clone.epg=[];
 		tui.globalPlayer.play(clone, resume);

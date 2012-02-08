@@ -1,6 +1,6 @@
 div(class = ((channel.thumbnail !== null)? "leftCont" : "leftContLong"))
 	- if (channel.sortIndex !== '0' && channel.sortIndex !== 0 )
-		h1.number_id!= channel.sortIndex
+		h1.number_id!= channel.id
 	- else 
 		h1.number_id
 	h2.item_name!= channel.publishName

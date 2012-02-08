@@ -226,6 +226,7 @@ define({
 	components: {
 		dialogs: {
 			confirmApply: "Save changes?",
+            confirmPay: "Please confirm charges of ",
 			select: "Select action",
 			lock: "Password",
 			wrongPassword: "The password is incorrect",
