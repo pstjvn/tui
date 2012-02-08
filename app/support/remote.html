@@ -9,8 +9,8 @@
 
 <script>
 route = function(key) {
-    if(opener){
-        opener.transportReceiver({ 
+    if(top){
+        top.transportReceiver({ 
             "header": { 
             "type": "event", 
             "tag": "0000000000", 
@@ -21,9 +21,6 @@ route = function(key) {
                 "key": key 
             }    
         });	
-    }
-    else{
-        window.close();
     }
 }
 </script>

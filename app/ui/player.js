@@ -127,7 +127,7 @@ define([
             
             var progress = 0,
                 timeString = '',
-                elapsedTime = parseInt( elapsedTime, 10 ),
+                elapsedTime = parseInt( elapsedTime, 10),
                 duration = parseInt( duration, 10),
                 updateEls = [this.timeIndicator],
                 updateName = false;
@@ -135,10 +135,10 @@ define([
             if ( !isNaN( elapsedTime ) ) {
                 timeString += datetime.parseTimeFromSeconds(elapsedTime);
                 if (!isNaN( duration ) ) {
-                    timeString += ' / ';
+                    timeString += ' - ';
                     timeString += datetime.parseTimeFromSeconds( duration );
                     progress = parseInt( (elapsedTime / duration) * 100 , 10);
-                    timeString += '  ' + progress + '%';
+                    timeString += ' (' + progress + '%)';
                 }
             } else {
                 timeString = '0 / ' + (isNaN( duration )) ? '0': duration;
@@ -206,7 +206,6 @@ define([
 		if ( Player.AUDIO_TYPES.indexOf( this.current_[0]['type']) === -1   ) 
 			this.setOSDState(state);
 		this.state = Player.dspStates[state];
-		console.log('**************PLAYER STATE UPDATE : ' + this.state);
 		if (old_state !== this.state) {
 			if (this.state === Player.STATES.STOPPED) {
 				tui.signals.restoreEventTree();
@@ -218,13 +217,6 @@ define([
 					this.enableVisual(this.current_[0]['publishName']);
 					this.visualPlayer.setState('play');
 				}
-				//
-				// if ( this.useVisualPlayer_ ) {
-				// 	console.log('JDdddddddddddddddddddddddddddddHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH');
-				// 	this.enableVisual();
-				// 	this.visualPlayer.setState('play');
-				// }
-				// 
 			}
 		}
 	};
@@ -264,11 +256,6 @@ define([
 					tui.signals.restoreEventTree();
 					if (!this.useVisualPlayer_) {
 						this.setVState( Player.VSTATE.TRANSLUSENT ) ;
-						//
-						// var req = request.create('display', {'page': 'ui'});
-						// this.vstate_ = Player.VSTATE.TRANSLUSENT;
-						// req.send();
-						// 
 					} else {
                         this.visualPlayer.focus(false);
 					}
@@ -278,20 +265,6 @@ define([
 				this.alterChannels();
 				break;
 			case 'power': 
-//				var DEBUG = document.createElement('div');
-//				var log = '';
-//				for (var i = 0; i < this.log.length; i++) {
-//					log += this.log[i];
-//					log += '<br>';
-//				}
-//				DEBUG.innerHTML = log;
-//				DEBUG.style.position = 'absolute',
-//				DEBUG.style.top = 0;
-//				DEBUG.style.width = '640px';
-//				DEBUG.style.height = '480px';
-//				DEBUG.style.left = 0;
-//				DEBUG.style.backgroundColor = 'black';
-//				document.body.appendChild(DEBUG);
 				break;
 			case 'rec':
 				this.record();

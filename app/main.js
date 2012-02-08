@@ -47,7 +47,7 @@ require(['ui/throbber'], function(t) {
 //	Fix the document dimenations and show loader first
 	document.body.style.width = window.innerWidth + 'px';
 	document.body.style.height = window.innerHeight + 'px';
-	loadIndicator = {
+	var loadIndicator = {
 		show: function(text) {
 			t.start({
 				element: document.body,
