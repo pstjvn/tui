@@ -1,5 +1,5 @@
 .audio-pannel {
-	width: 530px;
+	width: 580px;
 	/*height: 100px;*/
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(78,81,79,1)), color-stop(46%,rgba(48,55,51,1)));
 	margin: auto;
@@ -7,7 +7,7 @@
 	border: 1px solid #555;
 	position: absolute;
 	bottom: 26px;
-	left: 8%;
+	left: 28px;
 }
 .audio-display {
 	height:50px;
