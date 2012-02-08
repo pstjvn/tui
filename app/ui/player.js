@@ -134,14 +134,14 @@ define([
                 
             if ( !isNaN( elapsedTime ) ) {
                 timeString += datetime.parseTimeFromSeconds(elapsedTime);
-                if (!isNaN( duration ) ) {
+                if (!isNaN( duration ) && duration > 0 ) {
                     timeString += ' - ';
                     timeString += datetime.parseTimeFromSeconds( duration );
                     progress = parseInt( (elapsedTime / duration) * 100 , 10);
                     timeString += ' (' + progress + '%)';
                 }
             } else {
-                timeString = '0 / ' + (isNaN( duration )) ? '0': duration;
+                timeString = '0 / ' + (isNaN( duration ) || duration===0) ? '0': duration;
             }
             this.timeIndicator.textContent = timeString;
             if ( name !== undefined && name !== this.trackname_ ) {
@@ -172,21 +172,22 @@ define([
 	};
 	Player.prototype.setOSDState = function(state) {
 		var item = this.current_[0], id = '';
-		if (item.id.length < 5)
+		if (item.id.length < 5) {
             if ( !isNaN( parseInt( item.id ) ) ) {
                 id = '[' + item.id + '] ';
             } else id = '';
+		}
 		switch (state) {
 			case 'started':
 			case 'playing':
 				if (this.useVisualPlayer_) {
 					this.visualPlayer.setState('play');
 				} else {
-					tui.osdInstance.setContent(strings.player.states.playing + id + item.publishName, 5, 'play');
+					tui.osdInstance.setContent(strings.player.states.playing + id + item.title, 5, 'play');
 				}
 				break;
 			case 'buffering':
-				tui.osdInstance.setContent(strings.player.states.buffering + id +  item.publishName, 5, 'buffering');
+				tui.osdInstance.setContent(strings.player.states.buffering + id + item.title, 5, 'buffering');
 				break;
 			case 'paused':
 				if (this.useVisualPlayer_) {
@@ -372,11 +373,12 @@ define([
 		}
 
 		newreq = request.create(play_command, {"url": obj.playURI, 'resume': resume, 'audio': isAudio});
-		response.register(newreq, bind(this.requestResultHandle, this, obj.sortIndex,  obj.publishName, 'play') );
+		response.register(newreq, bind(this.requestResultHandle, this, obj.sortIndex,  obj.title, 'play') );
 		newreq.send();
 	};
 	Player.prototype.notifyOSD = function( obj ) {
 		mix( obj, Theme);
+        console.log(obj);
 		var req = request.create('mediainfo', obj);
 		req.send( obj );
 	};
