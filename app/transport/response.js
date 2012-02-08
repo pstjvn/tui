@@ -45,6 +45,9 @@ define(function (){
 						RemoteKeyHandler(this.json['event']['key']);
 					}
 					break;
+                case 'msgbox': 
+                    tui.createDialog('message', undefined, undefined, this.json['event']['text']);
+                    break;
 				case 'telephony':
 					window.exportedSymbols['telephony']['setLineStatus'](this.json['event']);
 					break;

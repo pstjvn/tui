@@ -416,9 +416,11 @@ define([
 	/**
 	* Check status and if it is different from internal stopped, attempt stop signal on transport layer
 	*/
-	Player.prototype.stop = function() {
+	Player.prototype.stop = function(callback) {
 //		if (this.state !== Player.STATES.STOPPED) {
 			var newreq = request.create('stop', {});
+            if (callback ) 
+                response.register(newreq, callback);
 			newreq.send();
 //		}
 	};

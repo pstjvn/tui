@@ -107,6 +107,7 @@ require(['ui/throbber'], function(t) {
 				LISTS: tNow
 			},
 			signals: {
+                queue_: [],
 				listingApp: ['iptv', 'vod', 'ppv', 'aod', 'radio'],
 				refreshConfig: function() {
 					tui.DATA_TS.CONFIG = (new Date()).getTime();
@@ -121,11 +122,23 @@ require(['ui/throbber'], function(t) {
 					}
 				},
 				restoreEventTree: function() {
-					response.setRemoteKeyHandler(globalevents.defaultEventAccepter);
-					this.eventsAreFetched = false;
+                    if ( this.queue_.length > 0 ) {
+                        response.setRemoteKeyHandler( this.queue_.shift() );
+                    } else {
+					    response.setRemoteKeyHandler(globalevents.defaultEventAccepter);
+					    this.eventsAreFetched = false;
+                    }
 				},
 				eventsAreFetched: false
 
+			},
+            stealEvents: function(newManager) {
+                if (this.signals.eventsAreFetched ) {
+                    this.signals.queue_.push( newManager );
+                } else {
+				    response.setRemoteKeyHandler(newManager);
+				    this.signals.eventsAreFetched = true;
+                }
 			},
 			osdInstance: new OSD(),
 			keyboardIgnoredKeys: [34, 8, 46, 37, 38, 39, 40, 13, 36],
@@ -161,12 +174,9 @@ require(['ui/throbber'], function(t) {
 ////				var header = options.header.html;
 ////				this.rerouteEventsToPanel();
 //			},
-			stealEvents: function(newManager) {
-				response.setRemoteKeyHandler(newManager);
-				this.signals.eventsAreFetched = true;
-			},
 			createDialog: function(type, options, callback, title, defaultOption ) {
 				var dialog;
+
 				if (type === 'optionlist') {
 					dialog = new Dialogs.OptionList(type, options, callback, title, defaultOption);
 				} else if (['input', 'password', 'text'].indexOf(type) !== -1  ) {
@@ -178,9 +188,15 @@ require(['ui/throbber'], function(t) {
 				} else if (type === 'message') {
 					dialog = new Dialogs.MessageBox(type, title);
 				}
-
-				dialog.show();
-				this.stealEvents(bind(dialog.eventHandler, dialog));
+                if (this.globalPlayer.getState() !== player.STATES.STOPPED) {
+                    this.globalPlayer.stop(bind(function(d){
+                        d.show();
+                        this.stealEvents(bind(d.eventHandler, d));
+                    }, this, dialog));
+                } else {
+				    dialog.show();
+                    this.stealEvents(bind(dialog.eventHandler, dialog));
+                }
 			},
 			setPanels: function(top, bottom, opt_topContent, opt_bottomContent) {
 				return;
