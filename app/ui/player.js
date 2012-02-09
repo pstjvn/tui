@@ -1,3 +1,8 @@
+/**
+ * Implements general purpose global player that integrates the HW player
+ * found on the Tornado devices in the UI
+ */
+
 define([
 	'transport/request',
 	'transport/response',
@@ -8,20 +13,17 @@ define([
 	'tpl/audio-player',
 	'dom/dom',
 	'oop/mix',
-    'utils/datetime',
-    'data/static-strings'
-], function(request, response, bind, strings, events, array, tpl,  dom, mix, datetime, strings) {
-	//loader.loadCSSFromText( css );
-//	var Theme = {
-//		"fontname" : window.BACKEND_CONFIG.THEME.fontname || "Tahoma",
-//        "fontsize" : window.BACKEND_CONFIG.THEME.fontsize || 15,
-//        "timefmt" : window.BACKEND_CONFIG.THEME.timefmt || "us"
-//	};
+    'utils/datetime'
+], function(request, response, bind, strings, events, array, tpl,  dom, mix, datetime) {
+    
+    /**
+     * Define your theme here if you do not want to use the backend provided one
+     */
 	var Theme = {
 		"fontname" :  "Tahoma",
         "fontsize" :  15,
         "timefmt" : "us"
-	}
+	};
 
 	//
 	// TODO: finish implementation for recording
@@ -82,7 +84,6 @@ define([
 	* The strings returned by transport layer as player status
 	* @define
 	* @static
-	* @private
 	*/
 	Player.dspStates = {
 		stopped: Player.STATES.STOPPED,
@@ -96,17 +97,6 @@ define([
 		error: Player.STATES.STOPPED
 	};
 	Player.prototype.vstateName_ = 'display';
-	//
-	// Player.prototype.requestVState = function(state) {
-	// 	var page;
-	// 	switch (state) {
-	// 		case Player.VISIBILITY.VISIBLE:
-	// 			page = 'media';
-	// 			break;
-	// 		case Player.VISIBILITY.TRANSLUSENT: 
-	// 			
-	// };
-	// 
 	Player.prototype.createPlayer = function() {
 		var that = {};
 		that.dom = dom.getInnerNodes(tpl.render({ }));
@@ -200,12 +190,12 @@ define([
 	*/
 	Player.prototype.setState = function(state) {
 		var old_state = this.state;
-		if ( Player.AUDIO_TYPES.indexOf( this.current_[0]['type']) === -1   ) 
+		if ( Player.AUDIO_TYPES.indexOf( this.current_[0]['type']) === -1   ) {
 			this.setOSDState(state);
+		}
 		this.state = Player.dspStates[state];
         if (this.state === Player.STATES.STOPPED ) 
             tui.signals.restoreEventTree(this.keyHandler);
-        console.log('Change player state;', this.state, state);
 		if (old_state !== this.state) {
 			if (this.state === Player.STATES.STOPPED) {
 				this.disableVisual();
@@ -269,7 +259,6 @@ define([
 				this.record();
 				break;
 			default:
-//				console.log('This is the player now accepting all events');
 				return;
 		}
 	};
@@ -292,13 +281,6 @@ define([
 			path += now.getDate();
 			path += this.pathSeparator;
 			path += (now.getHours() + ':' + now.getMinutes());
-			console.log('Configured path', path);
-		//
-		// var newreq = request.create('record',{
-		// 	'status':'start',
-		// 	'path': path
-		// });
-		// 
 		} else {
 			return;
 		}
@@ -470,8 +452,8 @@ define([
 		}
 	};
 	Player.prototype.handlePlaybackInfo = function(event) {
-		var audio = event['has_audio'] || false;
-		var video = event['has_video'] || false;
+//		var audio = event['has_audio'] || false;
+//		var video = event['has_video'] || false;
 		if (this.useVisualPlayer_) {
 			this.visualPlayer.update( undefined, event['current_position'], event['duration']);
 		}

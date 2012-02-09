@@ -1,16 +1,17 @@
+/**
+ * @fileoverview Provides handler for apps that want to utilize more than one
+ * screen and be able to switch between them in the same app context
+ */
+
 define([
 	'oop/inherit',
 	'oop/idisposable',
 	'tpl/multiselect',
-	'text!css/multiselect.css',
-	'loader/loader',
 	'dom/dom',
 	'shims/bind',
 	'dom/attributes',
 	'dom/classes'
-], function(inherit, Disposable, template, css, loader, dom, bind, domattr, classes){
-	//Load some CSS code
-//	loader.loadCSSFromText(css);
+], function(inherit, Disposable, template, dom, bind, domattr, classes){
 	/**
 	* @constructor
 	* @param {Array} options, List ot options to visualize
@@ -99,7 +100,6 @@ define([
 	* @param {String} key The key identifier to process,
 	*/
 	MultipleSelection.prototype.acceptEvents = function(key) {
-		console.log('Now the events should be received here', key)
 		switch (key) {
 			case 'up':
 				this.selectItem(false);

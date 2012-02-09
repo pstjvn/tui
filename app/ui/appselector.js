@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Provides UI for the app selector
+ * This UI component cannot be used on the slower Tornado devices asa it 
+ * requires fast drawing for its effects
+ * Instead the simpleselector one should be used
+ * @deprecated
+ */
+
 define(['tpl/appselector','data/applist', 'dom/dom', 'dom/classes', 'utils/events', 'debug/console'],
 function(tpl,applist, dom, classes, Mevents, logger) {
 	var pcli = logger.getInstance('appselector');
@@ -82,9 +90,6 @@ function(tpl,applist, dom, classes, Mevents, logger) {
 		}
 	};
 	Mevents.addHandlers(selectorBindings);
-	//
-	// .cvar rendered = tpl.render({ apps: obj2array(applist) });
-	// 
 	var DOM = dom.getInnerNodes(tpl.render({
 		apps: obj2array(applist)
 	}));

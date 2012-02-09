@@ -1,9 +1,9 @@
+/**
+ * @fileoverview Provides generalized data paths accessor for most sysmaster 
+ * serivices
+ */
 define({
 	general: ['lock', 'unlock', 'bookmark', 'unbookmark'],
-//	prefix: "/cgi-bin/voip.cgi?",
-//	suffix: {
-//		newif: 1
-//	},
 	urls : {
 		lock: {
 			list: {
@@ -58,15 +58,21 @@ define({
 				section: 'system',
 				'var': 'temperature'
 			},
-			//"run=get_cfgval_json&section=system&var=temperature",
 			city:{
 				run: 'get_cfgval_json',
 				section: 'system',
 				'var': 'weather_code'
 			} 
-			//'run=get_cfgval_json&section=system&var=weather_code'
 		}
 	},
+    
+    /**
+     * Getter for the load paths
+     * @param {string} name The apptag string identifying the pp
+     * @param {string} type Additionally type of the data (for apps with
+     *  more than one data type)
+     * @return {Object} Path representation
+     */
 	getPath: function (name, type) {
 		var result;
 		if (typeof type === 'undefined') {
@@ -87,7 +93,6 @@ define({
 				result[k] = this.urls[name][type][k];
 			}
 		}
-//		return result;
 		return  result;
 	}
 });

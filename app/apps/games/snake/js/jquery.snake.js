@@ -66,6 +66,7 @@ var Snake = {
 			}
 		};*/
 	},
+// Tornado related code
 	DMCIntegration: (function() {
 		var numCodes = {
 			'down': 40,
@@ -87,6 +88,7 @@ var Snake = {
 		};
 
 	})(),
+// End Tornado related code
 
 	start: function() {
 		Snake.$cherry.fadeIn(function() {

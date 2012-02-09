@@ -1,3 +1,13 @@
+/**
+ Fan like app selector
+ Unfortunately it requires HW accelerated transformations which is
+ supported on the Tornado line, but the frame buffer flushing is too slow
+ for nice appearing anumation. 
+ 
+ This is deprecated as the module using it is deprecated bacause of the 
+ framebuffer slow flushing
+*/
+
 #appselector {
 	width: 270px;
 	height: 480px;

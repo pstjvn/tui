@@ -1,3 +1,4 @@
+/* Info buttons for the infobar, allows describing the available actions in screens */
 /*TODO: Make at least 4 info buttons apper at the same time working!*/
 .remoteOK, .remoteArrows, .remoteHome, .remoteInfo, .remoteDisplay, .remote-left-right, .remote-up-down,
 .remote-play-pause, .remote-save, .remote-delete, .remote-return {

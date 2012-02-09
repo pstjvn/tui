@@ -1,4 +1,6 @@
-/* FOR NEW EPG */
+/* FOR NEW EPG
+This is used when the IPTV screen displays the EPG information
+*/
 .epgrow {
 	background: black;
 	width: 640px;

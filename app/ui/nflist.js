@@ -1,5 +1,5 @@
 /**
- * @fileoverview Provider for NetFlix listing type. It utilizes the webkit
+ * @fileoverview Provider for Netflix inspired listing type. It utilizes the webkit
  * transitions and transformation capabilities to minimize the dom access
  * Optional animation is supported via CSS and is programitically enabled/
  * disabled
@@ -19,7 +19,7 @@ define([
 	 * @param {ListingApp} app The app that will utilize the listings
 	 * @param {Storage} data_accessor The storage to use for data loading/access
 	 * @param {number} item_height The height desired for each item, should
-	 * 		match the height in the styling
+	 * 	match the height in the styling
 	 */
 
 	var NFList = function( app, data_accessor, item_height ) {
@@ -54,9 +54,9 @@ define([
 	NFList.composeAnimationStyle = function() {
 		var res = '.' + NFList.prototype.listItemCssClass + '{ -webkit-transition: -webkit-transform ';
 		res += NFList.animationDuration_;
-		res += 'ms; }'
+		res += 'ms; }';
 		return res;
-	}
+	};
 	NFList.animationStyleElement = (function() {
 		return dom.create('style', {
 			text: NFList.composeAnimationStyle()
@@ -102,7 +102,6 @@ define([
 		});
 
 		dom.adopt( this.container_, this.transContainer_ );
-		console.log(this.container_.innerHTML)
 		this.transWidth_ = parseInt(this.contentBox_.style.width, 10);
 		this.transHeight_ = parseInt(this.contentBox_.style.height, 10);
 		this.container_.style.width = this.transWidth_ +'px';
@@ -276,7 +275,7 @@ define([
 			if ( data.length > (this.dataPointer_ + this.rows_) ) {
 				taken = this.beforescreen_.shift();
 				avobject = data[ this.dataPointer_ + this.rows_];
-				taken.style.webkitTransition = 'none'
+				taken.style.webkitTransition = 'none';
 				this.populateItem(taken, avobject);
 				this.afterscreen_.push(taken);
 			}
@@ -302,6 +301,8 @@ define([
 		if ( index > this.dataPointer_ + this.rows_ - 1 ) return false;
 		return true;
 	};
+    
+    
 	/** public api*/
 	NFList.prototype.getStep = function() {return 1;};
 	NFList.prototype.getHStep = function() {

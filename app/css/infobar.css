@@ -1,3 +1,6 @@
+/*
+Styling for the panels, which are currently not used, but are completely implements
+*/
 .tui-panel {
 	transition-property: bottom, top;
 	transition-duration: 0.35s;

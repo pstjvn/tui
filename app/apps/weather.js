@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Implements weather app, taking weatherbug's API into the 
+ * Tornado UI
+ * 
+ * Sysmaster's Tornado M55 device supports configuring a weather station
+ * code in their config panel (working in a PC browser) so one can
+ * configure its weather report from there
+ */
+
 define([
 	'oop/inherit',
 	'utils/visualapp',
@@ -19,6 +28,7 @@ define([
 	 * @type {string}
 	 */
 	var city_ = '104164';
+    
 	var Weather = function(options) {
 		VisualApp.call(this, options);
 		this.forecast = null;
@@ -27,12 +37,19 @@ define([
 		this.on('show-requested', this.onShowRequested);
 		this.on('stop-requested', this.onStopRequested);
 	};
+    /** @inerit VisualApp to allow controller interaction */
 	inherit(Weather, VisualApp);
 	
+    /**
+     * Clean up the container when stopping
+     */
 	Weather.prototype.onStopRequested = function() {
 		this.container.innerHTML = '';
 	};
 	
+    /**
+     * Start has been called from the controller, take action
+     */
 	Weather.prototype.onStartRequested = function() {
 //		fetch data if we do not have it yet
 		if (this.forecast === null || this.location === null) {
@@ -56,6 +73,7 @@ define([
 		}
 		this.loadData([this.units, this.city]);
 	};
+    
 	Weather.prototype.onShowRequested = function() {
 		this.dom_ = template.render({
 			things: this.forecast['forecastList'],
@@ -66,20 +84,27 @@ define([
 	};
 	/**
 	 * Loads the forecase information from weatherbug, this require network
-	 * access. Errors are not handled well
+	 * access. Errors are not handled yet
 	 * TODO: Handle errors from wb
 	 */
 	Weather.prototype.loadData = function(data) {
 		if (data) {
-			loader.loadJSONP('weatherlocation', 'http://i.wxbug.net/REST/Direct/GetLocation.ashx?api_key=u2bwf83unq43dt66ugm6t2fa&nf&f=exportedSymbols.weather.locationInfo&city=' + this.city);
-			loader.loadJSONP('weatherinfo', 'http://i.wxbug.net/REST/Direct/GetForecast.ashx?api_key=u2bwf83unq43dt66ugm6t2fa&nf=4&f=exportedSymbols.weather.load&city=' + this.city + '&units='+ this.units);
+			loader.loadJSONP('weatherlocation', 
+                'http://i.wxbug.net/REST/Direct/GetLocation.ashx?api_key=u2bwf83unq43dt66ugm6t2fa&nf&f=exportedSymbols.weather.locationInfo&city=' + this.city);
+			loader.loadJSONP('weatherinfo', 
+                'http://i.wxbug.net/REST/Direct/GetForecast.ashx?api_key=u2bwf83unq43dt66ugm6t2fa&nf=4&f=exportedSymbols.weather.load&city=' + this.city + '&units='+ this.units);
 			return;
 		}
+//        Support getting settings from Tornado settings storage
 		var req = request.create('calld', tui.options.paths.getPath(this.name, 'units'));
 		var req2 = request.create('calld', tui.options.paths.getPath(this.name, 'city'));
 		new GroupRequest(bind(this.loadJSON, this), req2, req);
 	};
 	
+    /**
+     * Handler for the JSON response from weatherbug for location information
+     * @param {JSONObject} json Response
+     */
 	Weather.prototype.setLocationInfo = function(json) {
 		this.location = json;
 		if (this.forecast !== null) {
@@ -92,6 +117,10 @@ define([
 	 */ 		
 	Weather.prototype.noDataLoaded = function() {};
 	
+    /**
+     * Load the data from WeatherBug as JSON obj and process it
+     * @param {Object} jsonobj 
+     */
 	Weather.prototype.load = function(jsonobj) {
 		if (jsonobj === null) {
 			this.noDataLoaded();
@@ -101,18 +130,19 @@ define([
 		var pred;
 		for (var i = 0; i < this.forecast['forecastList'].length; i++) {
 			pred = this.forecast['forecastList'][i].dayPred;
-			if (/feels-like temperature of (.*)$/.exec(pred) != null) {
+			if (/feels-like temperature of (.*)$/.exec(pred) !== null) {
 	        	this.forecast['forecastList'][i].feelslike = /feels-like temperature of (.*)$/.exec(pred)[1];
 	        }
-	        if (/[wW]inds ([^\.]*)/.exec(pred) != null){
+	        if (/[wW]inds ([^\.]*)/.exec(pred) !== null){
 				this.forecast['forecastList'][i].wind = /[wW]inds ([^\.]*)/.exec(pred)[1];
 			}
-			if (/ ([0-9]*%) /.exec(pred) != null) {
+			if (/ ([0-9]*%) /.exec(pred) !== null) {
 	    		this.forecast['forecastList'][i].humidity = / ([0-9]*%) /.exec(pred)[1];
 			}
 		}
 		if (this.location !== null)	this.fire('start-ready');
 	};
+    /** @override */
 	Weather.prototype.disposeInternal = function() {
 		Weather.superClass_.disposeInternal.call(this);
 		delete this.dom_;
@@ -123,16 +153,32 @@ define([
 		delete this.cityLoaded_;
 		delete this.unitsLoaded_;
 	};
+    
+    /**
+     * Compose a new instance, as we will even only need one, thus no need to 
+     * export the constructor as module, just export the instance
+     */
 	var a = new Weather({
 		name: 'weather'
 	});
+    
+    /**
+     * Export global symbols for loading the JSONP requests to weatherbug
+     * Load the forcast
+     */
 	exports.exportSymbol('weather', {
 		name: 'load',
 		symbol: bind(a.load, a)
 	});
+    
+    /**
+     * Export global symbols for loading the JSONP requests to weatherbug
+     * Load the station information
+     */
 	exports.exportSymbol('weather', {
 		name: 'locationInfo',
 		symbol: bind(a.setLocationInfo, a)
 	});
+    
 	return a;
 });

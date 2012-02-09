@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Provides paths for STB device, this is deprecated as the
+ * JSON path communication channel is used
+ * @deprecated
+ */
 define({
 	general: ['lock', 'unlock', 'bookmark', 'unbookmark'],
 	prefix: "/cgi-bin/voip.cgi?",

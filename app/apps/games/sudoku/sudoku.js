@@ -6,11 +6,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
- 
-/* Authors: Peter StJ
- * contacts: pjanakiev@sysmaster.com
- * for Sysmaster Corp Free software initiative
- */
 
 var squareObjects = [];
 var level = 1; // 1 is lowest level
@@ -511,11 +506,11 @@ function findFirstEmpty() {
 	}
 }
 //END original game
-//DMC related stuff
+//Tornado related stuff
 window.onload = function () {
 	initSudoku();
 	findFirstEmpty();
-}
+};
 window.remoteEvent = (function() {
 	var keys = ['one','two','three','four','five','six','seven','eight','nine', 'left', 'right', 'down', 'up'];
 	return function(key) {
@@ -531,61 +526,4 @@ window.remoteEvent = (function() {
 		}
 	};
 })();
-
-//(function() {
-//	var go_up = function() {
-//		var myurl = 'http://'+window.location.host+ window.location.pathname.replace ( 'Sudoku' , 'Games' ) ;
-//		window.location.assign( myurl );
-//	};
-//	///DO NOT LIST YET, it is not ready
-//	var handle = function(key) {
-//			insertNumber2(key);
-//		};
-//	var App = {
-//		appEvents: {},
-//		Grab: [Dispatcher],
-//		constructEvents: function() {
-//			//instead of writing all events manually, use cycle when the handler is same
-//			var keys = ['one','two','three','four','five','six','seven','eight','nine', 'left', 
-//				'right', 'down', 'up'];
-//			var i;
-//			for (i = 0 ; i < keys.length; i++ ) {
-//				this.appEvents[keys[i]] = {
-//					name: keys[i],
-//					func: handle,
-//					attached: false
-//				};
-//			}
-//			this.appEvents.okButton = {
-//				name: 'ok',
-//				func: showHint,
-//				attached: false
-//			};
-//			this.appEvents.homeButton = {
-//				name: 'home',
-//				func: function() {
-//					if (window.location.host.indexOf('sysmaster') != -1 ) { 
-//						alert('app://close_youtube'); 
-//					} else {
-//						Utils.goHome();
-//					}
-//				},
-//				attached: false
-//			};
-//			this.appEvents.ret = {
-//				name: 'return',
-//				func: function() {
-//					if (window.location.host.indexOf('sysmaster') != -1 ) { go_up(); }
-//				},
-//				attached:false
-//			};
-//		},
-//		init: function() {
-//			this.constructEvents();
-//			initSudoku();
-//			findFirstEmpty();
-//			this.addCustomHandlers(this.appEvents);
-//		}
-//	};
-//	return App;
-//})().Start();
+//END Tornado stuff

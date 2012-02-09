@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Provides internationalization support for the
+ * virtual kbd
+ * 
+ * Add your key settings if you want to provide additional languages
+ */
 define({
 	bg_bg: [
 		["'","1","2","3","4","5","6","7","8","9",'0','|','Del'],

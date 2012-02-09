@@ -1,35 +1,30 @@
+/**
+ * @fileoverview Device specific configuration options implementation
+ * This implements only the Tornado M55 device settings, however 
+ * the code is hughly reusable, providing the settings are returned in
+ * the same format. Additin, removale and mutation of the configuration
+ * options is fully supported out of the box. Configuration swapping ( from
+ * one section to another) is also supported
+ */
+
 define([
 	'utils/multiscreenjson',
 	'utils/telescreen',
-	'loader/loader',
 	'dom/dom',
 	'dom/classes',
-	'utils/scrollable',
-	'shims/bind',
-	'transport/request',
-	'transport/response',
-	'data/static-strings',
 	'tpl/setup_chooser',
 	'utils/miniscreenjson',
 	'json/json',
-	'tpl/setupminiscreen',
-	'text!css/setupminis.css'
+	'tpl/setupminiscreen'
 ], function(
 	App, 
 	TeleMini,
-	loader, 
 	dom, 
 	classes, 
-	scrollable, 
-	bind,
-	request,
-	response,
-	strings,
 	choosertpl,
 	NM,
 	json,
-	template,
-	css ) {
+	template) {
 	//loader.loadCSSFromText(css);
 	/**
 	* Mini screen chooser

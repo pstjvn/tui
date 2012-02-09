@@ -5,7 +5,7 @@
  * @require net/socket
  * @require appdebug/config
  */
-define(['window/window', 'net/socket', 'appdebug/config'], function(windows, socket, debugconfig) {
+define(['net/socket', 'appdebug/config'], function(socket, debugconfig) {
 //	Use this to specify the global transport entry point, used only in emulated environment
 	var defaultTransport_ = window.transportReceiver;
 	if (typeof window.smjs != 'undefined') {

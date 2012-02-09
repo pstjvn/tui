@@ -1,3 +1,7 @@
+/*
+This file implements the looks for the app selector in linear mode
+*/
+
 .screenChooserWrapper {
 	width: 130px;
 	position: absolute;
@@ -20,6 +24,11 @@
 	background-image: url('../imgs/icon_set.png');
 	background-repeat: no-repeat;
 }
+
+/**
+You should define you custom app icon here! The classname attached will be
+the string defined as apptag in the listing
+*/
 .screenChooser .screen.iptv {
 	background-position: right -4px;
 }
@@ -56,6 +65,10 @@
 .screenChooser .screen.weather {
 	background-position: right -1110px;
 }
+
+/**
+The 'glower' indicating the active app in the selector
+*/
 .screen-selector-pointer {
     background-position: left -997px;
     height: 113px;

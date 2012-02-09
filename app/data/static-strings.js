@@ -1,3 +1,6 @@
+/**
+ * @fileoverview Provide translatable strings for the UI
+ */
 define({
 	common: {
 		refresh: 'Reloading ',

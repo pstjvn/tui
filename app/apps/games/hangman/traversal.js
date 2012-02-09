@@ -330,7 +330,6 @@ function ShowMessage(message, actionOK) {
 
 		return function(direction) {
 			var a, b, c;
-//			pcli(direction);
 			//First set the new Element that we will use to calculate next
 			EL = myTable.querySelector('.active');
 			//EL.removeClass('active');
@@ -350,17 +349,10 @@ function ShowMessage(message, actionOK) {
 			}
 			classes.removeClasses(EL, 'active');
 			classes.addClasses(b, 'active');
-//			EL.removeClass('active');
-//			b.addClass('active');
+
 			currentButton = b;
 		};
 	})();
-
-//	var go_up = function() {
-//			var myurl = 'http://' + window.location.host + window.location.pathname.replace('Hangman', 'Games');
-//			
-//			window.location.assign(myurl);
-//		};
 	function applyLetter() {
 		if (BLOCKED) {
 			BLOCKED = false;
@@ -390,52 +382,4 @@ function ShowMessage(message, actionOK) {
 	window.onload = function() {
 		Init();
 	};
-//	var App = {
-//		appEvents: {},
-//		Grab: [Dispatcher],
-//		constructEvents: function() {
-//			//instead of writing all events manually, use cycle when the handler is same
-//			var keys = ['left', 'right', 'down', 'up'];
-//			var i;
-//			for (i = 0; i < keys.length; i++) {
-//				this.appEvents[keys[i]] = {
-//					name: keys[i],
-//					func: MoveInTable,
-//					attached: false
-//				};
-//			}
-//			this.appEvents.okButton = {
-//				name: 'ok',
-//				func: applyLetter,
-//				attached: false
-//			};
-//			this.appEvents.homeButton = {
-//				name: 'home',
-//				func: function() {
-//					if (window.location.host.indexOf('sysmaster') != -1) {
-//						alert('app://close_youtube');
-//					}
-//					else {
-//						Utils.goHome();
-//					}
-//				},
-//				attached: false
-//			};
-//			this.appEvents.ret = {
-//				name: 'return',
-//				func: function() {
-//					//if (window.location.host.indexOf('sysmaster') != -1) {
-//						go_up();
-//					//}
-//				},
-//				attached: false
-//			};
-//		},
-//		init: function() {
-//			this.constructEvents();
-//			Init();
-//			this.addCustomHandlers(this.appEvents);
-//		}
-//	};
-//	App.Start();
 })();

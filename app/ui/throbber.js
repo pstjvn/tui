@@ -19,10 +19,6 @@ define(function() {
 	var tobber;
 	tobber = document.createElement('div');
 	tobber.className = 'tui-text-tobber';
-/*	// create div with backgorund opacity
-	var backdiv;
-	backdiv = document.createElement('div');
-	backdiv.className = 'tobberBackground';*/
 	
 	return {
 		/**

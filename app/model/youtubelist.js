@@ -1,24 +1,39 @@
+/**
+ * @fileoverview Provide data storage for youtube lists, implementing the 
+ * Storage interface so the same UI components can use the data provider
+ */
+
 define([
-	'array/array',
 	'model/listmodel',
 	'oop/inherit',
-	'json/json',
 	'env/exports', 
 	'shims/bind',
 	'loader/loader',
 	'data/static-strings'
-], function(array, Listmodel, inherit, json, exports, bind, loader, strings) {
+], function( Listmodel, inherit, exports, bind, loader, strings) {
+    
+    /**
+     * YouTube storage model
+     * @implement {Storage}
+     * @constructor
+     * @param {ListingApp} app
+     */
 	var YTData = function(app) {
 		Listmodel.call(this, app);
 		this.currentDataURL = YTData.urls.most_popular_url;
+//        Export the global loader symbol for JSONP
 		exports.exportSymbol('youtube', {
 			name: 'load',
 			symbol:  bind(this.load, this)
 		});
 		this.lastDisplayedIndex = 0;
-//		this.searchURL = '';
 	};
 	inherit(YTData, Listmodel);
+    
+    /**
+     * The URLS to use for loading lists
+     * @static
+     */
 	YTData.urls = {
 		most_popular_url: 'http://gdata.youtube.com/feeds/api/standardfeeds/most_popular?alt=jsonc&callback=exportedSymbols.youtube.load&v=2&max-results=16&prettyprint=true',
 		toprated: 'http://gdata.youtube.com/feeds/api/standardfeeds/top_rated?alt=jsonc&callback=exportedSymbols.youtube.load&v=2&max-results=16&prettyprint=true',
@@ -26,13 +41,24 @@ define([
 		recently_featured: 'http://gdata.youtube.com/feeds/api/standardfeeds/recently_featured?alt=jsonc&callback=exportedSymbols.youtube.load&v=2&max-results=16&prettyprint=true',
 		search_url: 'http://gdata.youtube.com/feeds/api/videos?alt=jsonc&callback=exportedSymbols.youtube.load&v=2&max-results=16&prettyprint=true&q=',
 	};
+    
+    /**
+     * How many videos to load at once, the higher the number the slower 
+     * the rendering
+     * @type {number}
+     */
 	YTData.prototype.itemsPerLoad = 16;
 	YTData.prototype.isLoading = false;
 	YTData.prototype.hasMoreResult = true;
+    
 	YTData.prototype.resetSource = function(identifier, querystring) {
 		if (YTData.urls[identifier]) {
 			if (identifier === 'search_url' && typeof  querystring !== 'string' ) {
-				tui.createDialog('input', true, bind(this.resetSource, this, identifier), strings.components.dialogs.ytube.searchquery);
+				tui.createDialog('input', 
+                    true, 
+                    bind(this.resetSource, this, identifier), 
+                    strings.components.dialogs.ytube.searchquery
+                );
 				return; 
 			}
 			this.currentDataURL = YTData.urls[identifier];
@@ -47,6 +73,7 @@ define([
 			});
 		}
 	};
+    
 	YTData.prototype.loadData = function(setting) {
 		if (typeof setting.querystring == 'string') {
 			this.currentDataURL += setting.querystring
@@ -59,8 +86,8 @@ define([
 		this.isLoading = true;
 		loader.loadJSONP('youtubevideos', url);
 	};
+    
 	YTData.prototype.load = function(data) {
-		console.log('data from youtube', data);
 		this.isLoading = false;
 		if ( data.data.startIndex + data.data.itemsPerPage >= data.data.totalItems)
 			this.hasMoreResult = false;
@@ -77,7 +104,6 @@ define([
 			}
 		}
 		this.lastDisplayedIndex = this.data.list.length;
-		console.log('Posledniqt index e', this.lastDisplayedIndex);
 		this.pointer = this.data.list;
 		this.isLoaded = true;
 		this.app.fire('data-load-end', {
@@ -86,6 +112,7 @@ define([
 		});
 	
 	};
+    
 	YTData.prototype.disposeInternal = function(){
 		YTData.superClass_.disposeInternal.call(this);
 		delete this.currentDataURL;

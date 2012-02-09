@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Curenlty no image viewing is possible on the UI
+ * This is an ongoing work to resolve the memory issue preventing 
+ * image viewers to work on the device in general
+ */
 define([
     'dom/dom',
     'shims/bind'

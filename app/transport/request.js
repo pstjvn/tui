@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Provides reques abstraction for communication with the backend
+ */
+
 define(['transport/requestdata', 'json/json', 'dmc/smjs'], function(request, json, smjs) {
 	/**
 	* Wrapper for JSON requests, it only provides the socket wrapper if needed, used only in browsers, will be stripped off when building

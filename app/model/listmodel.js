@@ -1,16 +1,25 @@
+/**
+ * @fileoverview Provides data view abstraction to work with listing data 
+ * as provided from sysmaster servers
+ */
+
 define([
 	'types/types', 
 	'array/array',
 	'oop/idisposable',
 	'oop/inherit',
-	'json/json',
 	'net/simplexhr',
 	'shims/bind',
 	'ui/simplescreenselector',
 	'transport/request',
 	'data/static-strings'
-], function(types, array, Disposable, inherit, json, xhr, bind, appsel, request, strings){
+], function(types, array, Disposable, inherit, xhr, bind, appsel, request, strings){
 	
+    /**
+     * Storage implementation
+     * @param {ListingApp} The app the model should be attached to
+     * @constructor
+     */
 	var Storage = function(app) {
 		Disposable.call(this);
 		this.app = app;
@@ -28,6 +37,11 @@ define([
 		this.lastLoadedTS = null;
 	};
 	inherit(Storage, Disposable);
+    
+    /**
+     * Loads the data from server
+     * @param {Object} o Object
+     */
 	Storage.prototype.loadData = function(o) {
 		var url = o.url || tui.options.paths.getPath(o.name, o.type);
 		var that = this;
@@ -38,9 +52,16 @@ define([
 		});
 		this.app.fire('data-load-start');
 	};
+    
+    /**
+     * Handle remote events, events might or might not be filtered at
+     * Application level
+     * @param {Object.<string>} ev Should contain at least the action
+     */
 	Storage.prototype.acceptEvent = function(ev) {
-		console.log('Received event from remote to datamodel', ev);
-		if (this.isLoading) return;
+		if (this.isLoading) {
+            return;
+		}
 		var step = this.app.presentation.getStep();
 		var hstep = this.app.presentation.getHStep();
 
@@ -73,7 +94,7 @@ define([
 				} 
 				return;
 			}
- 			if (this.currentIndex > 0 ) {
+            if (this.currentIndex > 0 ) {
 				this.app.presentation.activate(this.currentIndex -1 );
 			}
 			break;
@@ -111,19 +132,16 @@ define([
 			});
 			req.send();
 			tui.loadIndicator.show(strings.common.refresh + this.app.name.toUpperCase());
-			//
-			// this.isLoaded = false;
-			// this.history = [];
-			// this.app.presentation.reset(true);
-			// this.app.defaultStartRequested();
-			// 
 			break;
 		default: break;
 		}
-
 	};
+    
+    /**
+     * Selects the next item by its index 
+     * @param {number}
+     */
 	Storage.prototype.selectByIndex = function(index) {
-		console.log('Selected index : ' +  index);
 		if (index < this.pointer.length) {
 			this.currentIndex = index;
 			this.app.presentation.activate(this.currentIndex);
@@ -155,13 +173,12 @@ define([
 				}
 			}
 		}
-		if (found === null ) {
-			console.log('There is no other channel available');
-		} else {
-			this.selectByIndex(found);
-			
-		}
+        if ( found !== null ) this.selectByIndex(found);
 	};
+    
+    /**
+     * Static sort methods to deal with the data structure reordering
+     */
 	Storage.sortById = function(a, b) {
 		var ida = parseInt(a.id, 10);
 		var idb = parseInt(b.id, 10);
@@ -191,6 +208,11 @@ define([
 		if ( ia > ib ) return 1;
 		return 0;
 	};
+    
+    /**
+     * Implements sorting of the loaded data
+     * @param {string}
+     */
 	Storage.prototype.sort = function(byWhat) {
 		if (this.pointer.length > 0 ) {
 			this.pointer.sort(Storage[byWhat]);
@@ -200,17 +222,19 @@ define([
 			});
 		}
 	};
+    
+    /**
+     * Finds the previous item in the list and activates it
+     */
 	Storage.prototype.activatePreviousItem = function() {
 		var index = this.currentIndex - 1, found = null;
 		for (; index >= 0; index--) {
 			if (this.pointer[index].isDir === false && this.pointer[index].id !== null) {
 				found = index;
-				console.log(JSON.stringify(this.pointer[index]));
 				break;
 			}
 		}
 		if (found === null) {
-			console.log('Not found, try from back ');
 			index = this.pointer.length-1;
 			for (; index > this.currentIndex; index--) {
 				if (this.pointer[index].isDir === false && this.pointer[index].id !== null) {
@@ -219,12 +243,15 @@ define([
 				}
 			}
 		}
-		if (found === null) {
-			console.log('No prev channel to select');
-		} else {
+		if (found !== null) {
 			this.selectByIndex(found);
 		}
 	};
+    
+    /**
+     * Try to go up a folder, should be called only if there
+     * really is a folder up, does not provides checks
+     */
 	Storage.prototype.outDir = function() {
 		var toLoad = this.history.pop();
 		this.pointer = toLoad.dir;
@@ -233,6 +260,11 @@ define([
 			index: toLoad.index
 		});		
 	};
+    
+    /**
+     * Try to load an innner folder
+     * @return {boolean} true if folder load is started, false otherwise
+     */
 	Storage.prototype.enterDir = function() {
 		var item = this.getItem();
 		var url = {};
@@ -252,6 +284,11 @@ define([
 			return false;
 		}	
 	};
+    
+    /**
+     * Loads a filder
+     * @param {Object} data The listing for the dir
+     */
 	Storage.prototype.loadDir = function(data) {
 		this.data.dirs[this.pointer[this.currentIndex].id] = data;
 		this.history.push({
@@ -261,11 +298,22 @@ define([
 		this.pointer = this.data.dirs[this.pointer[this.currentIndex].id];
 		this.isLoading = false;
 	};
+    
+    /**
+     * Gets the current item or an item by its index
+     * Index validity is not checked
+     * @param {number} 
+     */
 	Storage.prototype.getItem = function(i) {
 		var ii = (types.assert(i, 'number'))?i:this.currentIndex;
 		return this.pointer[ii];
 	};
 	
+    /**
+     * General data getter
+     * @param {string} what The type of data requested, 'list' or 'epg'
+     *  list is assumed if not param is provided
+     */
 	Storage.prototype.get = function(what) {
 		what = (types.assert(what,'string'))? what : 'list';
 		if (what === 'list') {
@@ -312,7 +360,6 @@ define([
 				});
 				break;
 			case 'epg':
-				console.log('JUST LOADED EPG DATA FROM SERVER');
 				this.data.epg = res;
 				break;
 			default: break;
@@ -325,13 +372,14 @@ define([
 			app: this.app.name
 		});
 	};
+    
 	Storage.prototype.getPropertyFromItem = function(item, index) {
 		var found = this.getItem(index);
 		return found[item];
 	};
+    
 	Storage.prototype.getEPGForItem = function(index) {
 		if (this.data.epg === null) {
-			console.log('There is no EPG records for this data');
 			return null;
 		}
 		var itemByID = this.getPropertyFromItem('id',index);
@@ -341,8 +389,10 @@ define([
 		if ( this.data.epg[ id ]) return this.data.epg[id].body;
 		return [];
 	};
+    
 	Storage.prototype.unload = function(){};
-	Storage.prototype.disposeInternal = function() {
+	
+    Storage.prototype.disposeInternal = function() {
 		Storage.superClass_.disposeInternal.call(this);
 		
 	};

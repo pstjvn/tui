@@ -128,7 +128,7 @@
  */
  
 /* Authors: Peter StJ
- * contacts: pjanakiev@sysmaster.com
+ * contacts: regardingscot@gmail.com
  * for Sysmaster Corp Free software initiative
  */	
 
@@ -155,10 +155,6 @@
 		document.querySelector('div').appendChild(a);
 	}
 	
-//	function go_up() {
-//		var myurl = 'http://' + window.location.host + window.location.pathname.replace('SizzleBox', 'Games');
-//		window.location.assign(myurl);
-//	}
 	var knownKeys = ['left', 'up', 'right', 'down'];
 	window.remoteEvent = function(key) {
 		console.log('Remote event received in frame');
@@ -169,49 +165,5 @@
 	window.onload = function() {
 		start();
 	};
-	
-//	var App = {
-//		appEvents: {},
-//		Grab: [Dispatcher],
-//		constructEvents: function() {
-//			//instead of writing all events manually, use cycle when the handler is same
-//			var keys = ['left', 'right', 'down', 'up'];
-//			var i;
-//			for (i = 0; i < keys.length; i++) {
-//				this.appEvents[keys[i]] = {
-//					name: keys[i],
-//					func: WrapKeys,
-//					attached: false
-//				};
-//			}
-//			/*this.appEvents.okButton = {
-//				name: 'ok',
-//				func: ShowMessage,
-//				attached: false
-//			};*/
-//			this.appEvents.homeButton = {
-//				name: 'home',
-//				func: function() {
-//					if (window.location.host.indexOf('sysmaster') != -1) {
-//						alert('app://close_youtube');
-//					}
-//					else {
-//						Utils.goHome();
-//					}
-//				},
-//				attached: false
-//			};
-//			this.appEvents.ret = {
-//				name: 'return',
-//				func: go_up,
-//				attached: false
-//			};
-//		},
-//		init: function() {
-//			this.constructEvents();
-//			start();
-//			this.addCustomHandlers(this.appEvents);
-//		}
-//	};
-//	App.Start();
+
 })();
