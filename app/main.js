@@ -73,8 +73,9 @@ require(['ui/throbber'], function(t) {
 		'appdebug/preload',
 		'utils/osd',
         'transport/request',
-        'ui/simplescreenselector'
-	], function(globalevents, classes, dom, Dialogs, bind, player, response, preloads, OSD, request, AS ) {
+        'ui/simplescreenselector',
+        'array/array'
+	], function(globalevents, classes, dom, Dialogs, bind, player, response, preloads, OSD, request, AS, array ) {
 //		Let the response handler for transport layer know where to direct key presses on the remote
 		response.setRemoteKeyHandler(globalevents.defaultEventAccepter);
 //		Load images offscreen after we have loaded the deps to avoid trapping the JS in the max Concurent Reqs of the browsser
@@ -89,14 +90,21 @@ require(['ui/throbber'], function(t) {
 			style: 'height: ' + window.innerHeight + 'px; width: ' + window.innerWidth + 'px; margin-top: 0; margin-bottom: 0'
 		}));
 		var tNow = (new Date()).getTime();
-
+        
+        /**
+         * Call for system settings, ie. the settings made from the browser 
+         * interface 
+         */
 		var lll = request.create('calld', {
 			run: 'backend_json',
 			newif: 1
 		}); 
 		response.register(lll, function(res) {
-			if ( res.status == 'OK')
+			if ( res.status == 'OK') {
+                // Eval them in the global context as they do not include rjs 
+                // wrpaper
 				eval(res.content);
+			}
 		});
 		lll.send();
 		
@@ -121,23 +129,28 @@ require(['ui/throbber'], function(t) {
 						tui.appModuleAdded(tui.currentActiveApp);
 					}
 				},
-				restoreEventTree: function() {
-                    if ( this.queue_.length > 0 )  {
-                        response.setRemoteKeyHandler( this.queue_.shift());
-                        return;
+				restoreEventTree: function(fn) {
+                    console.log('*******Remove events', array.has(this.queue_, fn ));
+                    array.remove(this.queue_, fn);
+                    console.log('******Removed event from tree:', this.queue_.length);
+                    if (array.isEmpty(this.queue_)) {
+                        response.setRemoteKeyHandler( globalevents.defaultEventAccepter);
+                        this.eventsAreFetched = false;
+                    } else {
+                        response.setRemoteKeyHandler( array.last(this.queue_) );
                     }
-				    response.setRemoteKeyHandler(globalevents.defaultEventAccepter);
-				    this.eventsAreFetched = false;
 				},
+                fetchEvents: function(fn) {
+                    this.queue_.push(fn);
+                    console.log('******Added event to event tree:', this.queue_.length);
+                    response.setRemoteKeyHandler(array.last(this.queue_));
+                    this.eventsAreFetched = true;
+                },
 				eventsAreFetched: false
 
 			},
             stealEvents: function(newManager) {
-                if ( this.signals.eventsAreFetched ) {
-                    this.signals.queue_.push( response.getRemoteKeyHandler());
-                }
-			    response.setRemoteKeyHandler(newManager);
-			    this.signals.eventsAreFetched = true;
+                this.signals.fetchEvents(newManager);
 			},
 			osdInstance: new OSD(),
 			keyboardIgnoredKeys: [34, 8, 46, 37, 38, 39, 40, 13, 36],
@@ -187,19 +200,10 @@ require(['ui/throbber'], function(t) {
 				} else if (type === 'message') {
 					dialog = new Dialogs.MessageBox(type, title);
 				}
-                var bound = bind(dialog.eventHandler, dialog);
+//                var bound = bind(dialog.eventHandler, dialog);
                 dialog.show();
-                this.stealEvents(bound);
+//                this.stealEvents(bound);
                 return;
-                if ( this.signals.eventsAreFetched )  {
-                    this.signals.queue_.push( bind( function() {
-                        dialog.show();
-                        this.stealEvents( bound );
-                    }, this)); 
-                } else {
-                    dialog.show();
-                    this.stealEvents(bound);
-                }
 			},
 			setPanels: function(top, bottom, opt_topContent, opt_bottomContent) {
 				return;

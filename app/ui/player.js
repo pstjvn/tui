@@ -203,9 +203,11 @@ define([
 		if ( Player.AUDIO_TYPES.indexOf( this.current_[0]['type']) === -1   ) 
 			this.setOSDState(state);
 		this.state = Player.dspStates[state];
+        if (this.state === Player.STATES.STOPPED ) 
+            tui.signals.restoreEventTree(this.keyHandler);
+        console.log('Change player state;', this.state, state);
 		if (old_state !== this.state) {
 			if (this.state === Player.STATES.STOPPED) {
-				tui.signals.restoreEventTree();
 				this.disableVisual();
 			} else if (this.state === Player.STATES.PLAYING) {
 				tui.stealEvents(this.keyHandler);
@@ -250,7 +252,7 @@ define([
 				break;
 			case 'display':
 				if (this.state !== Player.STATES.STOPPED) {
-					tui.signals.restoreEventTree();
+					tui.signals.restoreEventTree(this.keyHandler);
 					if (!this.useVisualPlayer_) {
 						this.setVState( Player.VSTATE.TRANSLUSENT ) ;
 					} else {
