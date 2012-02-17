@@ -1,0 +1,182 @@
+Overview:
+
+This document provides a quick tutorial on how to add your existing app to the 
+TUI infrastructure. It assumes you have the source installed and the device 
+configured to use it via startURL. It also assumes that you know how to edit 
+javascript files, css files and image files.
+
+Let's start.
+
+Source code for your first app:
+
+var MyApp = function() {
+	this.data_ = null;
+};
+
+MyApp.prototype.getData = function( callback ) {
+	setTimeout(function() {
+		this.setData('My very important data');
+	}.bind(this), 500);
+};
+
+MyApp.prototype.setData = function( data ) {
+	this.data_ = data;
+	this.display_to_user(document.querySelector('body'));
+}
+MyApp.prototype.display_to_user = function(container) {
+	var my_message = dcument.createElement('div');
+	my_message.textContent = this.data_;
+	container.appendChild( my_message );
+};
+
+(new MyApp()).getData();
+
+The application is very simple, it is constructed wihtout any parameters and 
+waits for the getData method to be called. The getData method calls the setData
+method asyncroniously to emulate data retrieval from remote location (with 
+XMLHttpRequest for example), which once called also calls the function that 
+shows the UI component to the user view port. 
+
+Your application of course can have much more complex logic, but it usually
+boils down to getting some data and displaying it in a suitable format to the
+user.
+
+Here two very important assumtions are made, and should those be not met in your existing code
+additional work will need to be done to convert it so those can be met.
+
+First assumption is that the app instance does _not_ calls the display logic
+immediately, regardless of the state of the data, i.e. if the app already has
+the data it will _not_ call the display method, instead it will be called after
+the instance is returned.
+
+Second assumption is your app know how to display its UI component in a container
+HTML element without poluting the DOM outside of that container.
+
+Now let's convert this simple app to one that TUI can work with:
+
+define([ 
+	'oop/inherit',
+	'utils/visualapp'
+], function(inherit, VisualApp) {
+	var MyApp = function() {
+		VisualApp.call(this);
+		this.data_ = null;
+		this.appEvents = {
+			ok: {
+				name: 'ok',
+				func: function() {
+					console.log('success');
+				},
+				attached: false
+			}
+		};
+		
+		// Execute according to signals from TUI manager
+		this.on('start-requested', this.getData);
+		this.on('show-requested', this.display_to_user);
+		this.on('stop-requested', this.hide);
+	};
+	inherit(MyApp, VisualApp);
+	
+	MyApp.prototype.getData = function() {
+		setTimeout(function() {
+			this.setData('My very important data');
+		}.bind(this), 500);		
+	};
+	
+	MyApp.prototype.setData = function( data ) {
+		this.data_ = data;
+		// Here we do not immediately invoke the display logic, instead
+		// we notify the manager that we are ready to display content
+		// It will call our display logic should our app is still the
+		// active one
+		this.fire('start-ready');
+	};
+	
+	MyApp.prototype.display_to_user = function() {
+		// Here the container is already set for us by the parent class
+		// so we need to only display our content in it
+		var my_message = dcument.createElement('div');
+		my_message.textContent = this.data_;
+		this.container.appendChild( my_message );
+		// Attach our events defined in this.appEvent to the global event 
+		// controller, after that we can receive events from the remote
+		this.attachEvents(true);	
+	};
+	
+	
+	// We also need to implement a clean up logic,
+	// this function will be called when the user wants to switch
+	// to another app
+	// Here you should also detach your event listeners
+	MyApp.prototype.hide = function() {
+		this.attachEvents( false );
+		this.container.innerHTML = '';
+	};
+	
+	// Expose the app as module so it can be dynamically loaded by the
+	// screen mamager
+	return MyApp;
+});
+
+This trivial changes reflect the needed steps to tke to assure your app
+operability in TUI environment.
+
+First we inherit our app from the VisualApp super class, it provides us with utility
+functions for starting, stopping, showing and attaching events in our app.
+
+Then in the constructor we defined which mrthods should be executed when. 
+
+Then we altered 'setData' method so it fires the show-ready signal. It notifies the
+TUI controller that our app has everything it needs to start painting the screen. Should
+the user did not changed its mind, the controlled will call the super method Show with
+the appropriate container as argument, the container will be set for us and the
+method set as listener for 'show-requested' event will be called. In our case this is
+the display_to_user method, in which we as before paint our content, but additionally we
+attach our events to the event controller. 
+
+From now on all user input will be directed to your app, but it will receive only events
+it has subscribed for, in our example - only the OK button press. 
+
+Some events are not received by the app as they are reserved by the controller - this is
+the 'home' button event, if pressed your content will be greyed out and the app selector will be
+shown. If the user selected another app the Stop method will be called. It is set for us by the super class and it will fire the 'stop-requested' event, which we configured to handle with our
+hide function.
+
+Those functions should always clear out the container completely and should remove the event listeners 
+for your app from the global event dispatcher as shown in this example.
+
+Now the app is complete. it simulates loading data async, then notifies changes of its state to the controller and is ready to display its content, once allowed to display ti attached its events and is working until the user decides to activate another app. The the hide method is called. 
+
+Now let's add your app to the app selector:
+
+Edit the file app/data/applist.js and add your app:
+
+	myapp: {
+		name: '',
+		apptag: 'myapp',
+		module: 'apps/myapp'
+	},
+
+In the example we assume the app file was put in app/apps/ directory and is called myapp.js
+
+Last thing to do it add icon for your app to the appselector.
+
+Edit the file app/imgs/icon_set.png
+
+Add your image at the bottom of it.
+
+Open the file app/css/appselector3.css
+and add the following lines to it:
+
+.screenChooser .screen.myapp {
+	background-position: right -1110px;
+}
+
+and change the pixels to match your edited picture in such a way that the top of the picture be your app icon (ex. if yout icon is starting at 1400px from the top of the image the configured pixels should be 1400px);
+
+Save your changes and realod the interface. 
+
+You should now be able to find your app in the app list and activate it as well as chnage freely from other apps to it and vice versa. 
+
+
