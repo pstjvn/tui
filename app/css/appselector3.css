@@ -20,7 +20,7 @@ This file implements the looks for the app selector in linear mode
 	text-align: left;
 }
 .screen.iptv, .screen.ppv, .screen.vod, .screen.uservideo, .screen.radio, .screen.aod, .screen.youtube, .screen.uaudio, 
-.screen.setup, .screen.games, .screen.phone, .screen.weather, .screen.weather, .screen-selector-pointer {
+.screen.setup, .screen.games, .screen.phone, .screen.weather, .screen.weather, .screen-selector-pointer, .screen.welcome  {
 	background-image: url('../imgs/icon_set.png');
 	background-repeat: no-repeat;
 }
@@ -29,6 +29,9 @@ This file implements the looks for the app selector in linear mode
 You should define you custom app icon here! The classname attached will be
 the string defined as apptag in the listing
 */
+.screenChooser .screen.welcome{
+	background-position: right -605px;
+}
 .screenChooser .screen.iptv {
 	background-position: right -4px;
 }
