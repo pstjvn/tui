@@ -1,6 +1,6 @@
 /**
  * @fileoverview Implement div console for devices that do not support anything
- * else
+ * else and we have the opportunity to dedicate the screen to deubg
  */
 
 /**
@@ -46,6 +46,7 @@ define([
 	/**
 	 * Inherit docs, override implementation
 	 * @override
+     * @param {LogRecord}
 	 */
 	DivConsole.prototype.putRecord = function (log_record) {
 		var buffer = [];
