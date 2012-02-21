@@ -8,18 +8,6 @@ buf.push(attrs({ "class": ('tui-multiscreen') + ' ' + ('general-wrapper') }));
 buf.push('><div');
 buf.push(attrs({ "class": ("image-selector " + appname) }));
 buf.push('></div><div');
-buf.push(attrs({ "class": ('general-head') }));
-buf.push('><div');
-buf.push(attrs({ "class": ('settings') }));
-buf.push('>');
-var __val__ = transl.settings
-buf.push(null == __val__ ? "" : __val__);
-buf.push('</div><div');
-buf.push(attrs({ "class": ('value') }));
-buf.push('>');
-var __val__ = transl.value
-buf.push(null == __val__ ? "" : __val__);
-buf.push('</div></div><div');
 buf.push(attrs({ "class": ("general-content " + appname) }));
 buf.push('>');
  for ( var i = 0; i < items.length; i++)

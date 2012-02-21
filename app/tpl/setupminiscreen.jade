@@ -1,8 +1,5 @@
 div.tui-multiscreen.general-wrapper
 	div(class="image-selector " + appname)
-	div.general-head
-		div.settings!= transl.settings
-		div.value!= transl.value
 	div(class="general-content " + appname)
 		- for ( var i = 0; i < items.length; i++)
 			- if (items[i].type === 'list')
