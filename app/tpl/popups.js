@@ -34,11 +34,24 @@ buf.push('></div>');
 {
 buf.push('<div');
 buf.push(attrs({ "class": ('tui-horizontal-container') }));
-buf.push('><div');
+buf.push('>');
+ if (useDefaultButtons === true)
+{
+buf.push('<div');
+buf.push(attrs({ 'data-trigger':("1"), "class": ('tui-popup-button') + ' ' + ('horizontal-button') + ' ' + ('active') }));
+buf.push('>OK</div><div');
+buf.push(attrs({ 'data-trigger':("0"), "class": ('tui-popup-button') + ' ' + ('horizontal-button') }));
+buf.push('>Cancel</div>');
+}
+ else 
+{
+buf.push('<div');
 buf.push(attrs({ 'data-trigger':("1"), "class": ('tui-popup-button') + ' ' + ('horizontal-button') }));
 buf.push('>OK</div><div');
 buf.push(attrs({ 'data-trigger':("0"), "class": ('tui-popup-button') + ' ' + ('horizontal-button') + ' ' + ('active') }));
-buf.push('>Cancel</div></div>');
+buf.push('>Cancel</div>');
+}
+buf.push('</div>');
 }
  else if (type == 'message')
 {

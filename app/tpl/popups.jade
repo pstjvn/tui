@@ -10,8 +10,12 @@ div
 					div.tui-kbd-container
 				- else if (type == 'confirm')
 					div.tui-horizontal-container
-						div.tui-popup-button.horizontal-button(data-trigger="1") OK
-						div.tui-popup-button.horizontal-button.active(data-trigger="0") Cancel
+						- if (useDefaultButtons === true)
+							div.tui-popup-button.horizontal-button.active(data-trigger="1") OK
+							div.tui-popup-button.horizontal-button(data-trigger="0") Cancel
+						- else 
+							div.tui-popup-button.horizontal-button(data-trigger="1") OK
+							div.tui-popup-button.horizontal-button.active(data-trigger="0") Cancel
 				- else if (type == 'message')
 					div.tui-horizontal-container
 						div.tui.popup-button.horizontal-button.single-button.active OK
