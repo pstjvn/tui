@@ -80,8 +80,13 @@ require(['ui/throbber'], function(t) {
 		'utils/osd',
         'transport/request',
         'ui/simplescreenselector',
-        'array/array'
-	], function(globalevents, classes, dom, Dialogs, bind, player, response, preloads, OSD, request, AS, array ) {
+        'array/array',
+        // Put debug/logger on separate line to be able to strip it on build
+        'debug/logger'
+	], function(globalevents, classes, dom, Dialogs, bind, player, response, preloads, OSD, request, AS, array, 
+	//Put Logger on separate line to be able to strip it on build
+	Logger
+) {
 		// Let the response handler for transport layer 
 		// know where to direct key presses on the remote
 		response.setRemoteKeyHandler(globalevents.defaultEventAccepter);
@@ -123,6 +128,8 @@ require(['ui/throbber'], function(t) {
 		// Create the main Controller in global scope 
 		// FIXME: Make TUI work in rjs context 
 		window.tui = {
+			//Always use logger_ and .logger_ to be able to strip those if needed
+			logger_: new Logger('TUI Main'),
 			DATA_TS: {
 				CONFIG: tNow,
 				LISTS: tNow
@@ -558,8 +565,14 @@ require(['ui/throbber'], function(t) {
 						'data/applist', 
 						'ui/player', 
 						'tpl/infobuttons', 
-						'ui/telephone'
-					], function( paths, apps, player, itpl, Phone ) {
+						'ui/telephone',
+						'debug/log-keeper',
+						'debug/simple-console'
+					], function( paths, apps, player, itpl, Phone, LogKeeper, SimpleConsole ) {
+						if ( tui.options.debug ) {
+							LogKeeper.getInstance().setLogLevel( LogKeeper.Levels.ALL );
+							(new SimpleConsole()).enable();
+						}
 						tui.player = player;
 						tui.options.paths = paths;
 						tui.phone = Phone;
