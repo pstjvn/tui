@@ -80,8 +80,8 @@ define([
 	 */
 	DivConsole.prototype.enable = function () {
 		var screenSize = {
-			width: screen.width,
-			height: screen.height
+			width: document.width,
+			height: document.height
 		};
 		this.stream_.style.width = (screenSize.width - 5) + 'px';
 		this.stream_.style.height = (screenSize.height - 5) + 'px';

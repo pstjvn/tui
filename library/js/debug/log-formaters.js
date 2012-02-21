@@ -91,6 +91,27 @@ define([
 		return result;		
 	}
 	
+	function consolify( obj ) {
+		switch (typeof obj ) {
+			case 'undefined':
+				return 'UNDEFINED';
+			case 'object':
+				return expose( obj );
+			case 'boolean':
+				return (obj) ? 'TRUE': 'FALSE';
+			default: return obj;
+		}
+	}
+	
+	function textify( log_record ) {
+		var log_array = browserify( log_record );
+		log_array.unshift( 'LEVEL-' + log_record.getLevel() );
+		for ( var i = 0; i < log_array.length; i++ ) {
+			log_array[i] = consolify( log_array[i] );
+		}
+		return log_array;		
+	}
+	
 	return {
 		echo: Echo,
 		json: JSONStringify,
@@ -99,6 +120,7 @@ define([
 		html: function( log_record ) {
 			return htmlize( browserify( log_record ) );
 		},
+		text: textify,
 		getRelativeTime: getRelativeTime
 	};
 });
