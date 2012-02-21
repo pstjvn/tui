@@ -34,7 +34,7 @@ define([
 	 * Sends the request via the socket, first serializing it
 	 */
 	JSONRequest.prototype.send = function() {
-		this.logger_.info(this.getRequestString());
+		this.logger_.ok(this.getRequestString());
 		smjs.jsoncmd(this.getRequestString());
 		this.disposeInternal();
 	};

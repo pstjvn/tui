@@ -13,8 +13,11 @@ define([
 	'tpl/audio-player',
 	'dom/dom',
 	'oop/mix',
-    'utils/datetime'
-], function(request, response, bind, strings, events, array, tpl,  dom, mix, datetime) {
+    'utils/datetime',
+    'debug/logger'
+], function(request, response, bind, strings, events, array, tpl,  dom, mix, datetime,
+Logger
+) {
     
     /**
      * Define your theme here if you do not want to use the backend provided one
@@ -43,6 +46,7 @@ define([
 		this.visualPlayer = this.createPlayer();
 		this.vstate_ = Player.VSTATE.OPAQUE;
 	};
+	Player.prototype.logger_ = new Logger('UIPlayer');
 	Player.prototype.recording_ = false;
 	Player.prototype.setRecording = function( bool ) {
 		this.recording_ = bool;
@@ -289,7 +293,7 @@ define([
 	Player.VIDEO_TYPES = ['iptv', 'ppv', 'vod', 'uservideo'];
 	Player.IMAGE_TYPES = ['userpicture'];
 	Player.prototype.alterChannels = function() {
-		console.log(JSON.stringify(this.history_));
+		this.logger_.ok(this.history_);
 		if (this.history_ && this.history_.length === 2) {
 			this.stop();
 			this.play.apply(this, this.history_);
@@ -313,7 +317,13 @@ define([
 	* @param {?String} password The password the user has enetered when queried about the parental lock pass
 	*/
 	Player.prototype.play = function(obj, resume, password, should_pay) {
-		console.log('Try to play uri: '+ obj.playURI + ' , pass:' + password + ', resume:' + resume);
+		this.logger_.fine('Try to play uri:',
+		obj.playURI,
+		'pass',
+		password,
+		'shoul resume',
+		resume);
+		
 		var newreq;
 		if (obj.isLocked) {
 			//Prevent event stealing, set state manually so that when the event comes it 
@@ -375,7 +385,7 @@ define([
 	};
 	Player.prototype.notifyOSD = function( obj ) {
 		mix( obj, Theme);
-        console.log(obj);
+		this.logger_.fine('Notify osd', obj);
 		var req = request.create('mediainfo', obj);
 		req.send( obj );
 	};
@@ -384,7 +394,7 @@ define([
 	 * @param {string} title Optional title for the playing track
 	 */
 	Player.prototype.enableVisual = function(title) {
-		console.log('Visual mode enabled');
+		this.logger_.fine('Enable visual mode of player')
 		this.useVisualPlayer_ = true;
 		dom.adopt(this.visualPlayer.dom);
         this.visualPlayer.focus(true);
