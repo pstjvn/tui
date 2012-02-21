@@ -3,7 +3,9 @@
  * logic to handle specific packets (events)
  */
 
-define(function (){
+define([
+	'debug/logger'
+],function( Logger ) {
 	var RemoteKeyHandler = null;
 	var STATUS = {
 		OK: 'OK',
@@ -14,6 +16,9 @@ define(function (){
 		this.json = JSON; 
 		this.findCallback();
 	};
+	
+	Response.prototype.logger_ = new Logger('JSONResponse');
+	
 	Response.prototype.findCallback = function() {
 		var sid = this.json["header"]["tag"];
 		switch (this.json['header']['type']) {
@@ -60,11 +65,11 @@ define(function (){
 							tui.signals.refreshLists();
 							break;
 						case 'reloadinterface':
-							console.log('Reload interface coming');
+							this.logger_.info("Reload interface came from remote");
 							window.location.reload(true);
 							break;
 						case 'reload_lists':
-							console.log('Reload lists coming');
+							this.logger_.info("Reload lists command arrived");
 							break;
 						default: break;
 					}

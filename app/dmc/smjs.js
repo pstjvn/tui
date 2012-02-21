@@ -20,9 +20,8 @@ define(['net/socket', 'appdebug/config'], function(socket, debugconfig) {
 	
 			},
 			emulated: true,
-			initapi: function(){
-				console.log('Init API');
-			}
+			// Dummy function
+			initapi: function(){}
 		};
 		window.smjs.socket = socket.create(debugconfig.socket, 'stb-json-protocol', defaultTransport_);
 		window.smjs.jsoncmd = function(JSONString) {

@@ -1,18 +1,18 @@
 define([
 	'oop/inherit',
-	'oop/idisposable',
 	'utils/listingapp',
-//	'utils/epg',
 	'ui/epgvisual',
 	'shims/bind',
 	'tpl/infobuttons',
 	'oop/clone',
     'utils/datetime',
-    'dom/dom', 'datetime/xdate',
-    'transport/request', 'transport/response',
+    'dom/dom', 
+    'datetime/xdate',
+    'transport/request', 
+    'transport/response',
     'json/json',
     'data/static-strings'
-], function(inherit, Disposable, ListApp, Epg,bind, infobuttonstpl, cloner, datetime, dom, Xdate,
+], function(inherit, ListApp, Epg, bind, infobuttonstpl, cloner, datetime, dom, Xdate,
 request, response, json, strings){
 	var App = function(opts){
 		ListApp.call(this, opts);
@@ -26,9 +26,7 @@ request, response, json, strings){
 					this.epgInstance.hide();
 					this.presentation.unhide();
 					this.presentation.activate( this.model.currentIndex );
-//					this.presentation.container_.style.display = 'block';
 				} else {
-//					this.presentation.container_.style.display = 'none';
 					this.epgInstance.show();
 					this.epgInstance.selectRow( this.model.currentIndex );
 					this.presentation.unload();
@@ -41,23 +39,6 @@ request, response, json, strings){
 			func : bind(this.handlePlayButton, this),
 			attached : false
 		};
-		//Override the OK event to handle EPG also
-//		this.appEvents['ok'] = {
-//			name: 'ok',
-//			func: bind(function() {
-//				if (this.epgInstance.isAttachedToDom()) {
-//					this.epgInstance.enterListing(true);
-//					this.epgInstance.attachEvents(true);
-//				} else {
-//					this.model.acceptEvent({
-//						action: 'ok'
-//					});
-//				}
-//			},this), 
-//			attached: false
-//		};
-//		this.on('show-complete', this.showHints);
-//
 		this.on('epg-selection', this.onEpgSelection);
 	};
 	inherit(App, ListApp);
