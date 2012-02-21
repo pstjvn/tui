@@ -45,7 +45,8 @@ define({
 		module: 'apps/iptv',
         // Icons here are deprecated, all icons should be specified by apptag
         // property in the css appselector3.css
-		icon: 'imgs/start_screen_icon.png'
+		icon: 'imgs/start_screen_icon.png',
+		info: 'IPTV App implementation with EPG support'
 	},
 	vod: {
 		name: '',

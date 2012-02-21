@@ -47,6 +47,7 @@ function(tpl,applist, dom, classes, Mevents, sizes, exports, array, json) {
 		var dir = (bool)?'nextElementSibling':'previousElementSibling';
 		if ( currenScreen[dir] !== null && classes.hasClass(currenScreen[dir], 'approtator-item')) {
 			currenScreen =  currenScreen[dir];
+			updateBaloonInfo( applist[ dom.dataGet( currenScreen, 'appname')].info );
 			relocateTo(dom.dataGet(currenScreen, 'sequence'));
 		}
 	}
@@ -192,34 +193,20 @@ function(tpl,applist, dom, classes, Mevents, sizes, exports, array, json) {
 			func: addShortcutNow,
 			attached: false
 		}
-//		loadiptv: {
-//			name: 'video',
-//			func: function() {
-//				if (typeof applist['iptv'] === 'object') {
-//					tui.loadApp(applist['iptv']);
-//				}
-//			},
-//			attached: false,
-//		},
-//		loadonlineradio: {
-//			name: 'setup',
-//			func: function() {
-//				if (typeof applist['radio'] === 'object') {
-//					tui.loadApp(applist['radio']);
-//				}
-//			},
-//			attached: false
-//		},
-//		loadsetup: {
-//			name: 'setup',
-//			func: function() {
-//				if (typeof applist['setup'] === 'object') {
-//					tui.loadApp(applist['setup']);
-//				}
-//			},
-//			attached: false			
-//		}
 	};
+	var baloon = dom.create('p', {
+		classes: 'text-baloon'
+	});
+	
+	function updateBaloonInfo( text ) {
+		if ( text && text.length > 0 ) {
+			baloon.innerHTML = text;
+			dom.adopt(baloon);
+		} else {
+			dom.dispose(baloon);
+		}
+	}
+	
 	function showAppSel() {
 			tui.setContainerVisibility(true);
 			tui.setPanels(false, false);
@@ -227,6 +214,8 @@ function(tpl,applist, dom, classes, Mevents, sizes, exports, array, json) {
 			Mevents.addHandlers(moduleEvent);
 			dom.adopt(document.body, DOM);
 			relocateTo(dom.dataGet(currenScreen, 'sequence'));
+			updateBaloonInfo( applist[ dom.dataGet( currenScreen, 'appname' ) ].info );
+		
 			var a = dom.$('#maincontainer');
 			if (a !== null) classes.addClasses(a, 'obscure');
 	}
@@ -244,6 +233,7 @@ function(tpl,applist, dom, classes, Mevents, sizes, exports, array, json) {
 		Mevents.removeHandlers(moduleEvent);
 		SelectorState =  false
 		dom.dispose(DOM);
+		updateBaloonInfo();
 	}
 //	Exports
 	return {
