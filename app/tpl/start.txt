@@ -5,8 +5,6 @@
 			<br />	
 			<ul class="text">
 				<li>To select a screens press the &quot;Home&quot; button</li>
-				<li>Go thought the screens with the &quot;Up&quot; and &quot;Down&quot; arrows of the remote control</li>
-				<li>To select a screen press the &quot;OK&quot; button.</li>
 			</ul>
 		</div>
 	</div>
