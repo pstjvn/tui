@@ -35,7 +35,6 @@ define(['json/json'], function(json) {
 	 */
 	Socket.prototype.connect = function () {
 		if (this.socket) return;
-		console.log(this.url, this.protocol);
 		try {
 			this.socket = new WebSocket(this.url, this.protocol);
 		} catch(e) {

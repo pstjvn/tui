@@ -15,6 +15,7 @@ define(['types/types', 'array/array', 'dmc/smjs'], function(Mtypes, Marray, smjs
 		'delete',
 		'setup','video','audio'
 	];
+	var numbers =  ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
 	var defHandler = function(useraction) {};
 	var internalEventList = {};
 	events.forEach(function(useraction) {
@@ -81,6 +82,9 @@ define(['types/types', 'array/array', 'dmc/smjs'], function(Mtypes, Marray, smjs
 		},
 		showAll: function(){
 			console.log(internalEventList);
+		},
+		getNumberEvent: function() {
+			return numbers;
 		},
 		defaultEventAccepter: dispatchEvent,
 		initEvents: initEvents

@@ -4,7 +4,7 @@
 			<h1 class="welcome">WELCOME</h1>
 			<br />	
 			<ul class="text">
-				<li>To select a screens press the &quot;Home&quot; button</li>
+				<li>To select Features, press the &quot;Home&quot; button</li>
 			</ul>
 		</div>
 	</div>

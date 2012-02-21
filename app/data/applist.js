@@ -5,6 +5,18 @@
  * styling ( in appselector3.css and app/imgs/icon*)
  */
 define({
+	/**
+	* Those id are used for the shortcuts so
+	* if the user defines shortcut for welcome
+	* and you alter the key from welcome to something else
+	* the shortcut will not work any longer
+	*/
+	welcome: {
+		name: 'Welcome',
+		apptag: 'welcome',
+		module: 'apps/start',
+		info: 'Info baloon'
+	},
 	// In general this should be generated on the fly by the server,
 	// however we currently do not have this capability ready, 
     // so we will use static provide

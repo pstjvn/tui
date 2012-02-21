@@ -4,9 +4,15 @@
 */
 
 define(
-	[ 'tpl/appselector2','data/applist', 'dom/dom', 'dom/classes', 'utils/events', 'utils/sizes',
-	'env/exports'],
-function(tpl,applist, dom, classes, Mevents, sizes, exports) {
+	[ 'tpl/appselector2','data/applist', 'dom/dom', 'dom/classes', 'utils/events', 'utils/sizes', 'env/exports', 'array/array', 'json/json'],
+function(tpl,applist, dom, classes, Mevents, sizes, exports, array, json) {
+
+	var shortcuts;
+	if ( window.localStorage.hasOwnProperty('shortcuts') ) {
+		shortcuts = json.parse(window.localStorage.getItem('shortcuts'));
+	} else {
+		shortcuts = {};
+	}
 
 	var currenScreen, itemSize = 90, internalAppList = obj2array(applist), 
 		padding = sizes.pixelate(sizes.getSizesForAppselector(90).padding), 
@@ -44,21 +50,119 @@ function(tpl,applist, dom, classes, Mevents, sizes, exports) {
 			relocateTo(dom.dataGet(currenScreen, 'sequence'));
 		}
 	}
-	function selectApp( ) {
-		var a1 = dom.$('.obscure');
-		if (a1 !== null) classes.removeClasses(a1, 'obscure');
-		var a  = dom.dataGet(currenScreen, 'appname');
-		hideDOM();
-		tui.loadApp(applist[a]);		
+	
+	function updateSelectedAppInUI( module ) {
+		var i = 0, k, index;
+		for ( k in applist ) {
+			if ( applist[k] === module ) {
+				index = i;
+				break;
+			}
+			i++;
+		}
+		var all = dom.$$('.approtator-item', DOM);
+		currenScreen = all[ index ];
 	}
+	
+	function selectApp( module ) {
+		if ( typeof module === 'string') {
+			// we received key directly, find the cirrently visible
+			// active screen and use it
+			module = applist[dom.dataGet(currenScreen, 'appname')];
+		}
+		
+		var a1 = dom.$('.obscure');
+		if (a1 !== null) classes.removeClasses(a1, 'obscure');			
+		hideDOM();
+		tui.loadApp( module );		
+	}
+	
 	function getState() {
 		return SelectorState;
 	}
+	
+	function saveShortCut( key ) {
+		if (array.has( Mevents.getNumberEvent(), key )) {
+			shortcuts[key] = dom.dataGet( currenScreen, 'appname' );
+			window.localStorage.setItem( 'shortcuts',
+				json.serialize( shortcuts )
+			);
+		}
+		tui.signals.restoreEventTree( saveShortCut );
+	}
+	
+	function addShortcutNow() {
+		//steal events from global ev handler and expect number
+		// if anything else comes restore global events
+		// if number comes set shortcut and restore events
+		tui.stealEvents( saveShortCut );
+	}
+	
 	exports.exportSymbol('appselector', {
 		name: 'getState',
 		symbol: getState
 	});
+	
+	function executeShortCut( key ) {
+		if ( shortcuts[key] && applist[shortcuts[key]]) {
+			updateSelectedAppInUI( applist[ shortcuts[ key ] ] );
+			selectApp( applist[ shortcuts[ key ] ] );
+		}
+	}
+	
 	var moduleEvent = {
+	// Handle numeric input for shortcuts
+		one: {
+			name: 'one',
+			func: executeShortCut,
+			attached: false
+		},
+		two: {
+			name: 'two',
+			func: executeShortCut,
+			attached: false
+		},
+		three: {
+			name: 'three',
+			func: executeShortCut,
+			attached: false
+		},
+		four: {
+			name: 'four',
+			func: executeShortCut,
+			attached: false
+		},
+		five: {
+			name: 'five',
+			func: executeShortCut,
+			attached: false
+		},
+		six: {
+			name: 'six',
+			func: executeShortCut,
+			attached: false
+		},
+		seven: {
+			name: 'seven',
+			func: executeShortCut,
+			attached: false
+		},
+		eight: {
+			name: 'eight',
+			func: executeShortCut,
+			attached: false
+		},
+		nine: {
+			name: 'nine',
+			func: executeShortCut,
+			attached: false
+		},
+		zero: {
+			name: 'zero',
+			func: executeShortCut,
+			attached: false
+		},
+		//Handle other navigation
 		up: {
 			name: 'up',
 			func: function(key){
@@ -81,6 +185,11 @@ function(tpl,applist, dom, classes, Mevents, sizes, exports) {
 		loadApp: {
 			name: 'ok',
 			func: selectApp,
+			attached: false
+		},
+		addShortCut: {
+			name: 'pound',
+			func: addShortcutNow,
 			attached: false
 		}
 //		loadiptv: {

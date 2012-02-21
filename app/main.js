@@ -1,4 +1,6 @@
-//(function() {
+/**
+* Configure the requirejs env
+*/
 require.config({
 	baseUrl: "app",
 	paths: {
@@ -21,9 +23,9 @@ require.config({
 		"text": "../library/js/text",
 		"datetime/xdate": "../library/js/datetime/xdate"
 	},
+	// Remove this URI bust for production env
 	urlArgs: "bust=" + (new Date()).getTime()
 });
-//Requere the minimum set of dependencies and decorate the page with loading message
 
 //Require the response first because it provides global function that will be called from player and should be defined when calling request or player
 require(['transport/response'], function (response) {
@@ -34,19 +36,22 @@ require(['transport/response'], function (response) {
 
 /**
  * Require the interface now
- * Basically we want to load the minimum set first to assure user notification for loading and then load everything needed
+ * Basically we want to load the minimum set first to assure user 
+ * notification for loading and then load everything needed
  * to start processing the user input and display things on screen
  */
 require(['ui/throbber'], function(t) {
+	// Define some options
 	var options = {
 		debug: true,
 		nodejs: false,
 		version: '0.1',
 		useScale: false
 	};
-//	Fix the document dimenations and show loader first
+	// Fix the document dimenations and show loader first
 	document.body.style.width = window.innerWidth + 'px';
 	document.body.style.height = window.innerHeight + 'px';
+	
 	var loadIndicator = {
 		show: function(text) {
 			t.start({
@@ -61,7 +66,8 @@ require(['ui/throbber'], function(t) {
 	loadIndicator.show();
 	
 	
-//	After we are done with the loader, require some helpers and the main event dispatcher and start building the app
+	// After we are done with the loader, require some helpers 
+	// and the main event dispatcher and start building the app
 	require([
 		'utils/events', 
 		'dom/classes', 
@@ -76,39 +82,46 @@ require(['ui/throbber'], function(t) {
         'ui/simplescreenselector',
         'array/array'
 	], function(globalevents, classes, dom, Dialogs, bind, player, response, preloads, OSD, request, AS, array ) {
-//		Let the response handler for transport layer know where to direct key presses on the remote
+		// Let the response handler for transport layer 
+		// know where to direct key presses on the remote
 		response.setRemoteKeyHandler(globalevents.defaultEventAccepter);
-//		Load images offscreen after we have loaded the deps to avoid trapping the JS in the max Concurent Reqs of the browsser
+		
+		// Load images offscreen after we have loaded the deps 
+		// to avoid trapping the JS in the max Concurent Reqs of the browsser
 		dom.adopt(dom.create('div', {
 			classes: 'tui-component tui-preloader',
+			// List your images here!
 			html: '<img src="app/imgs/icon_set.png">'
 		}));
-//		Now, while the images are loading, create the TUI
-//		Create the main container
+		
+		// Now, while the images are loading, create the TUI
+		// Create the main container
 		dom.adopt(dom.create('div', {
 			id: 'maincontainer',
 			style: 'height: ' + window.innerHeight + 'px; width: ' + window.innerWidth + 'px; margin-top: 0; margin-bottom: 0'
 		}));
+		
 		var tNow = (new Date()).getTime();
         
         /**
          * Call for system settings, ie. the settings made from the browser 
-         * interface 
+         * interface inherited from Carbon implementation for LIST/MOSAIC
          */
-		var lll = request.create('calld', {
+		var l1 = request.create('calld', {
 			run: 'backend_json',
 			newif: 1
 		}); 
-		response.register(lll, function(res) {
+		response.register(l1, function(res) {
 			if ( res.status == 'OK') {
                 // Eval them in the global context as they do not include rjs 
                 // wrpaper
 				eval(res.content);
 			}
 		});
-		lll.send();
+		l1.send();
 		
-//		Create the main Controller
+		// Create the main Controller in global scope 
+		// FIXME: Make TUI work in rjs context 
 		window.tui = {
 			DATA_TS: {
 				CONFIG: tNow,
@@ -123,18 +136,20 @@ require(['ui/throbber'], function(t) {
 						tui.currentActiveApp.reload();
 					}
 				},
+				
 				refreshLists: function() {
 					tui.DATA_TS.LISTS = (new Date()).getTime();
 					if (this.listingApp.indexOf(tui.currentActiveApp.name) !== -1) {
 						tui.appModuleAdded(tui.currentActiveApp);
 					}
 				},
+				
 				restoreEventTree: function(fn) {
-                    console.log('*******Remove events', array.has(this.queue_, fn ));
                     array.remove(this.queue_, fn);
-                    console.log('******Removed event from tree:', this.queue_.length);
                     if (array.isEmpty(this.queue_)) {
-                        response.setRemoteKeyHandler( globalevents.defaultEventAccepter);
+                        response.setRemoteKeyHandler( 
+                        	globalevents.defaultEventAccepter
+                        );
                         this.eventsAreFetched = false;
                     } else {
                         response.setRemoteKeyHandler( array.last(this.queue_) );
@@ -142,53 +157,85 @@ require(['ui/throbber'], function(t) {
 				},
                 fetchEvents: function(fn) {
                     this.queue_.push(fn);
-                    console.log('******Added event to event tree:', this.queue_.length);
                     response.setRemoteKeyHandler(array.last(this.queue_));
                     this.eventsAreFetched = true;
                 },
 				eventsAreFetched: false
 
 			},
+			// Set the event handler to any function and overwrite the whole 
+			// handler stack, the stack is preserved and can be restored
             stealEvents: function(newManager) {
                 this.signals.fetchEvents(newManager);
 			},
+			
 			osdInstance: new OSD(),
+			// Preparation work for keyboard input from remote
+			// with built-in kbd
+			// This is not yet supported
 			keyboardIgnoredKeys: [34, 8, 46, 37, 38, 39, 40, 13, 36],
+			
 			defaultKeyboardInputHandler: function(ev) {
 				console.log(String.fromCharCode(ev.charCode));
 			},
+			
 			keyboardInputHandler_: function() {},
+			
 			resetKeyboardInputHandler: function() {
 				this.keyboardInputHandler_ = this.defaultKeyboardInputHandler;
 			},
+			
 			setKeyboardInputHandler: function(method) {
 				this.keyboardInputHandler_ = method;
 			},
+			
+			// Export switching channels in player mode 
 			fastSwitchChannels: function(up_down) {
 				if (up_down === 'down')
 					this.currentActiveApp.model.activateNextItem();
 				else 
 					this.currentActiveApp.model.activatePreviousItem();
 			},
+			
+			// The global player instance, use global instance to allow
+			// playing from any screen at any time, including remote playing 
+			// start
 			globalPlayer: new player(),
+			
+			// The default container for screen apps
 			mainContainer: dom.$('#maincontainer'),
+			
+			// The load indicator pointer
 			loadIndicator: loadIndicator,
+			
+			// The options defined
 			options: options,
+			
+			// The currently active app instance
 			currentActiveApp: null,
+			
+			// If we have an app that we are waiting to load for
 			appRequested: false,
+			
 			appModuleAdded: function(app) {
 				this.currentActiveApp = app;
 				if (!window.exportedSymbols['appselector'].getState())
 					app.Start();
 			},
-//			systemConfirm: function(options) {
-//				// TODO: make those confirm panels work
-////				var header = options.header.html;
-////				this.rerouteEventsToPanel();
-//			},
+			
+			// Exports the dialog creation to all modules
+			// Unifies the dialog creation interface
+			/**
+			* @param {string} type The dialog type
+			* @param {Array} options Optional list of visible options to present
+			* @param {function} callback The function to execute when dialog is
+				resolved
+			* @param {string} title The title to use for the dialog
+			* @patam {number} defaultOption The default option to select when
+				multiple choices are available
+			*/
 			createDialog: function(type, options, callback, title, defaultOption ) {
 				var dialog;
-
 				if (type === 'optionlist') {
 					dialog = new Dialogs.OptionList(type, options, callback, title, defaultOption);
 				} else if (['input', 'password', 'text'].indexOf(type) !== -1  ) {
@@ -200,23 +247,20 @@ require(['ui/throbber'], function(t) {
 				} else if (type === 'message') {
 					dialog = new Dialogs.MessageBox(type, title);
 				}
-//                var bound = bind(dialog.eventHandler, dialog);
                 dialog.show();
-//                this.stealEvents(bound);
-                return;
 			},
 			setPanels: function(top, bottom, opt_topContent, opt_bottomContent) {
 				return;
 				if (top) {
-	//				if (opt_topContent) {
-	//					this.panels.top.innerHTML = opt_topContent;
-	//				}
+					if (opt_topContent) {
+						this.panels.top.innerHTML = opt_topContent;
+					}
 					this.panels.top.style.top = '0px';
 					this.mainContainer.style.marginTop = '40px';
 				} else {
 					this.panels.top.style.top = '-40px';
 					this.mainContainer.style.marginTop = '0px';
-					//this.panels.top.innerHTML = '';
+					this.panels.top.innerHTML = '';
 				}
 				if (bottom) {
 					if (opt_bottomContent) {
@@ -230,6 +274,9 @@ require(['ui/throbber'], function(t) {
 					this.panels.infoBlock.innerHTML = '';
 				}
 			},
+			// Adds possibility to scale down the main container so another 
+			// UI component can take the visual focus
+			// DO NOT USE on M55, only on newer device for speed reasons
 			scaleContainer: function(bool) {
 				if (bool) {
 					//calculate for 20%
@@ -242,7 +289,8 @@ require(['ui/throbber'], function(t) {
 						var y1 = parseInt(((y * 20) / 100), 10);
 						var moveX = parseInt(x / 2, 10) - parseInt(x1 / 2, 10);
 						//var moveY = parseInt(y/2) - parseInt(y1/2);
-						var res = "scale(0.2) translateX(" + moveX * 5 + "px)"; //  + "translateY(-" + moveY * 5 + "px)"
+						var res = "scale(0.2) translateX(" + moveX * 5 + "px)"; 
+						//  + "translateY(-" + moveY * 5 + "px)"
 						this.mainContainer.style.webkitTransform = res;
 						this.mainContainer.style.MozTransform = res;
 					} else {
@@ -259,6 +307,9 @@ require(['ui/throbber'], function(t) {
 					}
 				}
 			},
+			
+			// Sets the main container opacity, useful to focus the user attn to
+			// another UI component, currently used by the app selector
 			setContainerVisibility: function(bool) {
 				if (bool) {
 					this.mainContainer.style.opacity = 0.2;
@@ -266,12 +317,13 @@ require(['ui/throbber'], function(t) {
 					this.mainContainer.style.opacity = 1;
 				}
 			},
+			
+			// Take care of the apps
 			apps: {
 				signals: function(signaltype, opts) {
 					switch (signaltype) {
 					case 'ready':
 						if (tui.currentActiveApp.name === opts.name) {
-							tui.logger.log('my currentlyactve app is ready, time to hide the throbber and call draw on my app');
 							tui.loadIndicator.hide();
 							tui.setContainerVisibility(false);
 							tui.currentActiveApp.Show(tui.mainContainer);
@@ -285,6 +337,7 @@ require(['ui/throbber'], function(t) {
 					}
 				}
 			},
+			
 			loadApp: function(appobj) {
 				this.loadIndicator.show('Loading ' + appobj.name + '...');
 				if (this.currentActiveApp !== null) {
@@ -298,6 +351,8 @@ require(['ui/throbber'], function(t) {
 					tui.appModuleAdded(appmodule);
 				});
 			},
+			
+			// TODO: implement direct screen selection, same as shortcuts
 			selectApp: function(apptag) {
 				console.log('Go select an app')
 				AS.remoteSelectScreen( apptag === 'video' ? 'iptv' : apptag === 'audio' ? 'radio': apptag );
@@ -305,12 +360,15 @@ require(['ui/throbber'], function(t) {
 		};
 		
 		
-//		Setup global return key to check for the player and route to it 
-//		This should be used when the user wants to use the UI while the player is playing, once done and he wants toLowerCase
-//		return to the player, he presses return, if return is not bound in the UI (which it should not be)
-//		the global return will hit, it will check if the player is active and reroute the events to it and hide the UI
-		
+		/**
+		* Define globally accessable keys
+		* All keys defined here will be available by default and if not 
+		* overridden by the active app
+		*/
 		globalevents.addHandlers({
+			/** 
+			* Handle the player visibility/activity
+			*/
 			globalreturn: {
 				name: 'display',
 				func: function() {
@@ -325,6 +383,9 @@ require(['ui/throbber'], function(t) {
 				},
 				attached: false
 			},
+			/**
+			* Handle stopping of player from everywhere
+			*/
 			globalstop: {
 				name: 'stop',
 				func: function() {
@@ -332,6 +393,9 @@ require(['ui/throbber'], function(t) {
 				},
 				attached: false
 			},
+			/**
+			* Handle direct screen choosing
+			*/
 			loadiptv: {
 				name: 'video',
 				func: tui.selectApp,
@@ -349,15 +413,13 @@ require(['ui/throbber'], function(t) {
 			}
 		});
 
-/**
- * Setup global window event for keyboard input and always route this to tui handlers
- */
+		/**
+		 * Setup global window event for keyboard input and always 
+		 * route this to tui handlers, useful for debugggin in browser env
+		 */
 		window.addEventListener('keypress', function(ev) {
 			tui.keyboardInputHandler_(ev);
 		}, false);
-//		tui.setKeyboardInputHandler(function(ev){
-//			console.log(String.fromCharCode(ev.charCode));
-//		});
 		window.addEventListener('keydown', function(ev) {
 			var key;
 			console.log(ev.keyCode);
@@ -413,11 +475,15 @@ require(['ui/throbber'], function(t) {
 		        }    
 		    });
 		});
+		
+		
 		if (tui.options.debug) {
 			window.DEBUG = {
 				popup: false
 			};
 		}
+		
+		
 		//Self invoking with timeout function to update the clock every minute
 		//TODO: Export it as it might need to be reset from the backend
 		var updateClock = (function() {
@@ -452,11 +518,13 @@ require(['ui/throbber'], function(t) {
 				style: 'bottom: -40px'
 			})
 		};
+		
 		//Setup clock 
 		tui.panels.bottom.appendChild(dom.create('div', {
 			html: '<h1></h1>',
 			classes: 'tui-component tui-systemclock'
 		}));
+		
 		//Start clock
 		updateClock(dom.$('.tui-systemclock h1', tui.panels.bottom));		
 		
@@ -465,12 +533,18 @@ require(['ui/throbber'], function(t) {
 			classes: 'tui-component tui-infoblock'
 		});
 		tui.systemClock = updateClock;
+		
 		//Attach pannels
 		dom.adopt(tui.panels.bottom, tui.panels.infoBlock);
 		dom.adopt(tui.panels.top);
 		dom.adopt(tui.panels.bottom);
+		
+		/**
+		* Utiliti function to preload some modules if needed,
+		* avoid this as it will slow down loading and do not use it in
+		* production, the code should be compiled instead
+		*/
 		function preloadApps() {
-			console.log(preloads);
 //			require(preloads.preloadsModules, function(varargs) {
 //				console.log('Modules loaded...');
 //			});
@@ -479,44 +553,52 @@ require(['ui/throbber'], function(t) {
 		function loadTUI() {
 			require(['ui/simplescreenselector'], function(Mappsel) {
 				require(['transport/response'], function(response) {
-//					window.transportReceiver = function(JSONString) {
-//						response.recall(JSONString);
-//					};
-					require(['app/paths/jsonpaths.js', 'data/applist', 'ui/player', 'tpl/infobuttons', 'ui/telephone'], function(paths, apps, player, itpl, Phone) {
+					require([
+						'app/paths/jsonpaths.js', 
+						'data/applist', 
+						'ui/player', 
+						'tpl/infobuttons', 
+						'ui/telephone'
+					], function( paths, apps, player, itpl, Phone ) {
 						tui.player = player;
 						tui.options.paths = paths;
 						tui.phone = Phone;
 						preloadApps();
-						console.log("we are ready, go now....");
 						tui.loadIndicator.hide();						
 //						Signal to backend that we are ready to receive signals
 						alert("app://dmcready");
-						tui.loadApp({
-							name: 'Start',
-							apptag: 'start',
-							module: 'apps/start',
-							icon: 'imgs/start_screen_icon.png'
-						});
-						tui.setPanels(false, true, false, itpl.render({
-							things: {
-								home: 'Home'
-							}
-						}));
+						/**
+						* Load an app screen directly after start, if you
+						* want to use this option disable the showing
+						* of the app selector on start, which is the default 
+						* behavior
+						*/
+//						tui.loadApp({
+//							name: 'Start',
+//							apptag: 'start',
+//							module: 'apps/start',
+//							icon: 'imgs/start_screen_icon.png'
+//						});
+						/**
+						* Coment this line if you want to load a default app
+						* in your STB implementation
+						*/
+						Mappsel.show();
+						/**
+						* This is useful only if you use panels
+						* diabled by default
+						*/
+//						tui.setPanels(false, true, false, itpl.render({
+//							things: {
+//								home: 'Home'
+//							}
+//						}));
 					});
 				});
 
 			});
 		}
-		//Request our logger utility and then the static loader
-		require(['debug/console'], function(logger) { 
-			tui.logger = logger.getInstance('main');
-			tui.logger.log('Load the intrinsic loader now..');
-			require(['loader/loader'], function(loader) {
-				tui.logger.log(['Loaded intrinsic loader', 'Should switch to jquery and net/xrh to be browser independent']);
-				//loader.loadCSS(['app/css/reset.css', 'app/css/appselector3.css', 'app/css/infobuttons.css'], loadTUI);
-				loadTUI();
-			});
-		});
+		loadTUI();
 	});
 });
 
