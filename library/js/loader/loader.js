@@ -4,9 +4,8 @@
  * @provides loadCSS
  * */
 
-define(['dom/dom', 'debug/console'], function(dom, logger) {
+define(['dom/dom'], function(dom) {
 	var loaded = [];
-	var pcli = logger.getInstance('loader');
 	function reduceList(arr) {
 		var a = [],
 			i;
@@ -32,7 +31,6 @@ define(['dom/dom', 'debug/console'], function(dom, logger) {
 
 		function isComplete() {
 			if (counter >= list.length) {
-				pcli.log(['Done loading css, loaded:', list]);
 				dom.adopt(dom.$('head'), dom.create('style', {
 					text: result
 				}));
@@ -73,7 +71,6 @@ define(['dom/dom', 'debug/console'], function(dom, logger) {
 				classes: 'tui-display-none'
 			});
 			a.onload = function() {
-				pcli.log('template loaded');
 				cb(this);
 			};
 			document.body.appendChild(a);
@@ -86,7 +83,6 @@ define(['dom/dom', 'debug/console'], function(dom, logger) {
 		loadCSS: function(list, cb) {
 			var cur = reduceList(list);
 			if (cur.length < 1) {
-				pcli.log('All those files are already laoded');
 				cb();
 			} else {
 				loadInStyle(cur, cb);

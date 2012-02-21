@@ -2,7 +2,14 @@
  * @fileoverview Provides reques abstraction for communication with the backend
  */
 
-define(['transport/requestdata', 'json/json', 'dmc/smjs'], function(request, json, smjs) {
+define([
+	'transport/requestdata', 
+	'json/json', 
+	'dmc/smjs',
+	'debug/logger'
+], function(request, json, smjs, 
+	Logger
+) {
 	/**
 	* Wrapper for JSON requests, it only provides the socket wrapper if needed, used only in browsers, will be stripped off when building
 	* @param {!String} run The method to set in the header
@@ -11,10 +18,15 @@ define(['transport/requestdata', 'json/json', 'dmc/smjs'], function(request, jso
 	var JSONRequest = function(run, data) {
 		this.json = request.create(run, data);
 	};
+	
+	// Add a logger for debug
+	JSONRequest.prototype.logger_ = new Logger('JSON Request');
+	
 	/**
 	* Returns the serialized data of the request object
 	* @return {JSONString}
 	*/
+	
 	JSONRequest.prototype.getRequestString = function() {
 		return json.serialize(this.json);
 	};
@@ -22,7 +34,7 @@ define(['transport/requestdata', 'json/json', 'dmc/smjs'], function(request, jso
 	 * Sends the request via the socket, first serializing it
 	 */
 	JSONRequest.prototype.send = function() {
-		console.log(this.getRequestString());
+		this.logger_.info(this.getRequestString());
 		smjs.jsoncmd(this.getRequestString());
 		this.disposeInternal();
 	};

@@ -9,7 +9,7 @@ if (typeof define !== 'function') {
 
 define([
 	'oop/inherit',
-	'oop/disposable'
+	'oop/idisposable'
 ],function(inherit, Disposable) {
 	/**
 	* @constructor

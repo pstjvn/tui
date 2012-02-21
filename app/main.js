@@ -21,6 +21,7 @@ require.config({
 		"debug": "../library/js/debug",
 		"array": "../library/js/array",
 		"text": "../library/js/text",
+		"string": "../library/js/string",
 		"datetime/xdate": "../library/js/datetime/xdate"
 	},
 	// Remove this URI bust for production env

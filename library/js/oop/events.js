@@ -1,8 +1,7 @@
 /**
  * @module oop/events Module that provides custom events in objects, use on constructor functions to add 'on' and 'fire' events on the prototype chain. 
  */
-define(['debug/console'], function(logger) {
-	var pcli = logger.getInstance('event support');
+define(function() {
 	//assume we will work with the prototype of the object (i.e. call with Object.prototype)
 	var registry = [];
 
@@ -10,13 +9,9 @@ define(['debug/console'], function(logger) {
 		this._eventRegistryLink = registry.length;
 		registry.push({});
 	}
-	function getEvents() {
-		pcli.log(this._eventRegistryLink);
-		pcli.log(registry[this._eventRegistryLink]);
-	}
+	function getEvents() {}
 
 	function fire(event, params) {
-		pcli.log('Fired event ' + event + ' in object with name ' + this.name);
 		var array, func, handler, i = 0,
 			type = typeof event === 'string' ? event : event.type,
 			n = this._eventRegistryLink;
