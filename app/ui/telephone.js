@@ -44,12 +44,9 @@ define([
 
 	};
 	
-	Phone.prototype.keyHandler = function(key) {
-		console.log('Key received in Phone', key)
-	};
+	Phone.prototype.keyHandler = function(key) {};
 		
 	Phone.prototype.updateLine = function(eventOptions) {
-		console.log("received update for the phone", eventOptions)
 		var linetxt = 'line' + eventOptions.line;
 		line = this.calls[linetxt];
 		line.number = eventOptions.callerid;

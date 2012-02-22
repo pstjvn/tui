@@ -132,9 +132,6 @@ define([
 			'newif': 1
 		}
 	});
-	Setup.fillContent = function(data) {
-		console.log(json.parse(data.content));
-		
-	};
+	Setup.fillContent = function(data) {};
 	return Setup;
 });

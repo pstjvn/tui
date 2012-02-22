@@ -21,7 +21,6 @@ request, response, json, strings){
 		this.appEvents.info = {
 			name: 'info',
 			func: bind(function() {
-				console.log('And index is ;',this.model.currentIndex)
 				if (this.epgInstance.isVisible()) {
 					this.epgInstance.hide();
 					this.presentation.unhide();
@@ -50,7 +49,6 @@ request, response, json, strings){
 		}
 	};
 	App.prototype.onEpgSelection = function( bool ) {
-		console.log('Epg direction',bool);
 		if ( this.epgInstance.isVisible()) {
 			this.epgInstance.selectEpg(bool);
 		}
@@ -94,7 +92,6 @@ request, response, json, strings){
 		}
 	};
 	App.prototype.scheduleSwitch = function(chanid, epgrecord, should) {
-        console.log('Takovata',arguments);
         if ( should === 1) {
             var req = request.create('calld', {
                 'run' : 'sched_save_json',
@@ -111,7 +108,6 @@ request, response, json, strings){
         
     };
     App.prototype.handleScheduleSave = function(res) {
-        console.log( 'Handle save schedule ', arguments );
         if ( res.status === 'OK' ) {
             var cont = json.parse(res.content);
             if ( cont.status !== 'OK' ) {

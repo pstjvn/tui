@@ -1,4 +1,4 @@
-define(['json/json'], function(json) {
+define(['json/json', 'debug/logger'], function(json, Logger) {
 	/**
 	 * Wraps the socket interface to abstract FF and chrome, also sets the listeners for socket events
 	 * @constructor
@@ -17,6 +17,8 @@ define(['json/json'], function(json) {
 		this.messageHandler = this.createMessageHandler(onMessage, messageContext);
 		this.connect();
 	};
+	
+	Socket.prototype.logger_ = new Logger('Socket');
 	/**
 	 * Create the handler to use onmessage
 	 * @private
@@ -41,7 +43,7 @@ define(['json/json'], function(json) {
 			try {
 				this.socket = new MozWebSocket(this.url, this.protocol);
 			} catch (e) {
-				console.log("Web socket is not supported");
+				this.logger_.warn("Web socket is not supported");
 				this.socket = null;
 				return;
 			}
@@ -69,7 +71,7 @@ define(['json/json'], function(json) {
 	 */
 	Socket.prototype.send = function(JSONString) {
 		if (!this.url) {
-			console.log('The Object is already disposed, probably connection was terminated or did not success');
+			this.logger_.error('The Object is already disposed, probably connection was terminated or did not success');
 			return;
 		}
 		if (typeof JSONString !== 'string') return;

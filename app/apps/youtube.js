@@ -8,8 +8,9 @@ define([
 	'tpl/youtube-partial',
 	'dom/dom',
 	'shims/bind',
-	'data/static-strings'
-], function(App, YTData, ytpartial, dom, bind, strings){
+	'data/static-strings',
+	'debug/logger'
+], function(App, YTData, ytpartial, dom, bind, strings, Logger){
     
     /**
      * Listing app that uses youtube as list source, can be used
@@ -22,6 +23,7 @@ define([
 		listType: 'youtube'
 	});
     
+    YouTube.logger_ = new Logger('YouTube');
     /**
      * Implement data loading steps.
      * Youtube returns too much information for each video, so requesting big 
@@ -97,7 +99,7 @@ define([
      * @param {number} sIndex The index is the selected item index 
      */
 	YouTube.handleDialogSelection = function(sIndex) {
-		console.log( 'selection is ', this.selectionDialogOptions.actions[sIndex]);
+		YouTube.logger_.info('selection is ', this.selectionDialogOptions.actions[sIndex]);
 		this.model.resetSource(this.selectionDialogOptions.actions[sIndex]);
 	};
 	

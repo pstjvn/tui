@@ -93,9 +93,7 @@ define([
 		if (this.container === null) {
 			return;
 		}
-		console.log('View rasterize');
 		if (!this.isRendered_ || force) {
-			console.log('Real rasterize');
 			if (typeof idx === 'undefined') idx = 0;
 			this.container.innerHTML = this.template.rasterize(this.app.model.get('list'),this.app.name);
 			this.dom = this.container.firstChild;

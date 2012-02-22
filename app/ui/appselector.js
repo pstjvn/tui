@@ -6,9 +6,9 @@
  * @deprecated
  */
 
-define(['tpl/appselector','data/applist', 'dom/dom', 'dom/classes', 'utils/events', 'debug/console'],
-function(tpl,applist, dom, classes, Mevents, logger) {
-	var pcli = logger.getInstance('appselector');
+define(['tpl/appselector','data/applist', 'dom/dom', 'dom/classes', 'utils/events', 'debug/logger'],
+function(tpl,applist, dom, classes, Mevents, Logger) {
+	var logger_ = new Logger('AppSelector');
 	var currenScreen;
 	function obj2array(obj) {
 		var a = [], k;
@@ -34,7 +34,7 @@ function(tpl,applist, dom, classes, Mevents, logger) {
 		}
 	}
 	function log(k) {
-		pcli.log(k.toUpperCase() + 'button activated for module AppSelector');
+		logger_.info(.toUpperCase() + 'button activated);
 	}
 	var moduleEvent = {
 		up: {
@@ -61,11 +61,11 @@ function(tpl,applist, dom, classes, Mevents, logger) {
 		loadApp: {
 			name: 'ok',
 			func: function(key) {
-				pcli.log('load an app');
+				logger_.fine('load an app');
 				var a1 = dom.$('.obscure');
 				if (a1 !== null) classes.removeClasses(a1, 'obscure');
 				var a  = dom.dataGet(currenScreen, 'appname');
-				pcli.log(applist[a]);
+				logger_.fine('Selected app from list app',applist[a]);
 				hideDOM();
 				tui.loadApp(applist[a]);
 			},

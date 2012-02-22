@@ -49,7 +49,6 @@ define([
 	 * @param {String} key The key pressed on the remote
 	 */
 	NS.prototype.keyHandler = function(key) {
-		console.log('received key for handling in miniscreen: ' + key);
 		switch (key) {
 		case 'up':
 			if (this.listIsActive) {
@@ -232,7 +231,6 @@ define([
 	 * @param {string} value The new value to be set
 	 */
 	NS.prototype.setValueByText = function(dataName, node, value) {
-		console.log(arguments);
 		if (value !== "") {
 			this.isDirty_ = true;
 			this.updates_[dataName] = value;
@@ -268,7 +266,6 @@ define([
 	 * @param {Number} confirmed 0 for Cancel, 1 for Ok
 	 */
 	NS.prototype.performAction = function(exe, confirmed) { 
-		console.log(arguments); 
 		if (confirmed === 1) {
 			var req = request.create('calld', exe);
 			response.register(req, bind(this.handleExecError, this));
@@ -280,9 +277,7 @@ define([
 	 *
 	 * @param {JSONObject} response The response of the error that we receive
 	 */
-	NS.prototype.handleExecError = function(response) {
-		console.log(arguments);
-	};
+	NS.prototype.handleExecError = function(response) {};
 	/**
 	 * Shows the list option of the currently active item, should be called only for items that are of type 'list'
 	 */
@@ -302,7 +297,6 @@ define([
 	 *
 	 */
 	NS.prototype.onActivate = function() {
-		console.log('On Activate fired');
 		if (this.selectedIndex === null) {
 			this.selectItem(0);
 		} else this.selectItem(this.selectedIndex);
@@ -313,7 +307,6 @@ define([
 	 */
 	NS.prototype.selectItem = function(index) {
 		var data = this.getData();
-		console.log(data);
 		if (index >= data.length || index < 0) return;
 		this.selectedIndex = index;
 		var dataNodes = dom.$$(this.dataCssSelector, this.dom_);
@@ -329,7 +322,6 @@ define([
 	 */
 	NS.prototype.render = function(renderIn) {
 		var data = this.getData();
-		console.log('im miniscreen json data is ', data);
 		var mydom = dom.getInnerNodes(this.template_.render({
 			items: this.master.getData(this.name),
 			transl: strings.screens.setup.header,

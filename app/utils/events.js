@@ -1,7 +1,13 @@
 /**
  * @module events Provides keyboard/remote key bindings for the TUI 
  */
-define(['types/types', 'array/array', 'dmc/smjs'], function(Mtypes, Marray, smjs){
+define([
+	'types/types', 
+	'array/array', 
+	'dmc/smjs',
+	'debug/logger'
+], function(Mtypes, Marray, smjs, Logger){
+	var logger_ = new Logger('SimpleAppSelector');
 	var events = [
 		'display',
 		'volup', 'voldown', 'mute',
@@ -81,7 +87,7 @@ define(['types/types', 'array/array', 'dmc/smjs'], function(Mtypes, Marray, smjs
 			ev_list;
 		},
 		showAll: function(){
-			console.log(internalEventList);
+			logger_.warn('Event registry dump:',internalEventList );
 		},
 		getNumberEvent: function() {
 			return numbers;

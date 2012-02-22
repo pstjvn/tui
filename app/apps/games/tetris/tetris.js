@@ -40,7 +40,6 @@
 	}
 	var knownKeys = ['up', 'down', 'left', 'right', 'play'];
 	window.remoteEvent = function(key) {
-		console.log('Remote event received in frame');
 		if (knownKeys.indexOf(key)!== -1) {
 			if (key === 'play') {
 				handlePlay();

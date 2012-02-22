@@ -25,9 +25,7 @@ define([
 			keys: opts.keys || []
 		};
 	};
-	TeleMini.prototype.keyHandler = function(key) {
-		console.log('Received key - please setup your own k h', key);
-	};
+	TeleMini.prototype.keyHandler = function(key) {};
 	TeleMini.prototype.disposeInternal = function() {
 		TeleMini.superClass_.disposeInternal.call(this);
 		delete this.keyHandler;

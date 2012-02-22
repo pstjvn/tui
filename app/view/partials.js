@@ -74,7 +74,6 @@ Partials.prototype.getAppName = function() {
  * @protected
  */
 Partials.prototype.rasterizeInternal = function ( data_index ) {
-	console.log('called rasterize');
 	if (this.container === null) return;
 	if (typeof data_index != 'undefined') this.dataIndex = data_index;
 	this.setPage();
@@ -147,7 +146,6 @@ Partials.prototype.activateItemInternal = function() {
  * @param {Number} data_index The index of the data to activate in presentation
  */
 Partials.prototype.activate = function( data_index ) {
-	console.log('The new requested index in presenation coming from model is : ', data_index);
 	if (this.getData().length > data_index ) {
 		this.dataIndex = data_index;
 		this.activateItemInternal();

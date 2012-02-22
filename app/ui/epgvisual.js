@@ -331,9 +331,7 @@ define([
     	}
     	return this.events_;
     };
-    Epg.prototype.eventHandler_ = function( ) {
-    	console.log(arguments);
-    };
+    Epg.prototype.eventHandler_ = function( ) {};
     
     /**
      * Updates the internal state of time, current time is set to now,

@@ -28,7 +28,6 @@ define([
 		this.selectedIndex = selectedIndex || 0;
 		this.interpretator = bind(this.acceptEvents, this);
 		this.signalEnd = function(signalType) {
-			console.log('In signal end');
 			destroySignal.call(context, signalType);};
 	};
 	inherit(MultipleSelection, Disposable);

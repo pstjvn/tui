@@ -157,7 +157,6 @@
 	
 	var knownKeys = ['left', 'up', 'right', 'down'];
 	window.remoteEvent = function(key) {
-		console.log('Remote event received in frame');
 		if (knownKeys.indexOf(key)!== -1) {
 			WrapKeys(key);
 		}

@@ -41,11 +41,9 @@ define([
 		} else {
 			switch (key) {
 				case 'return':
-					console.log('Hide the game')
 					this.endGame();
 					break;
 				default:
-					console.log('Transmit to game');
 					this.activeFrame.contentWindow.remoteEvent(key);
 			}
 		}

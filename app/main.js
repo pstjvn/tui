@@ -184,7 +184,7 @@ require(['ui/throbber'], function(t) {
 			keyboardIgnoredKeys: [34, 8, 46, 37, 38, 39, 40, 13, 36],
 			
 			defaultKeyboardInputHandler: function(ev) {
-				console.log(String.fromCharCode(ev.charCode));
+				this.logger_.ok(String.fromCharCode(ev.charCode));
 			},
 			
 			keyboardInputHandler_: function() {},
@@ -289,7 +289,6 @@ require(['ui/throbber'], function(t) {
 				if (bool) {
 					//calculate for 20%
 					if (this.options.useScale) {
-						console.log('SET SCALE');
 						this.mainContainer.className = 'scaled';
 						var x = parseInt(this.mainContainer.style.width, 10);
 						var y = parseInt(this.mainContainer.style.height, 10);
@@ -362,7 +361,6 @@ require(['ui/throbber'], function(t) {
 			
 			// TODO: implement direct screen selection, same as shortcuts
 			selectApp: function(apptag) {
-				console.log('Go select an app')
 				AS.remoteSelectScreen( apptag === 'video' ? 'iptv' : apptag === 'audio' ? 'radio': apptag );
 			}
 		};
@@ -430,7 +428,6 @@ require(['ui/throbber'], function(t) {
 		}, false);
 		window.addEventListener('keydown', function(ev) {
 			var key;
-			console.log(ev.keyCode);
 			switch (ev.keyCode) {
 				case 8:
 					//backspace

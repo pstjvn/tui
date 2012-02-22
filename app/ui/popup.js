@@ -307,11 +307,8 @@ define([
         }
     };
 	Input.prototype.eventHandler = function(key) {
-        console.log(1);
         if ( !this.useKbd ) {
-            console.log(2);
             if ( this.getNumberFromName( key ) > -1 ) {
-                console.log(3);
                 this.value = this.value + '' + this.getNumberFromName( key );
                 this.updateElement();
             } else {

@@ -14,7 +14,7 @@ Styles for the audio player, used when audio streams are played
 	left: 28px;
 }
 .audio-display {
-	height:50px;
+	height:20px;
 	display: -webkit-box;
 }
 .audio-icons {
@@ -48,7 +48,7 @@ Styles for the audio player, used when audio streams are played
 	width: 236px;
 	height: 23px;
 	position: relative;
-	top: 15px;
+	top: 2px;
 }
 .audio-fill-cutter {
 	overflow: hidden;
@@ -73,9 +73,10 @@ Styles for the audio player, used when audio streams are played
 	background-position: 0 50px;
 }
 .audio-time{
+	margin-left: 10px;
     font-weight: bold;
 	width: 200px;
-	top: 14px;
+	top: 0px;
 	color: #AAA;
 	height: 18px;
 	position: relative;
@@ -87,7 +88,8 @@ Styles for the audio player, used when audio streams are played
 .audio-title{
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(122, 122, 122, 1)), color-stop(100%,rgba(79, 79, 79, 1)));
 	border-radius: 7px;
-	margin: 3px 10px;
+/*	margin-left: 60px;*/
+	margin: 3px 3px 3px 60px;
 	border: 1px solid #999;
 	color: white;
 	line-height: 2;

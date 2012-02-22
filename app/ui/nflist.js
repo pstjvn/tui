@@ -72,7 +72,6 @@ define([
 	NFList.prototype.enterDom = function(opt_cont_box, force) {
 		this.app.fire('show-start');
         if ( force ) {
-            console.log('Bybas enter dom');
             this.dataPointer_ = 0;
             this.createTransElements_();
         } else {

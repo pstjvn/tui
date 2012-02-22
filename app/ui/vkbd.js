@@ -154,12 +154,10 @@ define([
 			case 'Del':
 			case 'delete':
 			case 'del':
-				console.log('delete key selected');
 				this.deleteCharacter();
 				break;
 			case 'Return':
 			case 'Enter':
-//				console.log('Return key selected, here we should submit probably');
 				if (typeof this.submitCallback === 'function') {
 					this.submitCallback(this.value);
 				}
@@ -169,7 +167,6 @@ define([
 				this.shiftMutate();
 				break;
 			default:
-//				console.log('Key was ', value);
 				this.addCharacter(value);
 		}		
 	};
@@ -281,7 +278,6 @@ define([
 	* @param {String} key The key that has been activated (i.e. the innerHTML of a virtual key)
 	*/
 	KBD.prototype.keyPress = function(key) {
-		console.log(key)
 		var i, result;
 		if (this.customKeyPressHandlers.length > 0 ) {
 			for ( i = 0; i< this.customKeyPressHandlers.length; i++ ) {

@@ -1,8 +1,3 @@
-/**
-* @module ui/simplescreenselector Simplified screen selector to work on older devices with less processing power, completely covers the functionality and can replace the original app selector, only it does not utilizes any transforamtion nor animations
-* @requires 'tpl/appselector2','data/applist', 'dom/dom', 'dom/classes', 'utils/events', 'debug/console', 'utils/sizes'
-*/
-
 define(
 	[ 'tpl/appselector2','data/applist', 'dom/dom', 'dom/classes', 'utils/events', 'utils/sizes', 'env/exports', 'array/array', 'json/json'],
 function(tpl,applist, dom, classes, Mevents, sizes, exports, array, json) {
