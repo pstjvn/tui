@@ -89,6 +89,7 @@ define([
 				break;
 			case LogKeeper.Levels.FINE:
 				name = putFine( name );
+                break;
 			default:
 				name = putOk( name );
 				break;

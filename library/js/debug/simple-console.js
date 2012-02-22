@@ -59,6 +59,7 @@ define([
 				break;
 			default:
 				consoleMethod = 'log';
+                break;
 		}
 		this.stream_[consoleMethod].apply(this.stream_, this.formatter_(log_record));
 

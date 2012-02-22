@@ -21,4 +21,4 @@ define(function() {
 		this.relativeTimeStart_ = time;
 	};
 	return new TimeProvider();
-})
+});

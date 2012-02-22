@@ -21,6 +21,11 @@ define([
 	'oop/inherit',
 	'debug/log-formaters'
 ], function(SimpleConsole, inherit, LogFormaters){
+
+    /**
+     * Implements text only console
+     * @constructor
+     */
 	var TextConsole = function() {
 		SimpleConsole.call(this);
 		this.formatter_ = LogFormaters.text;
@@ -36,8 +41,13 @@ define([
 		throw Error('NO console interface found, are you sure this is Tornado');
 	};
 	
+    /**
+     * Add new record to the debug console
+     * @param {LogRecord}
+     */
 	TextConsole.prototype.putRecord = function( log_record ) {
 		this.stream_.log( this.formatter_( log_record ) );
 	};
+
 	return TextConsole;
 });

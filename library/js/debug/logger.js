@@ -31,9 +31,8 @@ define([
 	 * @param {*} message The log message
 	 */
 	Logger.prototype.addRecord = function( level, message) {
-		LogKeeper.getInstance().addRecord(
-			new LogRecord( level, message, this.name )
-		);
+		LogKeeper.getInstance().addRecord( new LogRecord( level, 
+            message, this.name));
 	};
 
 	/**
