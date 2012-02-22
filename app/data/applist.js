@@ -15,7 +15,7 @@ define({
 		name: 'Welcome',
 		apptag: 'welcome',
 		module: 'apps/start',
-		info: 'Info baloon'
+		info: '<img style="margin-right: 10px;"src="app/imgs/warning.png" />Welcome Feature:<br> <span style="font-size: 80%">you can show branding information here or any important messages the user must see when the device is turned on.<br>The message can be text or HTML, images are also supported</span>'
 	},
 	// In general this should be generated on the fly by the server,
 	// however we currently do not have this capability ready, 
@@ -46,37 +46,43 @@ define({
         // Icons here are deprecated, all icons should be specified by apptag
         // property in the css appselector3.css
 		icon: 'imgs/start_screen_icon.png',
-		info: 'IPTV App implementation with EPG support'
+		info: 'IPTV Feature:<br> <span style="font-size: 80%">Provides live channels to watch and optionally includes EPG data for the provided channels</span>'
 	},
 	vod: {
 		name: '',
 		apptag: 'vod',
-		module: 'apps/vod'
+		module: 'apps/vod',
+		info: 'Video on Demand Feature<br><span style="font-size: 80%">Includes video files</span>'
 	},
 	ppv: {
 		name: '',
 		apptag: 'ppv',
-		module: 'apps/ppv'
+		module: 'apps/ppv',
+		info: 'Pey Per View Feature:<br> <span style="font-size: 80%">Includes video streams that are payed content</span>'
 	},
 	uservideo: {
 		name: '',
 		apptag: 'uservideo',
-		module: 'apps/uvideo'
+		module: 'apps/uvideo',
+		info: 'User Folders Feature:<br> <span style="font-size: 80%">Implements DLNA servise discovery and browsing</span>'
 	},
 	youtube: {
 		name: '',
 		apptag: 'youtube',
-		module: 'apps/youtube'
+		module: 'apps/youtube',
+		info: 'YouTube Feature:<br> <span style="font-size: 80%">Watch YouTube videos on your TV</span>'
 	},
 	aod: {
 		name: '',
 		apptag: 'aod',
-		module: 'apps/aod'
+		module: 'apps/aod',
+		info: 'Audio On Demand Feature:<br> <span style="font-size: 80%">Audio files and music</span>'
 	},
 	radio: {
 		name: '',
 		apptag: 'radio',
-		module: 'apps/radio'
+		module: 'apps/radio',
+		info: 'Online Radio:<br> <span style="font-size: 80%">List of online radio stations you can listent to on your TV set</span>'
 	},
     
     /**
@@ -92,16 +98,19 @@ define({
 	games: {
 		name: '',
 		apptag: 'games',
-		module: 'apps/games'
+		module: 'apps/games',
+		info: 'Games Feature:<br> <span style="font-size: 80%">Provides list of entertaining games to play on the TV</span>'
 	},
 	weather: {
 		name: '',
 		apptag: 'weather',
-		module: 'apps/weather'
+		module: 'apps/weather',
+		info: "Weather forecast"
 	},
 	setup: {
 		name: '',
 		apptag: 'setup',
-		module: 'apps/setup'
+		module: 'apps/setup',
+		info: 'Setup Feature:<br> <span style="font-size: 80%">Configurable device options</span>'
 	}
 });
