@@ -47,7 +47,8 @@ require(['ui/throbber'], function(t) {
 		debug: true,
 		nodejs: false,
 		version: '0.1',
-		useScale: false
+		useScale: false,
+		PANELS_ENABLED: false
 	};
 	// Fix the document dimenations and show loader first
 	document.body.style.width = window.innerWidth + 'px';
@@ -84,10 +85,7 @@ require(['ui/throbber'], function(t) {
         'array/array',
         // Put debug/logger on separate line to be able to strip it on build
         'debug/logger'
-	], function(globalevents, classes, dom, Dialogs, bind, player, response, preloads, OSD, request, AS, array, 
-	//Put Logger on separate line to be able to strip it on build
-	Logger
-) {
+	], function(globalevents, classes, dom, Dialogs, bind, player, response, preloads, OSD, request, AS, array, Logger) {
 		// Let the response handler for transport layer 
 		// know where to direct key presses on the remote
 		response.setRemoteKeyHandler(globalevents.defaultEventAccepter);
@@ -155,9 +153,7 @@ require(['ui/throbber'], function(t) {
 				restoreEventTree: function(fn) {
                     array.remove(this.queue_, fn);
                     if (array.isEmpty(this.queue_)) {
-                        response.setRemoteKeyHandler( 
-                        	globalevents.defaultEventAccepter
-                        );
+                        response.setRemoteKeyHandler( globalevents.defaultEventAccepter);
                         this.eventsAreFetched = false;
                     } else {
                         response.setRemoteKeyHandler( array.last(this.queue_) );
@@ -260,28 +256,29 @@ require(['ui/throbber'], function(t) {
                 dialog.show();
 			},
 			setPanels: function(top, bottom, opt_topContent, opt_bottomContent) {
-				return;
-				if (top) {
-					if (opt_topContent) {
-						this.panels.top.innerHTML = opt_topContent;
+				if ( this.options.PANELS_ENABLED ) {
+					if (top) {
+						if (opt_topContent) {
+							this.panels.top.innerHTML = opt_topContent;
+						}
+						this.panels.top.style.top = '0px';
+						this.mainContainer.style.marginTop = '40px';
+					} else {
+						this.panels.top.style.top = '-40px';
+						this.mainContainer.style.marginTop = '0px';
+						this.panels.top.innerHTML = '';
 					}
-					this.panels.top.style.top = '0px';
-					this.mainContainer.style.marginTop = '40px';
-				} else {
-					this.panels.top.style.top = '-40px';
-					this.mainContainer.style.marginTop = '0px';
-					this.panels.top.innerHTML = '';
-				}
-				if (bottom) {
-					if (opt_bottomContent) {
-						this.panels.infoBlock.innerHTML = opt_bottomContent;
+					if (bottom) {
+						if (opt_bottomContent) {
+							this.panels.infoBlock.innerHTML = opt_bottomContent;
+						}
+						this.panels.bottom.style.bottom = '0px';
+						this.mainContainer.style.marginBottom = '40px';
+					} else {
+						this.panels.bottom.style.bottom = '-40px';
+						this.mainContainer.style.marginBottom = '0px';
+						this.panels.infoBlock.innerHTML = '';
 					}
-					this.panels.bottom.style.bottom = '0px';
-					this.mainContainer.style.marginBottom = '40px';
-				} else {
-					this.panels.bottom.style.bottom = '-40px';
-					this.mainContainer.style.marginBottom = '0px';
-					this.panels.infoBlock.innerHTML = '';
 				}
 			},
 			// Adds possibility to scale down the main container so another 
@@ -407,7 +404,7 @@ require(['ui/throbber'], function(t) {
 			loadiptv: {
 				name: 'video',
 				func: tui.selectApp,
-				attached: false,
+				attached: false
 			},
 			loadonlineradio: {
 				name: 'audio',
