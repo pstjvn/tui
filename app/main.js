@@ -164,9 +164,11 @@ require(['ui/throbber'], function(t) {
                     }
 				},
                 fetchEvents: function(fn) {
-                    this.queue_.push(fn);
-                    response.setRemoteKeyHandler(array.last(this.queue_));
-                    this.eventsAreFetched = true;
+                	if (!array.has(this.queue_, fn)) {
+		                this.queue_.push(fn);
+		                response.setRemoteKeyHandler(array.last(this.queue_));
+		                this.eventsAreFetched = true;               		
+                	}
                 },
 				eventsAreFetched: false
 
