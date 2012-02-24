@@ -8,8 +8,9 @@ define([
 	'json/json',
 	'transport/request',
 	'transport/response',
-	'shims/bind'
-], function(LM, inherit, json, request, response, bind) {
+	'shims/bind',
+	'paths/jsonpaths'
+], function(LM, inherit, json, request, response, bind, jpaths) {
     
     /**
      * Override of the constructor to make it instance of this module
@@ -24,7 +25,7 @@ define([
      * @override 
      */
 	ListModel.prototype.loadData = function(o) {
-		var url = o.url || tui.options.paths.getPath(o.name, o.type);
+		var url = o.url || jpaths.getPath(o.name, o.type);
 		var req = request.create('calld', url);
 		response.register(req, bind(this.load, this, o));
 		req.send();

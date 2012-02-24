@@ -15,8 +15,10 @@ define([
 	'loader/loader',
 	'tpl/weather',
 	'transport/request',
-	'transport/grouprequest'
-], function(inherit, VisualApp, bind, exports, loader, template, request, GroupRequest){
+	'transport/grouprequest',
+	'paths/jsonpaths'
+], function(inherit, VisualApp, bind, exports, loader, template, request, 
+	GroupRequest, jpaths){
 	/**
 	 * The type of usints to use, 1 for Celsius, 0 for farenheight
 	 * @type {string}
@@ -96,8 +98,8 @@ define([
 			return;
 		}
 //        Support getting settings from Tornado settings storage
-		var req = request.create('calld', tui.options.paths.getPath(this.name, 'units'));
-		var req2 = request.create('calld', tui.options.paths.getPath(this.name, 'city'));
+		var req = request.create('calld', jpaths.getPath(this.name, 'units'));
+		var req2 = request.create('calld', jpaths.getPath(this.name, 'city'));
 		new GroupRequest(bind(this.loadJSON, this), req2, req);
 	};
 	

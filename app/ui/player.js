@@ -5,7 +5,6 @@
 
 define([
 	'transport/request',
-	'transport/response',
 	'shims/bind',
 	'data/static-strings',
 	'utils/events',
@@ -14,10 +13,12 @@ define([
 	'dom/dom',
 	'oop/mix',
     'utils/datetime',
-    'debug/logger'
-], function(request, response, bind, strings, events, array, tpl,  dom, mix, datetime,
-Logger
-) {
+    'debug/logger',
+    'ui/popup',
+    'utils/osd',
+    'env/exports'
+], function(request, bind, strings, events, array, tpl,  dom, mix, 
+datetime, Logger, Dialogs, Osd, exports) {
     
     /**
      * Define your theme here if you do not want to use the backend provided one
@@ -171,17 +172,17 @@ Logger
 				if (this.useVisualPlayer_) {
 					this.visualPlayer.setState('play');
 				} else {
-					tui.osdInstance.setContent(strings.player.states.playing + item.title, 5, 'play');
+					Osd.getInstance().setContent(strings.player.states.playing + item.title, 5, 'play');
 				}
 				break;
 			case 'buffering':
-				tui.osdInstance.setContent(strings.player.states.buffering + item.title, 5, 'buffering');
+				Osd.getInstance().setContent(strings.player.states.buffering + item.title, 5, 'buffering');
 				break;
 			case 'paused':
 				if (this.useVisualPlayer_) {
 					this.visualPlayer.setState('pause');
 				} else {
-					tui.osdInstance.setContent(strings.player.states.paused, 5, 'pause');
+					Osd.getInstance().setContent(strings.player.states.paused, 5, 'pause');
 				}
 				break;
 			default: break;
@@ -199,12 +200,14 @@ Logger
 		}
 		this.state = Player.dspStates[state];
         if (this.state === Player.STATES.STOPPED ) 
-            tui.signals.restoreEventTree(this.keyHandler);
+        	exportedSymbols.tui.instance.restoreEventTree(this.keyHandler);
+            //exportedSymbols.tui.instance.restoreEventTree(this.keyHandler);
 		if (old_state !== this.state) {
 			if (this.state === Player.STATES.STOPPED) {
 				this.disableVisual();
 			} else if (this.state === Player.STATES.PLAYING) {
-				tui.stealEvents(this.keyHandler);
+				exportedSymbols.tui.instance.stealEvents(this.keyHandler);
+//				exportedSymbols.tui.instance.stealEvents(this.keyHandler);
 				if ( Player.AUDIO_TYPES.indexOf( this.current_[0]['type']) !== -1 ) {
 
 					this.enableVisual(this.current_[0]['publishName']);
@@ -223,20 +226,25 @@ Logger
 		if (Player.fastSwitchKeys.indexOf(key)!==-1) {
 			events.defaultEventAccepter(key);
 		}
+		// This use of tui instance is NOT correct as the current app
+		// Might NOT have model... 
 		switch (key) {
 			case 'up':
 			case 'down':
-				if (key === 'up') {
-					tui.currentActiveApp.model.activatePreviousItem();
-				} else {
-					tui.currentActiveApp.model.activateNextItem();
+				if ( exportedSymbols.tui.instance.currentAppHasModelWithChannels()) {			
+					if (key === 'up') {
+						exportedSymbols.tui.instance.currentActiveApp.model.activatePreviousItem();
+					} else {
+						exportedSymbols.tui.instance.currentActiveApp.model.activateNextItem();
+					}
+					if (this.timeout_ !== null) {
+						clearTimeout(this.timeout_);
+					}
+					var newItemToPlay = exportedSymbols.tui.instance.currentActiveApp.model.getItem();
+					this.timeout_ = window.setTimeout(function() { 
+						exportedSymbols.tui.instance.currentActiveApp.fire('try-play', newItemToPlay);
+					}, 500);
 				}
-				if (this.timeout_ !== null) {
-					window.clearTimeout(this.timeout_);
-				}
-				this.timeout_ = window.setTimeout(function() { 
-					tui.currentActiveApp.fire('try-play', tui.currentActiveApp.model.getItem());
-				}, 500);
 				break;
 			case 'stop':
 				this.stop();
@@ -246,7 +254,7 @@ Logger
 				break;
 			case 'display':
 				if (this.state !== Player.STATES.STOPPED) {
-					tui.signals.restoreEventTree(this.keyHandler);
+					exportedSymbols.tui.instance.restoreEventTree(this.keyHandler);
 					if (!this.useVisualPlayer_) {
 						this.setVState( Player.VSTATE.TRANSLUSENT ) ;
 					} else {
@@ -310,6 +318,10 @@ Logger
 		this.playlist_ = dataSource;
 		this.shufflePlayList_ = shuffle;
 	};
+	Player.responseRegistry = null;
+	Player.setResponseRegistry  = function( responseRegistry ) {
+		Player.responseRegistry = responseRegistry;
+	};
 	/**
 	* Try to play object from listings
 	* @param {Object} obj A channel/Video/Audio object with playURI property
@@ -338,15 +350,15 @@ Logger
 					section: 'streaming',
 					'var': 'lockpass'
 				});
-				response.register(newreq, bind(this.setParentalPass, this));
+				Player.responseRegistry.register(newreq, bind(this.setParentalPass, this));
 				newreq.send();
 			}
 			if (typeof password !== 'string') {
-				tui.createDialog('password', false, bind(this.play, this, obj, resume), strings.components.dialogs.lock);
+				Dialogs.createDialog('password', false, bind(this.play, this, obj, resume), strings.components.dialogs.lock);
 				return;
 			}
 			else if ( password !== this.parentalPassword ) {
-				tui.createDialog('message', undefined, undefined, strings.components.dialogs.wrongPassword);
+				Dialogs.createDialog('message', undefined, undefined, strings.components.dialogs.wrongPassword);
 				return;
 			}
 		}
@@ -356,7 +368,7 @@ Logger
     				this.state = Player.STATES.STOPPED;
     				this.stop();
     			}
-                tui.createDialog( 'confirm', null, bind( this.play, this, obj, resume, password),
+                Dialogs.createDialog( 'confirm', null, bind( this.play, this, obj, resume, password),
                     strings.components.dialogs.confirmPay + obj.cost + obj.currency + '<br>'+obj.publishName
                 );
                 return;
@@ -380,7 +392,8 @@ Logger
 		}
 
 		newreq = request.create(play_command, {"url": obj.playURI, 'resume': resume, 'audio': isAudio});
-		response.register(newreq, bind(this.requestResultHandle, this,  obj.title, 'play') );
+		Player.responseRegistry.register(newreq, bind(this.requestResultHandle, this,  
+		exportedSymbols.tui.instance , obj.title, 'play') );
 		newreq.send();
 	};
 	Player.prototype.notifyOSD = function( obj ) {
@@ -443,8 +456,8 @@ Logger
 	* Handle for the request result (i.e. transport layer debug, no useful application yet)
 	* @param {JSONObject} data The data returned by transport layer response
 	*/
-	Player.prototype.requestResultHandle = function( title, icon) {
-		tui.osdInstance.setContent(strings.player.states.starting + title, 10, icon);
+	Player.prototype.requestResultHandle = function( tui, title, icon) {
+		Osd.getInstance().setContent(strings.player.states.starting + title, 10, icon);
 	};
 	/**
 	* Handles the events coming from transport layer communication, called via tui.globalPlayer.handleEvent, no need for context
@@ -481,5 +494,11 @@ Logger
 //        "opacity" : 0.85
 //    });
 //    r.send();
+	Player.instance_ = null;
+	Player.getInstance = function() {
+		if (Player.instance_ === null) Player.instance_ = new Player();
+		return Player.instance_;
+	}
+
 	return Player;
 });

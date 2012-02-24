@@ -7,7 +7,11 @@
  */
 define(['net/socket', 'appdebug/config'], function(socket, debugconfig) {
 //	Use this to specify the global transport entry point, used only in emulated environment
-	var defaultTransport_ = window.transportReceiver;
+	var defaultTransport_ = function() {
+		if ( typeof window.transportReceiver === 'function') {
+			window.transportReceiver.apply(null, Array.prototype.slice.call(arguments, 0));
+		}
+	};
 	if (typeof window.smjs != 'undefined') {
 		document.querySelector('html').className='m55';
 		return window.smjs;

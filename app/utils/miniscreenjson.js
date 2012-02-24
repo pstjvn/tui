@@ -8,8 +8,10 @@ define([
 	'transport/request',
 	'transport/response',
 	'shims/bind',
-	'json/json'
-], function(inherit, TScreen, dom, strings, classes, Scrollable, request, response, bind, json ) {
+	'json/json',
+	'ui/popup'
+], function(inherit, TScreen, dom, strings, classes, Scrollable, request, 
+response, bind, json, Dialogs ) {
 	/**
 	 * Subset of the TeleMini screen that handles the specifities of the config panel
 	 *
@@ -72,7 +74,7 @@ define([
 				this.deactivateItem();
 			} else {
 				if (this.isDirty_) {
-					tui.createDialog('confirm', undefined, bind(this.handleUpdateDataOnServer, this), strings.components.dialogs.confirmApply);
+					Dialogs.createDialog('confirm', undefined, bind(this.handleUpdateDataOnServer, this), strings.components.dialogs.confirmApply);
 				} else {
 					this.master.activateScreen(0);
 				}
@@ -114,7 +116,7 @@ define([
 		if (response['status'] === 'OK') {
 			var res = json.parse(response['content']);
 			if (res['status'].toLowerCase() !== 'ok') {
-				tui.createDialog('message', undefined, undefined, strings.components.dialogs.updateFailed + res['message']);
+				Dialogs.createDialog('message', undefined, undefined, strings.components.dialogs.updateFailed + res['message']);
 			} else {
 				delete this.isDirty_;
 				this.updates_ = null;
@@ -201,20 +203,20 @@ define([
 				break;
 			case 'action':
 				if (data['action'] == 'confirm') {
-					tui.createDialog('confirm', undefined, bind(this.performAction, this, data['exec']), data['actiontitle']);
+					Dialogs.createDialog('confirm', undefined, bind(this.performAction, this, data['exec']), data['actiontitle']);
 				} else if (data['action'] == 'prompt') {
 					if (data['prompttype']== 'text') {
-						tui.createDialog('input', true, bind(this.setValueByText, this, data['name'], this.getDataNodes()[index]), data['help']);
+						Dialogs.createDialog('input', true, bind(this.setValueByText, this, data['name'], this.getDataNodes()[index]), data['help']);
 					} else if( data['prompttype'] == 'ip' ) {
-						tui.createDialog('ip', false, bind(this.setIpAddress, this), data['help']);
+						Dialogs.createDialog('ip', false, bind(this.setIpAddress, this), data['help']);
 					}
 				}
 				break;
 			case 'password':
-				tui.createDialog('password', true, bind(this.setPassWord, this, data['name'],  0), strings.common.new_password);
+				Dialogs.createDialog('password', true, bind(this.setPassWord, this, data['name'],  0), strings.common.new_password);
 				break;
 			case 'string':
-				tui.createDialog('input', true, bind(this.setValueByText, this, data['name'], this.getDataNodes()[index]), data['publishName']);
+				Dialogs.createDialog('input', true, bind(this.setValueByText, this, data['name'], this.getDataNodes()[index]), data['publishName']);
 				break;
 			default:
 				break;
@@ -250,7 +252,7 @@ define([
 			this.isDirty_ = true;
 			this.updates_[dataName] = pass;
 			if (index === 0) {
-				tui.createDialog('password', true, bind(this.setPassWord, this, dataName + '2', 1), strings.common.old_password);
+				Dialogs.createDialog('password', true, bind(this.setPassWord, this, dataName + '2', 1), strings.common.old_password);
 			}
 		} else {
 			if (index === 1) {

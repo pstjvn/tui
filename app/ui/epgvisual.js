@@ -539,7 +539,7 @@ define([
     };
     
     Epg.setupContainer = function(element) {
-    	var mc = document.getElementById('maincontainer');
+    	var mc = document.querySelector('#maincontainer');
     	element.style.width = parseInt(mc.style.width, 10) + 'px';
     	element.style.height = parseInt( mc.style.height, 10) + 'px';
     	element.style.position = 'absolute';
@@ -561,7 +561,7 @@ define([
     };
     //OVERRIDE
     Epg.prototype.setupContainerInternal = function(container) {
-    	Epg.setupContainer( container || this.container_);
+    	Epg.setupContainer( container || this.getContainer_());
     };
     Epg.prototype.getContainer_ = function() {
     	if (this.container_ === null) {

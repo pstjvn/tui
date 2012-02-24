@@ -5,7 +5,9 @@ define({
 	common: {
 		refresh: 'Reloading ',
 		old_password: "Your old password",
-		new_password: "Your new password"
+		new_password: "Your new password",
+		load_indication: "Loading ",
+		initial_load_indication: "Loading TUI..."
 	},
 	player: {
 		states: {

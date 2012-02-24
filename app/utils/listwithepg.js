@@ -11,9 +11,12 @@ define([
     'transport/request', 
     'transport/response',
     'json/json',
-    'data/static-strings'
-], function(inherit, ListApp, Epg, bind, infobuttonstpl, cloner, datetime, dom, Xdate,
-request, response, json, strings){
+    'data/static-strings',
+    'tui/tui',
+    'ui/player',
+    'ui/popup'
+], function(inherit, ListApp, Epg, bind, infobuttonstpl, cloner, datetime, 
+dom, Xdate, request, response, json, strings, TUI, Player, Dialogs){
 	var App = function(opts){
 		ListApp.call(this, opts);
 		this.epgInstance = new Epg(this.model, ListApp.remoteKeys_);
@@ -55,7 +58,7 @@ request, response, json, strings){
 	};
 	App.prototype.showHints = function() {
 		if (this.hints) {
-			tui.setPanels(false, true, undefined, infobuttonstpl.render({
+			TUI.getInstance().setPanels(false, true, undefined, infobuttonstpl.render({
 				things: this.hints
 			}));
 		}
@@ -111,12 +114,12 @@ request, response, json, strings){
         if ( res.status === 'OK' ) {
             var cont = json.parse(res.content);
             if ( cont.status !== 'OK' ) {
-                tui.createDialog( 'message', undefined, undefined, strings.screens.iptv.errors.cannotSchedule );
+                Dialogs.createDialog( 'message', undefined, undefined, strings.screens.iptv.errors.cannotSchedule );
             } else {
-                tui.createDialog( 'message', undefined, undefined, strings.screens.iptv.errors.scheduled );
+                Dialogs.createDialog( 'message', undefined, undefined, strings.screens.iptv.errors.scheduled );
             }
         } else {
-            tui.createDialog( 'message', undefined, undefined, strings.screens.iptv.errors.cannotSchedule );
+            Dialogs.createDialog( 'message', undefined, undefined, strings.screens.iptv.errors.cannotSchedule );
         }
     };
 	App.prototype.epgFrameSeparator_ = ' - ';
@@ -130,7 +133,7 @@ request, response, json, strings){
                 var index = parseInt(dom.dataGet(this.epgInstance.currentEpgElement_, 'index'),10);
                 var startTime = epgdata[ index ][1];
                 if ( (Xdate.now()).isEarlierThan( startTime ) ) {
-                    tui.createDialog('confirm',undefined, bind(this.scheduleSwitch, this, clone.id, epgdata[index]), 'Shedule program switch');
+                    Dialogs.createDialog('confirm',undefined, bind(this.scheduleSwitch, this, clone.id, epgdata[index]), 'Shedule program switch');
                     return;
                 } 
             }
@@ -147,7 +150,7 @@ request, response, json, strings){
         }
         clone.epg = epg;
         clone.title = clone.id + '. ' + clone.publishName;
-        tui.globalPlayer.play(clone, resume);          
+       	Player.getInstance().play(clone, resume);          
 	};
 	App.prototype.updateItem = function( index, obj ) {
 		App.superClass_.updateItem.call( this, index, obj );

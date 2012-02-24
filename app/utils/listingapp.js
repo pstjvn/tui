@@ -2,8 +2,13 @@ define(['oop/inherit', 'utils/visualapp', 'model/listmodel2', 'view/mosaicpresen
 // 'net/simplexhr',
 'data/static-strings', 'transport/request', 'transport/response',
 'json/json', 'view/partials', 'oop/clone',
-	'ui/nflist'],
-function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, request, response, json, Partials, cloner, NFList) {
+	'ui/nflist',
+	'paths/jsonpaths',
+	'tui/tui',
+	'ui/popup',
+	'ui/player'
+], function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings,
+request, response, json, Partials, cloner, NFList, jpaths, TUI, Dialogs, Player) {
 	var ListApp = function(options) {
 		VisualApp.call(this, options);
 		this.numericTimeout_ = null;
@@ -64,7 +69,7 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
             clone.title = '[' + clone.id + '] ' + ( clone.publishName || '');
         } else clone.title = (clone.publishName || '');
 		clone.epg=[];
-		tui.globalPlayer.play(clone, resume);
+		Player.getInstance().play(clone, resume);
 	};
 	ListApp.prototype.onSelectionChanged = function(objectWithIndex) {
 		this.model.currentIndex = objectWithIndex.index;
@@ -113,18 +118,17 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 		var nDigit = ListApp.numerics_.indexOf(digit);
 		window.clearTimeout(this.numericTimeout_);
 		this.selectChannelIndex += nDigit.toString();
-		tui.osdInstance.setContent(this.selectChannelIndex, 3);
+		TUI.osdInstance.setContent(this.selectChannelIndex, 3);
 		this.numericTimeout_ = window.setTimeout(bind(this.goToChannel, this), 3000);
 	};
 	ListApp.prototype.goToChannel = function(channelIndex) {
-
 		var find = this.selectChannelIndex;
 		this.selectChannelIndex = '';
 		this.numericTimeout_ = null;
 		var data = this.model.get();
 		var i;
 		for( i = 0; i < data.length; i++) {
-			if(data[i].sortIndex == find) {
+			if(data[i].id == find) {
 				this.model.selectByIndex(i);
 				this.fire('try-play', this.model.getItem());
 				break;
@@ -132,7 +136,7 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 		}
 	};
 	ListApp.prototype.defaultStartRequested = function() {
-		if(!this.model.isLoaded || ( this.model.lastLoadedTS !== null && this.model.lastLoadedTS < tui.DATA_TS.LISTS)) {
+		if(!this.model.isLoaded || ( this.model.lastLoadedTS !== null && this.model.lastLoadedTS < TUI.getInstance().lastRefreshTimeStamp_)) {
 			this.model.loadData({
 				name : this.name,
 				type : 'list'
@@ -175,7 +179,7 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 			options.push( strings.lists.sorting[ item ] );
 		});
 		options.push( strings.components.dialogs.cancel );
-		tui.createDialog( 'optionlist', options, bind( this.handleSorting, this ), strings.lists.sorting.title );
+		Dialogs.createDialog( 'optionlist', options, bind( this.handleSorting, this ), strings.lists.sorting.title );
 	};
 
 	/**
@@ -224,7 +228,7 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 			options : options,
 			actions : actions
 		};
-		tui.createDialog('optionlist', this.dialogInstance.options, bind(this.handleDialogSelection, this), strings.components.dialogs.select);
+		Dialogs.createDialog('optionlist', this.dialogInstance.options, bind(this.handleDialogSelection, this), strings.components.dialogs.select);
 	};
 	ListApp.prototype.handleDialogSelection = function(selectedIndex) {
 		var action;
@@ -233,7 +237,7 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 			switch (this.dialogInstance.action) {
 				case 'lock':
 				case 'unlock':
-					tui.createDialog('password', false, bind(this.acceptPass, this), strings.components.dialogs.lock);
+					Dialogs.createDialog('password', false, bind(this.acceptPass, this), strings.components.dialogs.lock);
 					break;
 
 				case 'bookmark':
@@ -258,7 +262,7 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 		}
 	};
 	ListApp.prototype.acceptPass = function(val) {
-		var urlconf = tui.options.paths.getPath(this.dialogInstance.action);
+		var urlconf = jpaths.getPath(this.dialogInstance.action);
 		var url = {
 			'run' : urlconf.run,
 			'sig' : urlconf.sig,
@@ -292,7 +296,7 @@ function(inherit, VisualApp, ListModel, MosaicPresentation, bind, strings, reque
 			}
 			this.updateItem(index, obj);
 		} else {
-			tui.createDialog('message', undefined, undefined, strings.lists.actionFailed);
+			Dialogs.createDialog('message', undefined, undefined, strings.lists.actionFailed);
 		}
 
 	};

@@ -25,5 +25,12 @@ define([
 		OFF: 1,
 		ON: 2 
 	};
+	OSD.instance_ = null;
+	OSD.getInstance = function() {
+		if ( OSD.instance_ === null ) {
+			OSD.instance_ = new OSD();
+		}
+		return OSD.instance_;
+	};
 	return OSD;
 });

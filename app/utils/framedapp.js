@@ -31,7 +31,7 @@ define([
 		GamesApp.superClass_.onStopRequested.call(this);
 	};
 	GamesApp.prototype.showInfoPanel = function() {
-		tui.setPanels(false, true, undefined, infobuttonstpl.render({
+		exportedSymbols.tui.instance.setPanels(false, true, undefined, infobuttonstpl.render({
 			things: this.hints.general
 		}));
 	};
@@ -61,15 +61,15 @@ define([
 		dom.adopt(this.gamelayer, this.activeFrame);
 		dom.adopt(this.gamelayer);
 		if (this.hints[gameObj.publishName]) {
-			tui.setPanels(false, true, undefined, infobuttonstpl.render({
+			exportedSymbols.tui.instance.setPanels(false, true, undefined, infobuttonstpl.render({
 				things: this.hints[gameObj.publishName]
 			}));
 		} else {
-			tui.setPanels(false, false);
+			exportedSymbols.tui.instance.setPanels(false, false);
 		}
 	};
 	GamesApp.prototype.endGame = function() {
-		tui.setPanels(false, false);
+		exportedSymbols.tui.instance.setPanels(false, false);
 		dom.dispose(this.gamelayer);
 		this.gamelayer.innerHTML = '';
 		this.activeFrame.onload = null;

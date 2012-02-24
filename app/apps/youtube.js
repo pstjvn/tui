@@ -9,8 +9,9 @@ define([
 	'dom/dom',
 	'shims/bind',
 	'data/static-strings',
-	'debug/logger'
-], function(App, YTData, ytpartial, dom, bind, strings, Logger){
+	'debug/logger',
+	'ui/popup'
+], function(App, YTData, ytpartial, dom, bind, strings, Logger, Popups){
     
     /**
      * Listing app that uses youtube as list source, can be used
@@ -85,7 +86,7 @@ define([
 	YouTube.appEvents.play = {
 		name: 'play',
 		func: bind(function() {
-			tui.createDialog('optionlist', 
+			Popups.createDialog('optionlist', 
                 this.selectionDialogOptions.options, 
                 bind(this.handleDialogSelection, this), 
                 strings.components.dialogs.ytube.select

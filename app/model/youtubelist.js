@@ -9,8 +9,9 @@ define([
 	'env/exports', 
 	'shims/bind',
 	'loader/loader',
-	'data/static-strings'
-], function( Listmodel, inherit, exports, bind, loader, strings) {
+	'data/static-strings',
+	'ui/popup'
+], function( Listmodel, inherit, exports, bind, loader, strings, Popup) {
     
     /**
      * YouTube storage model
@@ -54,7 +55,7 @@ define([
 	YTData.prototype.resetSource = function(identifier, querystring) {
 		if (YTData.urls[identifier]) {
 			if (identifier === 'search_url' && typeof  querystring !== 'string' ) {
-				tui.createDialog('input', 
+				Popup.createDialog('input', 
                     true, 
                     bind(this.resetSource, this, identifier), 
                     strings.components.dialogs.ytube.searchquery

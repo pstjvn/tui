@@ -3,7 +3,7 @@
  * the global 'tui' component
  */
 
-define(['oop/inherit', 'oop/ievent'], function(inherit, EventBase){
+define(['oop/inherit', 'oop/ievent', 'tui/tui'], function(inherit, EventBase, TUI){
     
     /**
      * Basic app sceleton
@@ -62,8 +62,8 @@ define(['oop/inherit', 'oop/ievent'], function(inherit, EventBase){
      * method. 
      */
 	App.prototype.setStateReady = function() {
-		tui.apps.signals('ready', {
-			name: this.name
+		TUI.getInstance().handleAppSignals('ready', {
+			name : this.name
 		});
 	};
     

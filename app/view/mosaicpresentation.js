@@ -9,8 +9,9 @@ define([
 	'view/listtemplate',
 	'view/youtubetemplate',
 	'oop/idisposable',
-	'oop/inherit'
-], function(dom, attr, classes, MosaicTemplate, ListTemplate, YouTubeTemplate, Disposable, inherit) {	
+	'oop/inherit',
+	'tui/tui'
+], function(dom, attr, classes, MosaicTemplate, ListTemplate, YouTubeTemplate, Disposable, inherit, TUI) {	
 	function getContainerRestrains(container) {
 		var s = window.getComputedStyle(container, null);
 		return {
@@ -111,8 +112,8 @@ define([
 		if (a !== null) classes.removeClasses(a, 'current');
 		classes.addClasses(collxn[i], 'current');
 		//add checks here for scxroll into view
-		var margint = parseInt(tui.mainContainer.style.marginTop, 10);
-		var marginb = parseInt(tui.mainContainer.style.marginBottom, 10);
+		var margint = parseInt(TUI.getInstance().getContainer().style.marginTop, 10);
+		var marginb = parseInt(TUI.getInstance().getContainer().style.marginBottom, 10);
 		var mosaicContainer = dom.$('.list-container');
 		var offsetTop = collxn[i].offsetTop;
 		var parentTop = parseInt(mosaicContainer.style.top, 10)  || 0;

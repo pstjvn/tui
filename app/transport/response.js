@@ -4,8 +4,10 @@
  */
 
 define([
-	'debug/logger'
-],function( Logger ) {
+	'debug/logger',
+	'ui/popup',
+	'ui/player'
+],function( Logger, Dialogs, Player ) {
 	var RemoteKeyHandler = null;
 	var STATUS = {
 		OK: 'OK',
@@ -40,10 +42,10 @@ define([
 		case 'event':
 			switch (this.json['header']['method']) {
 				case 'media':
-					tui.globalPlayer.handleEvent(this.json);
+					Player.getInstance().handleEvent(this.json);
 					break;
 				case 'player':
-					tui.globalPlayer.handleEvent(this.json);
+					Player.getInstance().handleEvent(this.json);
 					break;
 				case 'remote':
 					if (RemoteKeyHandler !== null) {
@@ -51,7 +53,7 @@ define([
 					}
 					break;
                 case 'msgbox':
-                    tui.createDialog('message', undefined, undefined, this.json['event']['title'] + '<br>' +this.json['event']['message']);
+                    Dialogs.createDialog('message', undefined, undefined, this.json['event']['title'] + '<br>' +this.json['event']['message']);
                     break;
 				case 'telephony':
 					window.exportedSymbols['telephony']['setLineStatus'](this.json['event']);
@@ -59,10 +61,10 @@ define([
 				case 'cmd':
 					switch (this.json['event']['action']) {
 						case 'reloadconfig':
-							tui.signals.refreshConfig();
+							exportSymbols.tui.instance.refreshConfig();
 							break;
 						case 'refreshdata':
-							tui.signals.refreshLists();
+							exportSymbols.tui.instance.refreshLists();
 							break;
 						case 'reloadinterface':
 							this.logger_.info("Reload interface came from remote");
@@ -94,7 +96,7 @@ define([
 		delete this.json;
 	};
     
-	return {
+	responseRegistry = {
 		register: function(Request, callback, context) {
 			Register[Request.json["header"]["tag"]] = [ callback, context ];
 		},
@@ -108,4 +110,6 @@ define([
             return RemoteKeyHandler;
         }
 	};
+	Player.setResponseRegistry( responseRegistry );
+	return responseRegistry;
 });

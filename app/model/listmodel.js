@@ -12,8 +12,12 @@ define([
 	'shims/bind',
 	'ui/simplescreenselector',
 	'transport/request',
-	'data/static-strings'
-], function(types, array, Disposable, inherit, xhr, bind, appsel, request, strings){
+	'data/static-strings',
+	'paths/jsonpaths',
+	'ui/load-indicator',
+	'tui/tui'
+], function(types, array, Disposable, inherit, xhr, bind, appsel, request, 
+strings, jpaths, LoadIndicator, TUI){
 	
     /**
      * Storage implementation
@@ -43,7 +47,7 @@ define([
      * @param {Object} o Object
      */
 	Storage.prototype.loadData = function(o) {
-		var url = o.url || tui.options.paths.getPath(o.name, o.type);
+		var url = o.url || jpaths.getPath(o.name, o.type);
 		var that = this;
 		xhr.get(url, function(text) {
 			that.load(text, o);
@@ -131,7 +135,7 @@ define([
 				'run':'refresh_media_json'
 			});
 			req.send();
-			tui.loadIndicator.show(strings.common.refresh + this.app.name.toUpperCase());
+			LoadIndicator.show(strings.common.refresh + this.app.name.toUpperCase());
 			break;
 		default: break;
 		}
@@ -335,7 +339,7 @@ define([
 				if (array.isEmpty(this.history)) this.pointer = this.data.list;
 				this.isLoaded = true;
 				this.lastLoadedTS = (new Date()).getTime();
-				if (this.lastLoadedTS > tui.DATA_TS.LISTS) {
+				if (this.lastLoadedTS > TUI.getInstance().lastRefreshTimeStamp_ ) {
 					this.pointer = this.data.list;
 				}
 				break;

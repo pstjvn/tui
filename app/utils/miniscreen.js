@@ -47,7 +47,7 @@ define([
 				for ( var i = 0; i <this.panelSetup.keys.length; i++) {
 					things[this.panelSetup.keys[i]] = strings.screens[this.name].panels.bottom[this.panelSetup.keys[i]];
 				}
-				tui.setPanels(this.panelSetup.top, this.panelSetup.bottom, undefined,  infobuttonstpl.render({things:things}));
+				exportedSymbols.tui.instance.setPanels(this.panelSetup.top, this.panelSetup.bottom, undefined,  infobuttonstpl.render({things:things}));
 			}
 		}
 	};

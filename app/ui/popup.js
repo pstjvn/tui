@@ -19,7 +19,8 @@ define([
 	'ui/vkbd',
 	'array/array',
 	'shims/bind'
-], function (dom, tpl, Disposable, inherit, classes, domattr, KBD, array, bind){
+], function (dom, tpl, Disposable, inherit, classes, domattr, KBD, array, 
+bind){
     
     /**
      * Provides basic popup, you should probably augment this object
@@ -73,7 +74,7 @@ define([
      * from the children if you want the dialogs to behave in the TUI
      */
 	Popup.prototype.destroyer = function() { 
-        tui.signals.restoreEventTree(this.getEventHandler());
+        exportedSymbols.tui.instance.restoreEventTree(this.getEventHandler());
     };
 	
     /**
@@ -97,10 +98,10 @@ define([
 			useDefaultButtons: this.useOkCancel
 		});
 		dom.adopt(this.container, this.dom_);
-        tui.stealEvents(this.getEventHandler());
+        exportedSymbols.tui.instance.stealEvents(this.getEventHandler());
 //        Make sure the player is not hiding us (1 means translucent )
 //        If the player is not working this will do nothing
-        tui.globalPlayer.setVState(1);
+		exportedSymbols.tui.instance.getGlobalPlayer().setVState(1);
 	};
     
     /**
@@ -278,8 +279,8 @@ define([
 			this.kbd = KBD.getInstance();
 			this.kbd.show(this.input, bind(this.kbdSubmit, this));
 			this.kbd.bindToElement(dom.$('.textarea', this.dom_), (this.type === 'password')?true:false);
-			tui.setKeyboardInputHandler(bind(function(ev) {
-				if (tui.keyboardIgnoredKeys.indexOf(ev.keyCode) !==-1) return;
+			exportedSymbols.tui.instance.setKeyboardInputHandler(bind(function(ev) {
+				if (TUI.keyboardIgnoredKeys.indexOf(ev.keyCode) !==-1) return;
 				var ch = String.fromCharCode(ev.charCode);
 				this.kbd.addCharacter(ch);
 			}, this));
@@ -289,7 +290,7 @@ define([
 	};
 	Input.prototype.kbdSubmit = function(value) {
 		if (this.useKbd) {
-			tui.resetKeyboardInputHandler();
+			exportedSymbols.tui.instance.resetKeyboardInputHandler();
 		}
         this.submit(value);
 	};
@@ -433,10 +434,26 @@ define([
 		}
 	};
 	return {
-		MessageBox: MessageBox,
-		OptionList: OptionSelector,
-		Text: Input,
-		Confirm: ConfirmBox,
-		IPBox: IPBox
+		createDialog: function( type, options, callback, title, defaultOption ) {
+			var dialog;
+			if (type === 'optionlist') {
+				dialog = new OptionSelector(type, options, callback, title, defaultOption);
+			} else if (['input', 'password', 'text'].indexOf(type) !== -1  ) {
+				dialog = new Input(type, options, callback, title);
+			} else if (type === 'confirm') {
+				dialog = new ConfirmBox(type, true, callback, title);
+			} else if (type === 'ip') {
+				dialog = new IPBox(type, undefined, callback, title);
+			} else if (type === 'message') {
+				dialog = new MessageBox(type, title);
+			}
+		    dialog.show();
+		}
+//		,
+//		MessageBox: MessageBox,
+//		OptionList: OptionSelector,
+//		Text: Input,
+//		Confirm: ConfirmBox,
+//		IPBox: IPBox
 	};
 });
