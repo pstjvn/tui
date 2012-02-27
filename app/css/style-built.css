@@ -1,0 +1,2893 @@
+/*
+This file implements the looks for the app selector in linear mode
+*/
+
+.screenChooserWrapper {
+	width: 130px;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+.screenChooser {
+	z-index: 1000;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 0 40px 0 0;
+}
+.screenChooser .screen {
+	width: 155px;
+	height: 90px;
+	text-align: left;
+}
+.screen.iptv, .screen.ppv, .screen.vod, .screen.uservideo, .screen.radio, .screen.aod, .screen.youtube, .screen.uaudio, 
+.screen.setup, .screen.games, .screen.phone, .screen.weather, .screen.weather, .screen-selector-pointer, .screen.welcome  {
+	background-image: url('../imgs/icon_set.png');
+	background-repeat: no-repeat;
+}
+
+/**
+You should define you custom app icon here! The classname attached will be
+the string defined as apptag in the listing
+*/
+.screenChooser .screen.welcome{
+	background-position: right -605px;
+}
+.screenChooser .screen.iptv {
+	background-position: right -4px;
+}
+.screenChooser .screen.ppv {
+	background-position: right -104px;
+}
+.screenChooser .screen.vod {
+	background-position: right -205px;
+}
+.screenChooser .screen.uservideo {
+	background-position: right -307px;
+}
+.screenChooser .screen.radio {
+	background-position: right -407px;
+}
+.screenChooser .screen.aod {
+	background-position: right -507px;
+}
+.screenChooser .screen.youtube{
+	background-position: right -1206px;
+}
+.screenChooser .screen.uaudio {
+	background-position: right -609px;
+}
+.screenChooser .screen.setup {
+	background-position: right -707px;
+}
+.screenChooser .screen.games {
+	background-position: right -808px;
+}
+.screenChooser .screen.phone {
+	background-position: right -908px;
+}
+.screenChooser .screen.weather {
+	background-position: right -1110px;
+}
+
+/**
+The 'glower' indicating the active app in the selector
+*/
+.screen-selector-pointer {
+    background-position: left -997px;
+    height: 113px;
+    position: fixed;
+    right: 12px;
+    top: 167px;
+    width: 173px;
+    z-index: 2000;
+}
+.text-baloon::after {
+content: "";
+position: absolute;
+bottom: auto;
+left: auto;
+border-width: 15px 0 0 40px;
+border-style: solid;
+display: block;
+width: 0;
+border-color: transparent hsl(204, 62%, 44%);
+top: 6px;
+right: -35px;
+}
+
+.text-baloon {
+position: relative;
+padding: 15px;
+margin: 1em 0 3em;
+color: white;
+background: hsl(207, 91%, 31%);
+background: -webkit-gradient(linear, 0 0, 0 100%, from(hsl(204, 62%, 47%)), to(hsl(207, 91%, 31%)));
+background: -moz-linear-gradient(hsl(204, 62%, 47%), hsl(207, 91%, 31%));
+background: -o-linear-gradient(hsl(204, 62%, 47%), hsl(207, 91%, 31%));
+background: linear-gradient(hsl(204, 62%, 47%), hsl(207, 91%, 31%));
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+width: 340px;
+bottom: 300px;
+left: 80px;
+font-size: 18px;
+}
+/**
+Styles for the audio player, used when audio streams are played
+*/
+
+.audio-pannel {
+	width: 580px;
+	/*height: 100px;*/
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(78,81,79,1)), color-stop(46%,rgba(48,55,51,1)));
+	margin: auto;
+	border-radius: 5px;
+	border: 1px solid #555;
+	position: absolute;
+	bottom: 26px;
+	left: 28px;
+}
+.audio-display {
+	height:20px;
+	display: -webkit-box;
+}
+.audio-icons {
+	width: 60px;
+	top: 3px;
+	position: relative;
+}
+.previous, .play, .next, .stop, .pause {
+	width: 45px;
+	height: 45px;
+	margin: 2px 7px;
+	background: url(../imgs/audio-player.png);
+}
+.play {
+	background-position: 0px 0px;
+}
+.previous {
+	background-position: -135px 0px;
+}
+.next  {
+	background-position: -175px 0px;
+}
+.stop {
+	background-position: -45px 0px;
+}
+.pause {
+	background-position: -89px 0px;
+}
+.audio-bar {
+	overflow: hidden;
+	width: 236px;
+	height: 23px;
+	position: relative;
+	top: 2px;
+}
+.audio-fill-cutter {
+	overflow: hidden;
+	width: 220px;
+	height: 50px;
+	left: 9px;
+	position: relative;
+}
+.audio-fill-bar{
+	height: 19px;
+	background: #B9580E;
+	position: relative;
+	left: -5%;
+	border-radius: 6px;
+}
+.audio-bar-bg{
+	width: 236px;
+	height: 50px;
+	background: url(../imgs/audio-player.png);
+	position: relative;
+	top: -51px;
+	background-position: 0 50px;
+}
+.audio-time{
+	margin-left: 10px;
+    font-weight: bold;
+	width: 200px;
+	top: 0px;
+	color: #AAA;
+	height: 18px;
+	position: relative;
+	left: 16px;
+    font-size: 110%;
+    line-height: 1.6;
+}
+
+.audio-title{
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(122, 122, 122, 1)), color-stop(100%,rgba(79, 79, 79, 1)));
+	border-radius: 7px;
+/*	margin-left: 60px;*/
+	margin: 3px 3px 3px 60px;
+	border: 1px solid #999;
+	color: white;
+	line-height: 2;
+	padding: 0 10px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+    font-weight: bold;
+    font-size: 110%;
+}
+/* NOTE: Keep this file as minimal as possible to be able to show some feedback 
+ * to user ASAP, the default screen on some devices is white, thus 'start' will
+ * be comprehended as soon as the user sees the black sceen
+ */
+ 
+/* 
+ * Basic reset from html5 boilerplate
+ */
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+body, button, input, select, textarea { 
+	font-family: sans-serif; color: #222; 
+}
+body {
+    
+    /*
+	 * List of some pre-defined backgrounds, tobe used ONLY on fast devices!
+     */
+    /*
+     * Default carbon fabric pattern - as in Carbon theme
+
+	 * background: -moz-radial-gradient(black 15%, transparent 16%), -moz-radial-gradient(black 15%, transparent 16%), -moz-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%), -moz-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
+	 * background: -webkit-radial-gradient(black 15%, transparent 16%) 0 0, -webkit-radial-gradient(black 15%, transparent 16%) 8px 8px, -webkit-radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 0 1px, -webkit-radial-gradient(rgba(255, 255, 255, .1) 15%, transparent 20%) 8px 9px;
+	 * background-attachment: scroll, scroll, scroll, scroll;
+	 * background-position: 0 0pt, 8px 8px, 0 1px, 8px 9px;
+	 * background-repeat: repeat, repeat, repeat, repeat;
+	 * background-size:16px 16px;
+	 * background-color: #000;
+	 */
+     
+    /* 
+     * Background ligh-grey gradient
+     
+     * background-image: -moz-radial-gradient(center 0deg, ellipse cover , #444 15%, #000 100%);
+	 * * old webkit *
+     * background-image: -webkit-gradient(radial, left top, 0, center center, 252, color-stop(5%, #444), color-stop(100%, #0e0e0e));
+	 * background: -webkit-gradient(linear, left top, right bottom, color-stop(1%,rgba(45,45,45,1)), color-stop(34%,rgba(33,33,33,1)), color-stop(70%,rgba(0,0,0,1)), color-stop(96%,rgba(19,19,19,1)), color-stop(100%,rgba(28,28,28,1)));
+     * background-image: -webkit-gradient(radial, 0 0, 0, 80% 65%, 220, color-stop(20%, #222) , color-stop(80%, #000));
+     */
+     
+    /*
+     * Default simple background for slow devices without accelerated compisiting
+     */
+    background-color: black;
+    
+    /**
+     * Common defaults 
+     */
+	overflow: hidden;
+	color: #fff;
+}
+
+/**
+ * Basic class properties for common elements
+ */
+.tui-display-none {
+	display: none;
+}
+/*
+ * Embed the loading animation with text here so we have it at start and not wait for additional file to download
+ */
+.tui-text-tobber {
+	z-index: 50;
+	position: relative;
+	left: 0;
+/*	-moz-box-align: stretch;*/
+/*	-moz-box-orient: vertical;*/
+/*	-webkit-box-align: stretch;*/
+/*	-webkit-box-orient: vertical;*/
+/*	display: -moz-box;*/
+/*	display: -webkit-box;*/
+/*	-moz-box-pack: center;*/
+/*	-webkit-box-pack: center;*/
+	text-align: center;
+	text-shadow: #fff 0 0  3px; 
+	font-size: 18px;
+/*	color: #a6a6a6;*/
+	color: white;
+	font-weight: bold;
+/*	-moz-animation-duration: 1.5s;*/
+/*	-moz-animation-name: trobb;*/
+/*	-moz-animation-iteration-count: infinite; */
+/*	-moz-animation-direction: alternate;*/
+/*	-webkit-animation-duration: 1.5s;*/
+/*	-webkit-animation-name: trobb;*/
+/*	-webkit-animation-iteration-count: infinite; */
+/*	-webkit-animation-direction: alternate;*/
+}
+.tobberBackground {
+	z-index: 49;
+	background: rgba(11, 35, 56, 0.8);
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+@-moz-keyframes trobb {
+	from {
+		color: #a6a6a6;
+	}
+	to {
+		color: #000;
+	}
+}
+@-webkit-keyframes trobb {
+
+	from {
+		color: #a6a6a6;
+	}
+	to {
+		color: #000;
+	}
+}
+/*------------------- scroll styling --------------------*/
+/*FIXME: Make the scrolls look the same in chrome, firefox and device*/
+::-webkit-scrollbar { 
+	width: 0px; 
+} 
+/* Track */ 
+::-webkit-scrollbar-track { 
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+	-webkit-border-radius: 10px; 
+	border-radius: 10px; 
+} 
+/* Handle */ 
+::-webkit-scrollbar-thumb { 
+	-webkit-border-radius: 10px; 
+	border-radius: 10px; 
+	background: none; 
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+} 
+/*::-webkit-scrollbar-thumb:window-inactive { */
+/*	background: rgba(255,0,0,1); */
+/*}*/
+
+/* NEW SCROLLBAR */
+::scrollbarbutton {
+  -moz-appearance: none !important;
+  background-color: transparent !important;
+  border: none !important
+}
+thumb {
+  -moz-appearance: none !important;
+  border: none !important;
+  background-color: #8e8e8e !important;
+  -moz-border-radius: 10px;
+  /*-moz-box-shadow: inset 0 0 3px #000*/
+}
+::scrollbar {
+  -moz-appearance: none !important;
+  background: blue !important;
+/*  opacity: 0.1 !important;*/
+}
+scrollbar:hover {
+  -moz-appearance: none !important;
+  background: transparent !important;
+ /* -moz-box-shadow: inset #000 0 0 1px; */
+  opacity: 1 !important;
+}
+scrollbarbutton:hover  {
+  opacity: 0.7 !important
+}
+/*thumb:hover, thumb:active {
+  background-color: #878787 !important;
+}*/
+
+scrollbar[orient="vertical"] thumb {
+	min-width: 7px !important; 
+	max-width: 7px !important; 
+	min-height: 11px !important
+}
+scrollbar[orient="horizontal"] thumb {
+	min-height: 7px !important; 
+	max-height: 7px !important
+}
+scrollbar[orient="vertical"] {
+	padding-left: 2px !important;
+	padding-right: 2px !important; 
+	min-width: 11px !important; 
+	max-width: 11px !important
+}
+scrollbar[orient="horizontal"] {
+	padding-top: 2px !important; 
+	padding-bottom: 2px !important; 
+	min-height: 11px !important; 
+	max-height: 11px !important;
+}
+
+.tui-component.panels {
+	position: fixed;
+	height: 40px;
+	width: 100%;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(45, 82, 163, 1)), color-stop(6%,rgba(26, 62, 109, 1)), color-stop(50%,rgba(22, 27, 43, 1)), color-stop(60%,rgba(19, 23, 33, 1)), color-stop(100%,rgba(26, 36, 61, 1)));
+	
+	-webkit-transition-property: top, bottom;
+	-webkit-transition-duration: 1s;
+	z-index: 10000;
+}
+.tui-component.tui-preloader {
+	position: absolute;
+	top: -5000px;
+	left: -5000px;
+}
+.tui-component.tui-systemclock {
+	background-image: url("../imgs/small_clock.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+
+    float: right;
+    height: 26px;
+	margin: 7px;
+    right: 30px;
+    width: 110px;
+    z-index: 10001;
+}
+.tui-component.tui-systemclock h1 {
+	color: white;
+	font-weight: normal;
+	font-family: Arial,Helvetica,sans-serif;
+	margin: 7px 0 0 18px;
+	font-size: 12px;
+}
+/* FOR NEW EPG
+This is used when the IPTV screen displays the EPG information
+*/
+.epgrow {
+	background: black;
+	width: 640px;
+	height: 70px;
+	position: absolute;
+	top:0;
+	left:0;
+	overflow: hidden;
+/*	-webkit-transition: -webkit-transform 0.3s;*/
+}
+/*
+.epgrow.active {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(167,181,204,1)), color-stop(4%,rgba(14,49,102,1)), color-stop(54%,rgba(0,0,0,1)), color-stop(97%,rgba(0,0,0,1)), color-stop(100%,rgba(124,140,165,1)));
+}*/
+.epgrow .prog {
+	position: relative;
+	top:0;
+	left:0;
+	height: 70px;
+	width: 1440px;
+}
+.epgrow .prog .p {
+	display: inline-block;
+	height: 70px;
+	position: absolute;
+}
+.title-holder {
+	color: white;
+	text-align: center;
+	width: 96%;
+	overflow: hidden;
+}
+html.m55 .bordered {
+	border: 10px;
+}
+.title-background, .bordered {
+	background-color: hsl(210, 50%, 15%);
+	height: 50px;
+	border: 2px solid hsl(210, 40%, 35%);
+	opacity: 0.8;
+	padding: 8px;
+}
+html.m55 .title-background, html.m55  .bordered {
+	background-color: hsl(210, 50%, 15%);
+	height: 50px;
+	border: 2px solid hsl(210, 40%, 35%);
+	opacity: 0.8;
+	padding: 8px;
+}
+.title-container {
+	display: table-cell;
+	height: 100%;
+	width: 100%;
+	vertical-align: middle;
+}
+html.m55 .epgrow .prog .p.active .title-background, .p.active .bordered {
+	opacity: 1;
+	border: 2px solid hsl(210, 50%, 75%);
+}
+.epgrow .prog .p.active .title-background, .p.active .bordered {
+	opacity: 1;
+	border: 2px solid hsl(210, 50%, 75%);
+	box-shadow: inset 0 1px 17px 3px hsl(210, 90%, 55%);
+}
+.epgrow .prog .spoofgrid {
+	height: 100%;
+	border-top: 1px solid hsl(211, 29%, 40%);
+}
+.epgrow.active .prog .spoofgrid {
+	height: 100%;
+	border-top: 1px solid hsl(211, 29%, 40%);
+	background: hsl(210, 70%, 20%);
+}
+.epgrow.active .title {
+	background: url(../imgs/epg-active.png);
+}
+.epgrow .title {
+	position: relative;
+	top:-70px;
+	left:0;
+	width:140px;
+	height: 70px;
+	border-right: 1px solid #364C63;
+	background: black;
+	background: url(../imgs/epg-inactive.png);
+	overflow: hidden;
+}
+.epgrow .title div {
+	text-align: center;
+	height: 70px;
+	border-bottom: 1px solid #364C63;
+	width: 80%;
+	position: relative;
+	font-weight: bold;
+	margin: auto;
+	line-height: 5.2;
+}
+.epgrow .title .imgcont img {
+	height: 90%;
+	width: 60%;
+	vertical-align: middle;
+	border-radius: 4px;
+}
+.epg-details {
+	background: black;
+	border-bottom: 1px solid #364C63;
+	display: table;
+}
+.epg-details-name {
+	max-height: 72px;
+	width: 160px;
+	top: 10px;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 20px;
+	position: relative;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.epg-name-holder {
+	top: -18px;
+	padding-left: 8px;
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	position: relative;
+}
+.epg-details-text {
+	text-align: center;
+	position: relative;
+	padding: 0px 10px 0px 10px;
+	display: table-cell;
+	vertical-align: middle;
+	top: -9px;
+	width: 470px;
+}
+.epg-details-info{
+	border-bottom: 1px solid hsl(211, 29%, 60%);
+	margin: 0 0 7px 0;
+}
+.epg-details-title {
+	max-height: 50px;
+	overflow: hidden;
+	font-size: 15px;
+	font-weight: bold;
+}
+.epgrow .channel-settings-icons {
+	left: 110px;
+	list-style-type: none;
+	position: absolute;
+	bottom: 0px;
+	/*border-bottom: 1px solid #364C63;*/
+	width: 30px;
+	padding-bottom: 6px;
+	z-index: 1;
+}
+.epgrow .title .channel-name {
+	width: 140px;
+	height: 33px;
+	background: rgba(1, 1, 1, 0.6);
+	position: absolute;
+	bottom: -38px;
+	/*-webkit-transition: all 850ms;*/
+	left: 0px;
+	text-align: center;
+	font-weight: bold;
+	line-height: 2;
+}
+.epgrow.active .channel-name {
+	bottom: 0px;
+	z-index: 2;
+}
+.epgrow.active .prog .p .highlight{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: hsl(210, 70%, 50%);
+	z-index: -2;
+}
+.epgrow.active .prog .p {
+	z-index: 5;
+}
+.epgrow .icon {
+	/*background-color: #596876;*/
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 20px;
+    margin-right: 1px;
+    width: 20px;
+    float: left; 
+}
+.bookmarked {
+	background-image: url("../imgs/icon_favorite.png");
+}
+.recordable {
+	background-image: url("../imgs/icon_recording.png");
+}
+.locked {
+	background-image: url("../imgs/icon_lock.png");
+}
+.epgrow.active .title {
+	background-color: black;
+}
+.paid {
+	background-image: url('../imgs/icon_dollar.png');
+}
+.timeline {
+	height: 20px;
+	width: 1440px;
+	left: 0;
+	background-color: hsl(210, 40%, 15%);
+	position: absolute;
+}
+.anhour {
+	display: inline-block;
+	border-left: 2px solid hsla(0, 0%, 100%, 0.5);
+	height: 100%;
+	padding: 0 0px 0 7px;
+	line-height: 1.6;
+}/**
+Styling for the new file list 
+*/
+.tui-nflist-container {
+	top: 0;
+	left: 0;
+	position: absolute;
+	z-index: 1000;
+}
+.tui-vertical-transition-container {
+	position: relative;
+}
+.tui-nflist-item {
+	margin: 14px 17px 0 17px;
+	width: 94%;
+	height: 3.4em;
+	text-align: left;
+	-moz-box-pack: center;
+	-webkit-box-pack: center;
+	border-radius: 0.3em;
+	-moz-border-radius: 0.3em;
+	-webkit-border-radius: 0.3em;
+	-ms-border-radius: 0.3em;
+	border: 2px solid #3E5170;
+	color: white;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.tui-nflist-item.empty {
+	border: 2px solid transparent;
+}
+.tui-nflist-item.active {
+	border: 2px solid #1E69D1;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(198, 222, 255, 0.9)), color-stop(4%,rgba(104, 151, 221, 0.75)), color-stop(5%,rgba(30, 105, 222, 0.45)), color-stop(50%,rgba(30, 105, 222, 0)), color-stop(96%,rgba(30, 105, 222, 0)), color-stop(96%,rgba(30, 105, 222, 0.45)), color-stop(98%,rgba(104, 151, 221, 0.75)), color-stop(100%,rgba(198, 222, 255, 0.9)));
+}
+.tui-vertical-transition-container.list-container {
+	text-align: center;
+	margin: 10px auto 10px auto;
+	position: absolute;
+}
+.tui-vertical-transition-container .item {
+	margin: 0.3em auto 0 auto;
+	width: 94%;
+	height: 3.4em;
+	text-align: left;
+	-moz-box-pack: center;
+	-webkit-box-pack: center;
+	border-radius: 0.3em;
+	-moz-border-radius: 0.3em;
+	-webkit-border-radius: 0.3em;
+	-ms-border-radius: 0.3em;
+	border: 2px solid #3E5170;
+	color: white;
+	position: relative;
+}
+.tui-vertical-transition-container.list-container .current {
+	border: 2px solid #1E69D1;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(198, 222, 255, 0.9)), color-stop(4%,rgba(104, 151, 221, 0.75)), color-stop(5%,rgba(30, 105, 222, 0.45)), color-stop(50%,rgba(30, 105, 222, 0)), color-stop(96%,rgba(30, 105, 222, 0)), color-stop(96%,rgba(30, 105, 222, 0.45)), color-stop(98%,rgba(104, 151, 221, 0.75)), color-stop(100%,rgba(198, 222, 255, 0.9)));
+}
+.tui-vertical-transition-container.list-container .current .number_id {
+	color: #d08b05;
+}
+.tui-vertical-transition-container .leftCont {
+	float: left;
+	width: 88%;
+	height: 80%;
+	padding: 0.5em;
+}
+.tui-vertical-transition-container .leftContLong {
+	float: left;
+	width: 99%;
+	height: 80%;
+	padding: 0.5em;
+}
+.tui-vertical-transition-container .rightCont {
+	height: 40px;
+	width: 53px;
+	text-align: right;
+	display: -webkit-inline-box;
+	margin-top:3px;
+}
+.tui-vertical-transition-container .rightCont-folder {
+	float: right;
+	width: 57px;
+	height: 38px;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	background: url(../imgs/folder.png) no-repeat;
+	background-size: contain;
+	margin: 4px 4px 0 0;
+}
+.tui-vertical-transition-container .leftCont .number_id {
+	color: #b4b3ae;
+    float: left;
+    font-size: 1.3em;
+    font-weight: bold;
+    height: 100%;
+    margin-right: 0.5em;
+    text-align: center;
+    width: 70px;
+    line-height: 1em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.tui-vertical-transition-container .leftContLong .number_id {
+	color: #b4b3ae;
+    float: left;
+    font-size: 1.3em;
+    font-weight: bold;
+    height: 100%;
+    margin-right: 0.5em;
+    text-align: center;
+    width: 70px;
+    line-height: 1em;
+}
+.tui-vertical-transition-container .item_name {
+    font-size: 1.1em;
+    font-weight: bold;
+    height: 50%;
+	-moz-box-pack:center;
+	-moz-box-align:center;
+	-webkit-box-pack:center;
+	-webkit-box-align:center;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.tui-vertical-transition-container .img_thumb {
+	border: 0;
+	width: 100%;
+	display: -webkit-box;
+}
+.tui-vertical-transition-container .description {
+	display: inline-block;
+	margin-right: 20px;
+}
+.tui-vertical-transition-container .channel-settings-icons {
+	left: 11px;
+    list-style-type: none;
+    position: absolute;
+    bottom: 2px;
+}
+.tui-vertical-transition-container .icon {
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 20px;
+    margin-right: 1px;
+    width: 20px;
+    float: left; 
+}
+.tui-vertical-transition-container .bookmarked {
+	background-image: url("../imgs/icon_favorite.png");
+}
+.tui-vertical-transition-container .recordable {
+	background-image: url("../imgs/icon_recording.png");
+}
+.tui-vertical-transition-container .locked {
+	background-image: url("../imgs/icon_lock.png");
+}
+.tui-vertical-transition-container .paid {
+	background-image: url('../imgs/icon_dollar.png');
+}
+.tui-vertical-transition-container .no-content {
+	text-align: center;
+	padding: 15px 0 15px 0;
+	font-size: 135%;
+	height: auto;
+}
+/*
+Styling for the panels, which are currently not used, but are completely implements
+*/
+.tui-panel {
+	transition-property: bottom, top;
+	transition-duration: 0.35s;
+	-moz-transition-property: bottom, top;
+	-moz-transition-duration: 0.35s;
+	-webkit-transition-property: bottom, top;
+	-webkit-transition-duration: 0.35s;
+	 background-image: -webkit-gradient(
+	     linear,
+	     left bottom,
+	     left top,
+	     color-stop(0.07, rgba(0,0,0,.9)),
+	     color-stop(0.58, rgba(0,0,0,0.7))
+	 );
+	 background-image: -moz-linear-gradient(
+	     center bottom,
+	     rgba(0,0,0,1) 7%,
+	     rgba(0,0,0,0.85) 58%
+	 );
+	 position: fixed;
+	 width: 100%;	
+	 z-index: 1000;
+	 height: 40px;
+}
+.tui-titlebar { top: -60px; }
+.tui-titlebar-active { top: 0px; }
+.tui-infobar { bottom: -60px; }
+.tui-infobar-active { bottom: 0px; }
+/* Info buttons for the infobar, allows describing the available actions in screens */
+/*TODO: Make at least 4 info buttons apper at the same time working!*/
+.remoteOK, .remoteArrows, .remoteHome, .remoteInfo, .remoteDisplay, .remote-left-right, .remote-up-down,
+.remote-play-pause, .remote-save, .remote-delete, .remote-return {
+	background-image: url('../imgs/remote-keys.png');
+	background-repeat: no-repeat;
+	height: 40px;
+	display: inline-block;
+	padding-left: 45px;
+	color: white;
+	line-height: 40px;
+	margin: 2px 10px;
+	font-size: 110%;
+}
+.tui-infoblock .remoteOK {
+	background-position: left 0px;
+}
+.tui-infoblock .remoteArrows {
+	background-position: left -40px;
+}
+.tui-infoblock .remoteHome {
+	background-position: left -80px;
+}
+.tui-infoblock .remoteInfo {
+	background-position: left -120px;
+}
+.tui-infoblock .remoteDisplay {
+	background-position: left -160px;
+}
+.tui-infoblock .remote-left-right{
+	background-position: left -200px;
+}
+.tui-infoblock .remote-up-down{
+	background-position: left -240px;
+}
+.tui-infoblock .remote-play-pause{
+	background-position: left -280px;
+}
+.tui-infoblock .remote-save{
+	background-position: left -320px;
+}
+.tui-infoblock .remote-delete{
+	background-position: left -360px;
+}
+.tui-infoblock .remote-return{
+	background-position: left -400px;
+}
+.tui-list.list-container {
+	text-align: center;
+	margin: 10px auto 10px auto;
+	position: absolute;
+}
+.tui-list .item {
+	margin: 0.3em auto 0 auto;
+	width: 94%;
+	height: 3.4em;
+	text-align: left;
+	-moz-box-pack: center;
+	-webkit-box-pack: center;
+	border-radius: 0.3em;
+	-moz-border-radius: 0.3em;
+	-webkit-border-radius: 0.3em;
+	-ms-border-radius: 0.3em;
+	border: 2px solid #3E5170;
+	color: white;
+	position: relative;
+	/*
+	background-image: linear-gradient(bottom, rgb(74,80,92) 4%, rgb(39,44,52) 49%, rgb(74,80,92) 93%);
+	background-image: -o-linear-gradient(bottom, rgb(74,80,92) 4%, rgb(39,44,52) 49%, rgb(74,80,92) 93%);
+	background-image: -moz-linear-gradient(bottom, rgb(74,80,92) 4%, rgb(39,44,52) 49%, rgb(74,80,92) 93%);
+	background-image: -webkit-linear-gradient(bottom, rgb(74,80,92) 4%, rgb(39,44,52) 49%, rgb(74,80,92) 93%);
+	background-image: -ms-linear-gradient(bottom, rgb(74,80,92) 4%, rgb(39,44,52) 49%, rgb(74,80,92) 93%);
+
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.04, rgb(74,80,92)),
+		color-stop(0.49, rgb(39,44,52)),
+		color-stop(0.93, rgb(74,80,92))
+	);	*/
+}
+.tui-list.list-container .current {
+	/*background-color: gray;
+	background-image: none;
+	border: 2px solid #b74e02;
+	
+    box-shadow:inset 0 0 10px #000000;
+	-moz-box-shadow:inset 0 0 10px #000000;
+   	-webkit-box-shadow:inset 0 0 10px #000000;
+	-ms-box-shadow:inset 0 0 10px #000000;*/
+	border: 2px solid #1E69D1;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(198, 222, 255, 0.9)), color-stop(4%,rgba(104, 151, 221, 0.75)), color-stop(5%,rgba(30, 105, 222, 0.45)), color-stop(50%,rgba(30, 105, 222, 0)), color-stop(96%,rgba(30, 105, 222, 0)), color-stop(96%,rgba(30, 105, 222, 0.45)), color-stop(98%,rgba(104, 151, 221, 0.75)), color-stop(100%,rgba(198, 222, 255, 0.9)));
+
+}
+.tui-list.list-container .current .number_id {
+	color: #d08b05;
+/*	border-right: 5px solid #d3d2d2;
+	box-shadow:	10px 0 10px -10px #555555;
+	-moz-box-shadow: 10px 0 10px -10px #555555;
+	-webkit-box-shadow: 10px 0 10px -10px #555555;
+	-ms-box-shadow: 10px 0 10px -10px #555555;	*/
+}
+
+.tui-list .leftCont {
+	float: left;
+	width: 88%;
+	height: 80%;
+	padding: 0.5em;
+}
+.tui-list .leftContLong {
+	float: left;
+	width: 99%;
+	height: 80%;
+	padding: 0.5em;
+}
+
+.tui-list .rightCont {
+	height: 40px;
+	width: 53px;
+	text-align: right;
+	display: -webkit-inline-box;
+	margin-top:3px;
+}
+.tui-list .rightCont-folder {
+	float: right;
+	width: 57px;
+	height: 38px;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	background: url(../imgs/folder.png) no-repeat;
+	background-size: contain;
+	margin: 4px 4px 0 0;
+}
+.tui-list .leftCont .number_id {
+	color: #b4b3ae;
+    float: left;
+    font-size: 1.3em;
+    font-weight: bold;
+    height: 100%;
+    margin-right: 0.5em;
+    text-align: center;
+    width: 70px;
+    line-height: 1em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.tui-list .leftContLong .number_id {
+	color: #b4b3ae;
+    float: left;
+    font-size: 1.3em;
+    font-weight: bold;
+    height: 100%;
+    margin-right: 0.5em;
+    text-align: center;
+    width: 70px;
+    line-height: 1em;
+}
+
+.tui-list .item_name {
+    font-size: 1.1em;
+    font-weight: bold;
+    height: 50%;
+	-moz-box-pack:center;
+	-moz-box-align:center;
+	-webkit-box-pack:center;
+	-webkit-box-align:center;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.tui-list .img_thumb {
+	border: 0;
+	width: 100%;
+	display: -webkit-box;
+}
+.tui-list .description {
+	display: inline-block;
+	margin-right: 20px;
+}
+.tui-list .channel-settings-icons {
+	left: 11px;
+    list-style-type: none;
+    position: absolute;
+    bottom: 2px;
+}
+
+.tui-list.list-container .icon {
+	/*background-color: #596876;*/
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 20px;
+    margin-right: 1px;
+    width: 20px;
+    float: left; 
+}
+.tui-list.list-container .bookmarked {
+	background-image: url("../imgs/icon_favorite.png");
+}
+.tui-list.list-container .recordable {
+	background-image: url("../imgs/icon_recording.png");
+}
+.tui-list.list-container .locked {
+	background-image: url("../imgs/icon_lock.png");
+}
+.tui-list.list-container .paid {
+	background-image: url('../imgs/icon_dollar.png');
+}
+/* Deprecated */
+.tui-menu {
+	background:-moz-linear-gradient(center top , #FFFFFF 0%, #EFEFEF 100%) repeat scroll 0 0 transparent; 
+	box-shadow: 1px 1px 2px #AAAAAA;
+	border-top: 4px solid red;
+	z-index: 50;
+}
+.tui-mosaic.list-container {
+	margin: 10px auto 10px auto;
+	position: relative;
+	/*if we  really need the height...*/
+	overflow: auto;
+	top: 0;
+}
+html.browser .tui-mosaic.list-container {
+	-webkit-transition-property: top;
+	-webkit-transition-duration: 0.8s;
+}
+.tui-mosaic.list-container .no-content {
+	margin: 30% auto;
+	border: 2px solid #3E6EBB;
+	border-radius: 4px;
+	padding: 35px 0 35px 0;
+	color: white;
+	font-weight: inherit;
+	padding: 4% 20%;
+	text-align: center;
+	font-size: 135%;
+	width: 49%;
+}
+.tui-mosaic .item.regular {
+    width: 150px;
+    height: 130px;
+}
+.tui-mosaic .item.larger {
+	width: 210px;
+	height: 190px;
+}
+.tui-mosaic .item {
+/* do not use - attributes to +1/+2 px in positioning (offsetTop)
+	display: inline-block;
+*/
+    float: left;
+    text-align: center;
+   	padding: 5px 5px 5px 5px;
+	position: relative;
+}
+.tui-mosaic .larger .imgcont {
+	width: 200px;
+	height: 160px;
+}
+.tui-mosaic .regular .imgcont{
+	width: 140px;
+	height: 100px;
+	overflow: hidden;
+}
+/*------------ start-Rating-bar ----------------*/
+.tui-mosaic .regular .imgcont .video-bar {
+	height: 15px;
+	width: 70px;
+	background: rgba(0, 0, 0, 0.4);
+	border-radius: 3px;
+	position: absolute;
+	border-bottom-style: solid;
+	border-width: 1px 1px 1px 1px;
+	border-bottom-color: rgba(255, 255, 255, 0.2);
+	border-left-color: rgba(255, 255, 255, 0.3);
+	border-left-style: solid;
+	right: 9px;
+}
+.tui-mosaic .regular .imgcont .video-bar .rating_bar {
+	width: 66px;
+	background: url(../imgs/icon-favorite-grey.png) 0 0 repeat-x;
+	background-size: 13px;
+}
+
+.tui-mosaic .regular .imgcont .video-bar  .rating_bar div {
+	height: 17px;
+	background: url(../imgs/icon_favorite.png) 0 0 repeat-x;
+	background-size: 13px;
+}
+/*------------- end-Ratin-bar -------------------*/
+.tui-mosaic .imgcont {
+	-webkit-transition: background-color 1.2s;
+	-webkit-border-radius: 3px;
+	float: left;
+	margin-left: 5px;
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(51,78,114,0.9)), color-stop(4%,rgba(51,78,114,0)), color-stop(96%,rgba(51,78,114,0)), color-stop(100%,rgba(51,78,114,0.9)));
+}
+.tui-mosaic .imgcontin {
+	height: 100px;
+	width: 140px;
+	border-radius: 3px;
+	position:absolute;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(51,78,114,0.9)), color-stop(4%,rgba(51,78,114,0)), color-stop(96%,rgba(51,78,114,0)), color-stop(100%,rgba(51,78,114,0.9)));
+}
+.tui-mosaic .item.regular   img {
+    /*width: 130px;*/
+    height: 90px;
+}
+.tui-mosaic .item.larger img {
+	width: 190px;
+	height: 150px;
+}
+.tui-mosaic .item img {
+	border-radius: 3px;
+    padding: 5px;
+    /*display: block;
+    margin: auto auto 2px auto;
+    */
+}
+.tui-mosaic .title {
+	float:left; 
+	text-align:center;
+	display:block;
+	width: 100%;
+	overflow: hidden;
+/*	white-space: nowrap;
+	text-overflow: ellipsis;*/
+	height: 33px;
+}
+
+.tui-mosaic .icon {
+	background-position: center center;
+	background-repeat: no-repeat;
+	width: 20px;
+	height: 20px;
+	background-color: rgba(0, 0, 0, 0.3);
+	margin-bottom: 1px;
+}
+
+.tui-mosaic ul.channel-settings-icons {
+	margin: 0;
+	padding:0; 
+	list-style-type:none;
+	position: absolute;
+	top: 3px;
+	left: 9px;	
+}
+.tui-mosaic div.object-index {
+	background-color: rgba(0, 0, 0, 0.4);
+    font-weight: bold;
+    padding: 2px 4px;
+    position: absolute;
+	left: 10px;
+	top: 85px;
+}
+.tui-mosaic .item.current .imgcont {
+background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(198,222,255,0.9)), color-stop(1%,rgba(104,151,221,0.75)), color-stop(3%,rgba(30,105,222,0.45)), color-stop(6%,rgba(30,105,222,0)), color-stop(94%,rgba(30,105,222,0)), color-stop(97%,rgba(30,105,222,0.45)), color-stop(99%,rgba(104,151,221,0.75)), color-stop(100%,rgba(198,222,255,0.9)));
+}
+.tui-mosaic .item.current .imgcontin {
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(198,222,255,0.9)), color-stop(1%,rgba(104,151,221,0.75)), color-stop(3%,rgba(30,105,222,0.45)), color-stop(6%,rgba(30,105,222,0)), color-stop(94%,rgba(30,105,222,0)), color-stop(97%,rgba(30,105,222,0.45)), color-stop(99%,rgba(104,151,221,0.75)), color-stop(100%,rgba(198,222,255,0.9)));
+}
+.tui-mosaic .item.current span {
+    color: rgba(153, 206, 255, 1);
+}
+.tui-mosaic .icon.locked {
+	background-image: url('../imgs/icon_lock.png');
+}
+.tui-mosaic .icon.bookmarked {
+	background-image: url('../imgs/icon_favorite.png');
+}
+.tui-mosaic .icon.recordable {
+	background-image: url('../imgs/icon_recording.png');
+}
+.tui-mosaic .icon.paid {
+	background-image: url('../imgs/icon_dollar.png');
+}
+.item .imgcont .screen_default_icon_size {
+	width: 130px; 
+	height: 90px;
+	margin: 5px;
+}
+.item .default_icon {
+	background-image: url('../imgs/icon_set.png');
+}
+div[data-appid="iptv"] .item .default_icon {
+	background-position: center -3px;
+}
+div[data-appid="ppv"] .item .default_icon {
+	background-position: center -104px;
+}
+div[data-appid="vod"] .item .default_icon {
+	background-position: center -205px;
+}
+div[data-appid="uservideo"] .item .default_icon {
+	background-position: center -306px;
+}
+div[data-appid="radio"] .item .default_icon {
+	background-position: center -407px;
+}
+div[data-appid="aod"] .item .default_icon {
+	background-position: center -508px;
+}
+.tui-mosaic div.folder-icon {
+	background: url('../imgs/folder.png') no-repeat;
+	background-size: contain;
+	position: absolute;
+	width: 43px;
+	height: 43px;
+	right: 11px;
+	top: 73px;  
+}
+/*---------------------------  Multi Screen Chooser  -------------------------------*/
+/*.tui-multiscreen {
+	width: 640px;
+	height: 480px;
+	background-color: #333333;
+	
+	display: -moz-box;
+	-moz-box-pack: center;
+	-moz-box-align: center;
+	display: -webkit-box;
+	-webkit-box-pack: center;
+	-webkit-box-align: center;
+	display: box;
+	box-pack: center;
+	box-align: center;
+	vertical-align: middle;
+}
+.tui-multiscreen .icon {
+	width: 120px;
+	height: 90px;
+	text-align: center;
+	display: inline-block;
+}
+.tui-multiscreen .icon span {
+	color: white;
+	z-index:1;
+    font-size: 120%;
+    position: relative;
+    top: -22px;
+    margin: 0 auto;
+}
+.tui-multiscreen .icon div {
+/*	-webkit-transition: all 0.2s ease-in; */
+/*	-moz-transition: all 0.2s ease-in; */
+/*	-o-transition: all 0.2s ease-in; */
+/*	-ms-transition: all 0.2s ease-in;*/
+/*	position: relative;*/
+/*	width: 120px;*/
+/*	height: 90px;*/
+}
+.tui-multiscreen .icon.active div {
+/*	-webkit-transform: translate(0px,-30px); */
+/*	-moz-transform: translate(0px,-30px);*/
+/*	-o-transform: translate(0px,-30px);*/
+/*	-ms-transform: translate(0px,-30px);*/
+}
+/*
+Styling for the dialogs
+*/
+.multi-select-wrapper {
+	background: rgba(28,28,28,0.8); 
+    text-align: center;
+    position: absolute;
+	margin-left: auto;
+    margin-right: auto;
+	top:0;
+	display: table; 
+	height: 480px; 
+	overflow: hidden;
+}
+.multi-select-wrapper > div {
+	display: table-cell; 
+	vertical-align: middle;
+	top:50%;
+}
+
+.multi-select-wrapper .multi-select-shadow {
+	margin: 0 auto; 
+	padding: 4px;
+	background: rgba(36,36,36, 0.4);
+	width: 30%;
+	border-radius: 5px;
+}
+.multi-select-wrapper .multi-select-shadow.wide {
+	width: 580px;
+}
+.multi-select-wrapper .multi-select-shadow.message {
+	width: 450px;
+}
+.multi-select-wrapper .multi-select-shadow.has-kbd {
+	width: 500px;
+}
+.multi-select-container .tui-kbd-container {
+	text-align: center;
+	width: 449px;
+	margin: 0 auto;
+/*	height: 225px;*/
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container {
+	color: white;
+	text-align: center;
+	padding: 20px 0 20px 0;
+	margin: 0 auto;
+	border-radius: 5px;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(12,30,51,1)), color-stop(9%,rgba(6,8,12,1)), color-stop(51%,rgba(0,0,0,1)), color-stop(94%,rgba(6,8,12,1)), color-stop(100%,rgba(17,24,40,1)));
+	border: 2px solid #3E5170;
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container .title {
+	font-weight: bold;
+	font-size: 160%;
+	color: white;
+	margin-bottom: 14px;
+	padding: 0 10px;
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container .input-box {
+	font-weight: bold;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(50%,rgba(26,30,40,1)), color-stop(90%,rgba(39,46,61,1)));
+	width: 33px;
+	height: 20px;
+	padding: 10px;
+	text-align: center;
+	margin: 4px;
+	border: 2px solid #3E5170;
+	font-size: 160%;
+	line-height: 1;
+	border-radius: 4px;
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container .tui-horizontal-container {
+	display: -webkit-inline-box;
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container .horizontal-button {
+	font-weight: bold;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(50%,rgba(26,30,40,1)), color-stop(90%,rgba(39,46,61,1)));
+	width: 80px;
+	height: 20px;
+	padding: 10px;
+	text-align: center;
+	margin: 4px;
+	border: 2px solid #3E5170;
+	font-size: 120%;
+	border-radius: 4px;
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container .horizontal-button.single-button {
+	float: right;
+	position: relative;
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container .multi-select-item {
+	font-weight: bold;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(50%,rgba(26,30,40,1)), color-stop(90%,rgba(39,46,61,1)));
+	width: 65%;
+	min-height: 20px;
+	padding: 10px 20px;
+	text-align: center;
+	display: block;
+	margin: 4px auto;
+	border: 2px solid transparent;
+	font-size: 120%;
+	border-radius: 4px;
+	border: 2px solid #3E5170;
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container div.active {
+	border: 2px solid #3E6EBB;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(198, 222, 255, 0.9)), color-stop(4%,rgba(104, 151, 221, 0.75)), color-stop(5%,rgba(30, 105, 222, 0.45)), color-stop(50%,rgba(30, 105, 222, 0)), color-stop(96%,rgba(30, 105, 222, 0)), color-stop(96%,rgba(30, 105, 222, 0.45)), color-stop(98%,rgba(104, 151, 221, 0.75)), color-stop(100%,rgba(198, 222, 255, 0.9)));
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container div.pressed {
+	border: 2px solid #808080; /*#9D5F00; /*#F49300;*/
+	
+	background-image: linear-gradient(bottom, rgb(66,62,66) 25%, rgb(51,51,51) 75%);
+	background-image: -o-linear-gradient(bottom, rgb(66,62,66) 25%, rgb(51,51,51) 75%);
+	background-image: -moz-linear-gradient(bottom, rgb(66,62,66) 25%, rgb(51,51,51) 75%);
+	background-image: -webkit-linear-gradient(bottom, rgb(66,62,66) 25%, rgb(51,51,51) 75%);
+	background-image: -ms-linear-gradient(bottom, rgb(66,62,66) 25%, rgb(51,51,51) 75%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.25, rgb(66,62,66)),
+		color-stop(0.75, rgb(51,51,51))
+	);	
+
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container .textarea {
+	width: 65%;
+	background-color: #0C1E33;
+	color: white;
+	border: 2px solid #3E5170;
+	box-shadow: inset 0 0 3px black;
+	margin: 0 auto 15px auto;
+	border-radius: 5px;
+	text-align: left;
+	padding: 4px;
+	font-size: 128%;
+	display: inline-block;
+	font-weight: bold;
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container .area-type-input, .multi-select-wrapper .multi-select-shadow .multi-select-container .area-type-password {
+	height: 20px;
+	overflow: hidden;
+	line-height: 30px;
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container .area-type-text {
+	height: 60px;
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container .area-type-confirm, .multi-select-wrapper .multi-select-shadow .multi-select-container .area-type-ip, .multi-select-wrapper .multi-select-shadow .multi-select-container .area-type-message  {
+	height: 0px;
+	border: 0;
+	padding: 0;
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container .kbd-submitBtn {
+	display: inline-block;
+    float: right;
+    height: 20px;
+    margin: 20px 36px 0 0;
+    padding: 6px;
+	border-radius: 5px;
+	background-image: linear-gradient(bottom, rgb(138,136,138) 20%, rgb(176,176,176) 80%);
+	background-image: -o-linear-gradient(bottom, rgb(138,136,138) 20%, rgb(176,176,176) 80%);
+	background-image: -moz-linear-gradient(bottom, rgb(138,136,138) 20%, rgb(176,176,176) 80%);
+	background-image: -webkit-linear-gradient(bottom, rgb(138,136,138) 20%, rgb(176,176,176) 80%);
+	background-image: -ms-linear-gradient(bottom, rgb(138,136,138) 20%, rgb(176,176,176) 80%);
+
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.2, rgb(138,136,138)),
+		color-stop(0.8, rgb(176,176,176))
+	);
+	border: 2px solid transparent;
+	color: black;
+}
+.multi-select-wrapper .multi-select-shadow .multi-select-container .kbd-submitBtn.active {
+	border: 2px solid #f4a01c;
+}
+.multi-select-container .title table {
+    text-align: left;
+}/* reset css*/
+
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section { display: block; }
+audio, canvas, video { display: inline-block; *display: inline; *zoom: 1; }
+audio:not([controls]) { display: none; }
+html { 
+	font-size: 100%; 
+	-webkit-text-size-adjust: 100%; 
+	-ms-text-size-adjust: 100%; 
+}
+
+body { 
+	margin: 0; 
+	font-size: 13px; 
+	line-height: 1.231; 
+}
+
+
+
+button, input, select, textarea { font-size: 100%; margin: 0; vertical-align: baseline; *vertical-align: middle; }
+
+#maincontainer {
+	-moz-transform: scale(1);
+/*	-moz-transition-property: -moz-transform;*/
+/*	-moz-transition-duration: 0.5s;*/
+	box-shadow: none;
+	-webkit-transform: scale(1);
+/*	-webkit-transition-property: -webkit-transform, box-shadow;*/
+/*	-webkit-transition-duration: 0.5s, 1s;*/
+}
+html.browser #maincontainer.scaled {
+	box-shadow: inset 0 0 15px 10px white;
+}
+html.m55 #maincontainer.scaled {
+	border: 10px solid white;
+	z-index: 10;
+}
+.tui-horizontal-centered {
+	text-align: center;
+}
+.tui-multiscreen {
+	margin: 0 auto;
+}
+.tui-scrollable-vertical {
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.game-layer {
+	position: absolute;
+	top: 0;
+	left: 0px;
+	background: black;
+}
+.setup-container {
+	width: 640px;
+	height: 480px;
+	background-color: #000;
+	-moz-box-pack: center;
+	-moz-box-align: center;
+	display: -webkit-box;
+	display: -moz-box;
+	display: box;
+	-webkit-box-pack: center;
+	-webkit-box-align: center;
+	box-pack: center;
+	box-align: center;
+	vertical-align: middle;
+	margin:auto;
+}
+.setup-container .icon {
+	color: black;
+}
+.setup-container .icon span {
+	z-index:1;
+    font-size: 120%;
+    position: static;
+    margin: 0 auto;
+}
+.setup-container .icon div {
+	position: relative;
+	width: 120px;
+	height: 104px;
+}
+.setup-container .active {
+	/*-webkit-transform: translate(0px,-30px); 
+	-moz-transform: translate(0px,-30px);
+	-o-transform: translate(0px,-30px);
+	-ms-transform: translate(0px,-30px);
+	color: white;
+	-webkit-transition: 0.1s ease-in;*/
+}
+.icon .general, .icon .iptv-settings, .icon .LAN, .icon .WIFI, .icon .voip-settings,
+.active .general, .active .iptv-settings, .active .LAN, .active .WIFI, .active .voip-settings {
+	background-image: url('../imgs/setup.png');
+	background-repeat:no-repeat;
+	z-index: 5;
+}
+.setup-container .icon .general {
+	background-position: left -4px;
+}
+.setup-container .active .general {
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
+	background-position: left -4px, 0 -535px;
+}
+.setup-container .icon .iptv-settings {
+	background-position: left -115px;
+}
+.setup-container .active .iptv-settings {
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
+	background-position: left -115px, 0 -646px;
+}
+.setup-container .icon .LAN {
+	background-position: left -215px;
+}
+.setup-container .active .LAN {
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
+	background-position: left -215px, 0 -746px;
+}
+.setup-container .icon .WIFI {
+	background-position: left -325px;
+}
+.setup-container .active .WIFI {
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
+	background-position: left -325px, 0 -856px;
+}
+.setup-container .icon .voip-settings {
+	background-position: left -430px;
+}
+.setup-container .active .voip-settings {
+	background-image: url('../imgs/setup.png'),url('../imgs/setup.png');
+	background-position: left -430px, 0 -644px;
+}
+/*
+.setup-container .icon .general .focus {
+	background-image: url('../imgs/setup.png');
+	background-position: left -535px;
+}
+.setup-container .icon .iptv-settings .focus {
+	background-image: url('../imgs/setup.png');
+	background-position: left -646px;
+}
+.setup-container .icon .LAN .focus {
+	background-image: url('../imgs/setup.png');
+	background-position: left -746px;
+}
+.setup-container .icon .WIFI .focus {
+	background-image: url('../imgs/setup.png');
+	background-position: left -856px;
+}
+.setup-container .icon .voip-settings .focus {
+	background-image: url('../imgs/setup.png');
+	background-position: 1px -644px;
+}
+*/
+
+/*------------------------ General ---------------------------*/
+
+
+.general-wrapper {
+	text-align: center;
+	padding: 20px;
+	color: white;
+	height: 440px;
+	position: relative;
+	display: block;
+	width: auto;
+	background: transparent;
+}
+.general-wrapper > * {
+	margin: 0 auto;
+}
+.general-wrapper .general-content {
+	overflow-y: auto;
+	height: 435px;
+	position: relative;
+}
+.general-wrapper .general-head {
+	margin: 10px 0px;
+	font-size: 110%;
+	color: #99BEFA;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(139,139,147,1)), color-stop(49%,rgba(64,64,71,1)), color-stop(90%,rgba(11,11,12,1)));
+	border-radius: 5px;
+	border: thin solid #333;
+	padding: 7px 0px;
+	clear:both;
+}
+.general-wrapper .image-selector {
+	position: absolute;
+	width: 120px;
+	height: 90px;
+	z-index: 1;
+	background-image: url('../imgs/setup.png');
+	background-position: left 80px;
+	background-repeat: no-repeat;
+	background-size: cover;
+	right: 9px;
+	margin-top: -14px;
+	-webkit-transform: rotate(12deg);
+}
+.general-wrapper .image-selector.general {
+	background-position: left -8px;
+}
+.general-wrapper .image-selector.iptv {
+	background-position: left -115px;
+}
+.general-wrapper .image-selector.lannetworking {
+	background-position: left -215px;
+}
+.general-wrapper .image-selector.wifi {
+	background-position: left -325px;
+}
+.general-wrapper .image-selector.voip {
+	background-position: left -433px;
+}
+
+.general-wrapper .general-item {
+	margin: 0px 5px;
+	padding: 6px 0px;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(34, 35, 38, 1)), color-stop(81%,rgba(27, 28, 35, 1)), color-stop(100%,rgba(23, 25, 30, 1)));
+	border: 1px solid black;
+	font-size: 110%;
+	position: relative;
+}
+.general-wrapper .general-item .settings, .general-wrapper .general-head .settings {
+	display: inline-block;
+	width: 50%;
+	height: 30px;
+	line-height: 30px;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	font-weight: bold;
+	text-overflow: ellipsis;
+}
+.general-wrapper .general-item .value , .general-wrapper .general-head .value{
+    line-height: 30px;
+	display: inline-block;
+	width: 43%;
+	text-align: left;
+/*	font-size: 120%;*/
+	font-weight: bold;	
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.general-wrapper .general-content .section{
+	color: #CCC;
+	margin: 0;
+	overflow: hidden;
+	background: #111;
+	height: 0px;
+	margin: 0% 70%;
+	padding-top: 0;
+	border-radius: 3px;
+}
+.general-wrapper .general-content .section .row{
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(34, 35, 38, 1)), color-stop(81%,rgba(27, 28, 35, 1)), color-stop(100%,rgba(23, 25, 30, 1)));
+	border: 1px solid #3E5170;
+	margin: 4px 3px 1px 50px;
+	color: gainsboro;
+	font-size: 15px;
+	display: inline-block;
+	width: 46%;
+	float: right;
+	font-weight: bold;
+	padding: 7px 0;
+}
+.general-wrapper .general-content .section .active{
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(198, 222, 255, 0.9)), color-stop(4%,rgba(104, 151, 221, 0.75)), color-stop(5%,rgba(30, 105, 222, 0.45)), color-stop(34%,rgba(9, 25, 40, 0.72)), color-stop(50%,rgba(9, 25, 40, 0.87)), color-stop(80%,rgba(9, 25, 40, 0.6)), color-stop(96%,rgba(9, 25, 40, 0.45)), color-stop(98%,rgba(9, 25, 40, 0.75)), color-stop(100%,rgba(9, 25, 40, 0.9)));
+	border: 1px solid #1E69D1;
+}
+.general-wrapper .general-content .section.active {
+	height: auto;
+	border-radius: 3px;
+	margin: 0px 5px 0% 5px;
+	border: 1px solid grey;
+}
+.general-wrapper .general-item .value-option {
+	display: -webkit-inline-box;
+	width: 70px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(40, 52, 59, 1)), color-stop(64%,rgba(127, 133, 140, 1)), color-stop(64%,rgba(146, 150, 155, 1)), color-stop(100%,rgba(181, 189, 200, 1)));
+	border-radius: 14px;
+	margin-right: 31%;
+}
+@media all and (min-width: 320px) and (max-width: 480px) {
+	.general-wrapper .general-item .value-option {
+		margin-right: 24%;
+}
+}
+@media all and (min-width: 481px) and (max-width: 800px) {
+	.general-wrapper .general-item .value-option {
+		margin-right: 31%;
+}
+}
+@media all and (min-width: 801px) and (max-width: 1024px) {
+	.general-wrapper .general-item .value-option {
+		margin-right: 36%;
+}
+}
+@media all and (min-width: 1024px) and (max-width: 1280px) {
+	.general-wrapper .general-item .value-option {
+		margin-right: 37%;
+}
+}
+.general-wrapper .general-item .value-option .switch {
+	height: 27px;
+	width: 70px;
+	white-space: initial;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-webkit-transition: all 750ms ease-in-out;
+	vertical-align: -webkit-baseline-middle;
+	border-radius: 14px;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,87,0,1)), color-stop(33%,rgba(0,138,0,1)), color-stop(67%,rgba(82,177,82,1)), color-stop(83%,rgba(131,199,131,1)), color-stop(97%,rgba(180,221,180,1)));
+	margin-left: -0px;
+	text-align: center;
+	-webkit-box-shadow: inset 0px 0px 8px white;
+	color: white;
+	text-shadow: black 1px 1px;
+	line-height: 1.5;
+}
+.general-wrapper .general-item .value-option .switch.on {
+	margin-left: -70px;
+}
+.general-wrapper .general-item .value-option .switch-off {
+	height: 27px;
+	width: 70px;
+	white-space: initial;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-webkit-transition: all 750ms ease-in-out;
+	vertical-align: -webkit-baseline-middle;
+	border-radius: 14px;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(40,52,59,1)), color-stop(64%,rgba(127,133,140,1)), color-stop(64%,rgba(146,150,155,1)), color-stop(100%,rgba(181,189,200,1)));
+	text-align: center;
+	color: #ccc;
+	text-shadow: black 1px 1px;
+	line-height: 1.5;
+}
+.general-wrapper .general-content .general-item.active {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(198, 222, 255, 0.9)), color-stop(4%,rgba(104, 151, 221, 0.75)), color-stop(5%,rgba(30, 105, 222, 0.45)), color-stop(34%,rgba(9, 25, 40, 0.72)), color-stop(50%,rgba(9, 25, 40, 0.87)), color-stop(80%,rgba(9, 25, 40, 0.6)), color-stop(96%,rgba(9, 25, 40, 0.45)), color-stop(98%,rgba(9, 25, 40, 0.75)), color-stop(100%,rgba(9, 25, 40, 0.9)));
+	border: 1px solid #1E69D1;
+	border-radius: 2px;
+}
+.general-wrapper .general-content .general-item.inactive {
+	background: rgba(50, 50, 50, 0.5);
+	color: #999;
+}
+.general-wrapper .general-content .general-item.inactive.active {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,rgba(63,77,107,1)), color-stop(50%,rgba(22,27,43,1)), color-stop(51%,rgba(22,27,38,1)), color-stop(60%,rgba(19,23,33,1)), color-stop(100%,rgba(26,36,61,1)));
+	color: #999;
+	border-bottom-color: #323232;
+	border-left-color: rgba(255, 255, 255, 0.1);
+	border-right-color: #323232;
+	border-style: solid;
+	border-width: 1px;
+	border-top-color: #333;
+}
+
+.sadarjanie {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	margin-top: 1px;
+	
+	display: -moz-box;
+	-moz-box-pack: center;
+	-moz-box-align: center;
+	display: -webkit-box;
+	-webkit-box-pack: center;
+	-webkit-box-align: center;
+	display: box;
+	box-pack: center;
+	box-align: center;
+	vertical-align: middle;
+}
+
+@media all and (min-width: 1281px) {
+	.start {
+		font-size: 20px;
+	}
+}
+
+@media all and (min-width: 701px) and (max-width: 1280px) {
+	.start {
+		font-size: 16px;
+	}
+}
+
+@media all and (max-width: 700px) {
+	.start {
+		font-size: 11px;
+	}
+}
+
+.start {
+	margin: 20px auto;
+	border: 2px solid orange;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	padding: 35px 0 35px 0;
+	box-shadow: 0px 0px 15px gray;
+	-moz-box-shadow: 0px 0px 15px gray;
+	-webkit-box-shadow: 0px 0px 15px gray;
+	background: -moz-linear-gradient(63deg, #151515 5px, transparent 5px), -moz-linear-gradient(243deg, #151515 5px, transparent 5px), -moz-linear-gradient(63deg, #222222 5px, transparent 5px), -moz-linear-gradient(243deg, #222222 5px, transparent 5px), -moz-linear-gradient(0deg, #1B1B1B 10px, transparent 10px), -moz-linear-gradient(#1D1D1D 25%, #1A1A1A 25%, #1A1A1A 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
+	background: -webkit-radial-gradient(center, black 15%, transparent 16%), -webkit-radial-gradient(center, black 15%, transparent 16%), -webkit-radial-gradient(center, rgba(255, 255, 255, 0.0976563) 15%, transparent 20%), -webkit-radial-gradient(center, rgba(255, 255, 255, 0.0976563) 15%, transparent 20%);
+	background-color: #131313;
+	background-size: 10px 10px;
+	/*background: url('app/imgs/bg1.png');
+	background-size:100%;*/
+	
+	display: block;
+}
+
+.start .welcome {
+	color: #FF9933;
+	font-size: 230%;
+	text-align:center;
+	display: block;
+}
+
+.start ul.text {
+	font-size: 130%;
+	color: white;
+	width: 76%;
+	margin: 20px auto;
+	text-align: left;
+	display: block;
+}
+.start ul.text li {
+	margin-bottom: 8px;
+}
+/* deprecated */
+.tui-multiscreen .system-info {
+	margin-top: 45px;
+}
+.phoneWrapper {
+	width: 640px; 
+	height: 480px; 
+	overflow: hidden;
+	position: relative;
+}
+.phoneWrapper .divForScroll_telephony {
+	position: absolute;
+	top: -2400px;
+	left: 0;
+}
+
+
+/*@media all and (max-height: 500px) {*/
+/*	.callCenter {
+		width: 600px;
+		height: 440px;
+	}
+	.callCenter .phoneDisplay {
+		font-size: 250%;
+	    height: 40px;
+	    line-height: 40px;
+	    margin-top: 45px;
+	}
+	.callCenter .phoneDictionary {
+		height: 40px;
+	}
+	.callCenter .phoneBtn {
+		height: 60px;
+    	line-height: 67px;	
+    	font-size: 300%;
+	}
+	.callCenter .phoneKeyboard .addToPhone {
+		line-height: 27px;
+		font-size: 18px;
+	}
+	.callCenter .phoneKeyboard .phoneBtn .phoneImg {
+		height: 40px;
+	}  /*
+	
+/*	
+}
+*/
+
+ /*
+.callCenter {
+	text-align: center;
+	padding: 20px;
+}
+.callCenter > * {
+	margin: 0 auto;
+}
+.callCenter .phoneDisplay {
+    text-align: right;
+    width: 65%;
+	padding: 5px;
+	display: inline-block;
+	border-radius: 8px;
+	border: 4px solid #afafaf;
+	background-image: linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	background-image: -o-linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	background-image: -moz-linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	background-image: -webkit-linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	background-image: -ms-linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.58, rgb(255,255,255)),
+		color-stop(0.88, rgb(255,254,236))
+	);
+}
+.callCenter .phoneDisplay.active {
+	border: 4px solid #f1720b;
+}
+.callCenter .phoneKeyboard {
+	width: 100%;
+}
+.callCenter .phoneKeyboard .row {
+	padding: 10px;
+}
+.callCenter .phoneBtn {
+    width: 13%;	
+	display: inline-block;
+	border: 3px solid #afafaf;
+	border-radius: 8px;
+    font-weight: bold;
+    margin: 0 8px;
+    color: white;
+
+	background-image: linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	background-image: -o-linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	background-image: -moz-linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	background-image: -webkit-linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	background-image: -ms-linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.07, rgb(39,43,51)),
+		color-stop(0.8, rgb(89,91,105))
+	);
+}
+
+.callCenter .phoneKeyboard .active {
+	border: 3px solid #f1720b;
+	background-color: transparent;
+}
+.callCenter .active {
+	border: 4px solid #f1720b;
+	background-color: #e8e8e8;
+}
+*/
+
+/*-----------------------  phone book  ------------------------*/
+
+.phonebookWrapper {
+	text-align: center;
+	width: 600px;
+	height: 440px;
+	padding: 20px;
+	color: white;
+}
+.phonebookWrapper > * {
+	margin: 0 auto;
+}
+.phonebookWrapper .inputCont {
+	position: relative;
+	width: 70%;
+	display: inline-block;
+	margin-top: 50px;
+}
+.phonebookWrapper .inputCont .searchText {
+	font-style: italic; 
+	font-size: 130%; 
+	color: #cacaca;
+	position: absolute;
+	top: 15px;
+	left: 20px;
+}
+.phonebookWrapper input.searchInput {
+	font-size: 180%;
+    height: 30px;    
+    color: black;
+
+	text-align: left;
+    width: 90%;
+	padding: 5px;
+	display: inline-block;
+	border-radius: 8px;
+	border: 4px solid #afafaf;
+	background-image: linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	background-image: -o-linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	background-image: -moz-linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	background-image: -webkit-linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	background-image: -ms-linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.58, rgb(255,255,255)),
+		color-stop(0.88, rgb(255,254,236))
+	);
+
+}
+
+.phonebookWrapper .kbdButton {
+	display: inline-block;
+	padding: 5px 10px 5px 10px;
+	position: relative;
+	top: 3px;
+	left: 10px;
+	border-radius: 5px;
+	border: 2px solid transparent;
+	background-image: linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	background-image: -o-linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	background-image: -moz-linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	background-image: -webkit-linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	background-image: -ms-linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.07, rgb(39,43,51)),
+		color-stop(0.8, rgb(89,91,105))
+	);
+}
+.phonebookWrapper .kbdButton img {
+	height: 30px;
+}
+.phonebookWrapper .phoneBookResults {
+	overflow-y: auto;
+	height: 300px;
+	position: relative;
+}
+
+.phonebookWrapper .phoneBookResults .no-phonebook-entries:before {
+	content: "No entries";
+	color: white;
+}
+.phonebookWrapper .phonebookItem, .phonebookHeader {
+	background-color: #272b33;
+	margin-right: 5px;
+}
+/*.phonebookWrapper .phonebookItem.nobg {*/
+/*	background-color: transparent;*/
+/*	margin-top: 10px;*/
+/*	color: gray;*/
+/*}*/
+.phonebookWrapper .phonebookHeader {
+	background-color: transparent;
+	margin-top: 10px;
+	color: gray;
+}
+.phonebookWrapper .phonebookItem .name, .phonebookHeader .name {
+	display: inline-block;
+	width: 52%;
+	margin: 0 2px;
+	height: 30px;
+    line-height: 30px;
+	text-align: left;
+	font-size: 120%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.phonebookWrapper .phonebookItem .general, .phonebookHeader .general {
+	height: 30px;
+    line-height: 30px;
+	display: inline-block;
+	width: 22%;
+	margin: 0 2px;
+	text-align: left;
+	font-size: 120%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.phonebookWrapper .phonebookItem .ip, .phonebookHeader .ip {
+	height: 30px;
+    line-height: 30px;
+	width: 21%;
+	display: inline-block;
+	margin: 0 2px;
+	text-align: left;
+	font-size: 120%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.phonebookWrapper .phoneBookResults .phonebookItem.active {
+	background-color: #565965;
+}
+.phoneWrapper .phonebookWrapper .searchInput.active {
+	border: 4px solid #ffa500;
+}
+.phonebookWrapper .kbdButton.active {
+	border: 2px solid #ffa500;
+}
+
+/*----------------------- voice mail -------------------------*/
+
+.voiceMail {
+	text-align: center;
+	
+	width: 600px;
+	height: 440px;
+	padding: 20px;
+	color: white;
+}
+.voiceMail > * {
+	margin: 0 auto;
+}
+
+.voiceMail .voiceMailResults {
+	overflow-y: auto;
+	height: 365px;
+}
+.voiceMail .voiceMailResults .no-voicemail-messages:before {
+	content: "No entries";
+	color: white;
+}
+.voiceMail .voiceMailItem {
+	background-color: #272b33;
+	margin-right: 5px;
+}
+.voiceMail .voiceMailItem.nobg {
+	background-color: transparent;
+	margin-top: 45px;
+	color: gray;
+}
+.voiceMail .voiceMailItem .caller {
+	display: inline-block;
+	width: 65%;
+	margin: 0 2px;
+	height: 30px;
+    line-height: 30px;
+	text-align: left;
+	font-size: 120%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.voiceMail .voiceMailItem .time {
+	height: 30px;
+    line-height: 30px;
+	display: inline-block;
+	width: 32%;
+	margin: 0 2px;
+	text-align: left;
+	font-size: 120%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/*-------------------- call history --------------------*/
+
+.callHistory {
+	text-align: center;
+	
+	width: 600px;
+	height: 440px;
+	padding: 20px;
+	color: white;
+}
+.callHistory > * {
+	margin: 0 auto;
+}
+
+.callHistory .callHistoryResults {
+	overflow-y: auto;
+	height: 365px;
+}
+.callHistory .callHistoryResults .emptyScreen {
+	margin-top: 45px;
+}
+.callHistory .callHistoryResults .emptyScreen:before {
+	content: "No call history";
+	color: white;
+}
+.callHistory .callHistoryItem {
+	background-color: #272b33;
+	margin-right: 5px;
+}
+.callHistory .callHistoryItem.nobg {
+	background-color: transparent;
+	margin-top: 45px;
+	color: gray;
+}
+.callHistory .callHistoryItem .caller {
+	display: inline-block;
+	width: 35%;
+	margin: 0 2px;
+	height: 30px;
+    line-height: 30px;
+	text-align: left;
+	font-size: 120%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.callHistory .callHistoryItem .time {
+	height: 30px;
+    line-height: 30px;
+	display: inline-block;
+	width: 31%;
+	margin: 0 2px;
+	text-align: left;
+	font-size: 120%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.callHistory .callHistoryItem .duration {
+	height: 30px;
+    line-height: 30px;
+	display: inline-block;
+	width: 17%;
+	margin: 0 2px;
+	text-align: left;
+	font-size: 120%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.callHistory .callHistoryItem .type {
+	height: 30px;
+    line-height: 30px;
+	display: inline-block;
+	width: 10%;
+	margin: 0 2px;
+	text-align: left;
+	font-size: 120%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-align: center;
+}
+
+/*---------------------- send SMS -----------------------*/
+.sendSMS {
+	text-align: left;
+	
+	width: 600px;
+	height: 440px;
+	padding: 20px;
+	color: white;
+}
+
+.sendSMS .sendSmsHolder > * {
+	margin: 0;
+}
+.sendSMS .sendSmsHolder {
+	background-color: #212121;
+	padding: 30px 10px 0px;
+}
+.sendSMS .smsReceiver {
+	display: inline-block;
+	font-size: 120%;
+	margin-right: 8px;
+}
+.sendSMS .receiver {
+	font-size: 180%;
+    height: 30px;    
+    color: black;
+	display: inline-block;
+	text-align: left;
+    width: 60%;
+	padding: 5px;
+	margin-top: 5px;
+	border-radius: 8px;
+	border: 4px solid #afafaf;
+	background-image: linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	background-image: -o-linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	background-image: -moz-linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	background-image: -webkit-linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	background-image: -ms-linear-gradient(bottom, rgb(255,255,255) 58%, rgb(255,254,236) 88%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.58, rgb(255,255,255)),
+		color-stop(0.88, rgb(255,254,236))
+	);
+
+}
+.sendSMS .receiver.active {
+	border: 4px solid #f1720b;
+}
+.sendSMS .phoneBook.active {
+	border: 2px solid #f1720b;
+}
+.sendSMS .phoneBook {
+	display: inline-block;
+	padding: 4px 10px;
+	border-radius: 8px;
+	float: right;
+	margin-right: 5%;
+	border: 2px solid transparent;
+	
+	background-image: linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	background-image: -o-linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	background-image: -moz-linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	background-image: -webkit-linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	background-image: -ms-linear-gradient(bottom, rgb(39,43,51) 7%, rgb(89,91,105) 80%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.07, rgb(39,43,51)),
+		color-stop(0.8, rgb(89,91,105))
+	);
+
+}
+.sendSMS .phoneBook .phoneDictionary {
+	height: 40px;
+}
+.sendSMS .sendSmsHolder .messageName {
+	font-size: 120%;
+    margin-top: 25px;
+}
+
+.sendSMS .sendSmsHolder .message {
+	width: 80%;
+	margin: 20px 0 0 9%;
+	height: 172px;
+	background-color: black;
+	font-size: 120%;
+	padding: 4px;
+	border: 2px solid transparent;
+}
+.sendSMS .sendSmsHolder .message.active {
+	border: 2px solid #f1720b;
+}
+.sendSMS .sendSmsHolder .sendBtn {
+	display: inline-block;
+	margin: 20px 30px 10px 33%;
+	padding: 8px 20px;
+	background-color: #363636;
+	font-size: 120%;
+	border: 2px solid transparent;
+}
+.sendSMS .sendSmsHolder .clearBtn {
+	display: inline-block;
+	margin: 0;
+	padding: 8px 20px;
+	background-color: #363636;
+	font-size: 120%;
+	border: 2px solid transparent;
+}
+.sendSMS .sendSmsHolder .sendBtn.active {
+	border: 2px solid #f1720b;
+}
+.sendSMS .sendSmsHolder .clearBtn.active {
+	border: 2px solid #f1720b;
+}
+/*----------------------------  in call message  ------------------------------*/
+.inCallMessage {
+	text-align: center;
+	width: 600px;
+	height: 440px;
+	padding: 20px;
+	color: white;
+	
+	display: -moz-box;
+	-moz-box-pack: center;
+	-moz-box-align: center;
+	display: -webkit-box;
+	-webkit-box-pack: center;
+	-webkit-box-align: center;
+	display: box;
+	box-pack: center;
+	box-align: center;
+	vertical-align: middle;
+}
+.inCallMessage .callMessage {
+	text-align: center;
+}
+.inCallMessage .callMessage img {
+	height: 130px;
+}
+.inCallMessage .callMessage div {
+	font-size: 150%;
+}
+
+
+
+
+
+
+/*----------------------------  call-status  ------------------------------*/
+.call-container {
+	width: 600px;
+	height: 440px;
+	padding: 20px;
+	
+	display: -moz-box;
+	-moz-box-pack: center;
+	-moz-box-align: center;
+	display: -webkit-box;
+	-webkit-box-pack: center;
+	-webkit-box-align: center;
+	display: box;
+	box-pack: center;
+	box-align: center;
+	vertical-align: middle;
+	overflow: hidden;
+	position: relative;
+}
+.call-container .scroll-call {
+	height: 320px;
+	width: 100%;
+	overflow: auto;
+	left: 0;
+	top: -10px;
+	position: relative;
+	/* background-image:url(bg.svg);  */
+}
+
+.call-container .focus {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#8c7c70), color-stop(49%,#3f3730), color-stop(50%,#331f0f), color-stop(60%,#331f0f), color-stop(100%,#f28024));
+	-webkit-border-radius: 7px;
+}
+.scroll-call .call-status {
+	display: -webkit-inline-box;
+	margin-bottom: 40px;
+	width: 100%;
+}
+.scroll-call .call-status img {
+	height: 111px;
+	margin: 11px 20px 0 53px;
+}
+.scroll-call .call-status div {
+	font-size: 130%;
+	 /*display: -webkit-inline-box; */
+	margin-top: 5px;
+	color:#979797;
+	text-align:center;
+}
+.scroll-call .call-status .caller-name {
+	font-weight: bold;
+	display: block;
+	margin: 15px 40px 0;
+	color:#FFF;
+	font-size: 160%;
+}
+.scroll-call .call-status .caller-info {
+	font-weight: normal;
+	font-size: 100%;
+	text-align:center;
+}
+
+
+
+
+/*---------------------------  TELEPHONY Chooser  -------------------------------*/
+/*.telephonyChooser {*/
+/*	width: 640px;*/
+/*	height: 480px;*/
+/*	background-color: #333333;*/
+/*	*/
+/*	display: -moz-box;*/
+/*	-moz-box-pack: center;*/
+/*	-moz-box-align: center;*/
+/*	display: -webkit-box;*/
+/*	-webkit-box-pack: center;*/
+/*	-webkit-box-align: center;*/
+/*	display: box;*/
+/*	box-pack: center;*/
+/*	box-align: center;*/
+/*	vertical-align: middle;*/
+/*}*/
+/*.telephonyChooser .icon {*/
+/*	width: 120px;*/
+/*	height: 90px;*/
+/*	text-align: center;*/
+/*	display: inline-block;*/
+/*}*/
+/*.telephonyChooser .icon span {*/
+/*	color: white;*/
+/*	z-index:1;*/
+/*    font-size: 120%;*/
+/*    position: relative;*/
+/*    top: -22px;*/
+/*    margin: 0 auto;*/
+/*}*/
+/*.telephonyChooser .icon div {*/
+/*	-webkit-transition: all 0.2s ease-in; */
+/*	-moz-transition: all 0.2s ease-in; */
+/*	-o-transition: all 0.2s ease-in; */
+/*	-ms-transition: all 0.2s ease-in;*/
+/*	position: relative;*/
+/*	width: 120px;*/
+/*	height: 90px;*/
+/*}*/
+/*.telephonyChooser .icon.active div {*/
+/*	-webkit-transform: translate(0px,-30px); */
+/*	-moz-transform: translate(0px,-30px);*/
+/*	-o-transform: translate(0px,-30px);*/
+/*	-ms-transform: translate(0px,-30px);*/
+/*}*/
+.telephonyChooser .icon .voiceMailC {
+	background-image: url('app/imgs/telephonyIcons.png');
+	background-position: -3px -3px;
+	background-repeat:no-repeat;
+	z-index: 5;
+}
+.telephonyChooser .icon .callHistoryC {
+	background-image: url('app/imgs/telephonyIcons.png');
+	background-position: -3px -205px;
+	background-repeat:no-repeat;
+	z-index: 5;
+}
+.telephonyChooser .icon .callCenterC {
+	background-image: url('app/imgs/telephonyIcons.png');
+	background-position: -3px -103px;
+	background-repeat:no-repeat;
+	z-index: 5;
+}
+.telephonyChooser .icon .phonebookC{
+	background-image: url('app/imgs/telephonyIcons.png');
+	background-position: -3px -303px;
+	background-repeat:no-repeat;
+	z-index: 5;
+}
+.telephonyChooser .icon .sendSMSC {
+	background-image: url('app/imgs/telephonyIcons.png');
+	background-position: -3px -405px;
+	background-repeat:no-repeat;
+	z-index: 5;
+}
+
+/*------------------------------ !!! New Phone Keyboard --------------------------------------*/
+
+.phone-keyboard{
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+	width: 600px;
+	height: 440px;
+
+}
+
+.phone-keyboard .phone-btn {
+	-moz-border-bottom-colors: #323232;
+	-moz-border-image: none;
+	-moz-border-left-colors: rgba(255,255,255,0.3);
+	-moz-border-right-colors: #323232;
+	-moz-border-top-colors: #c8c7cc;
+	
+	
+	border-bottom-color: #323232;
+	border-left-color: rgba(255,255,255,0.3);
+	border-right-color: #323232;
+	border-top-color: #c8c7cc; 
+	
+	background: -moz-linear-gradient(top, rgba(139,139,147,1) 0%, rgba(64,64,71,1) 49%, rgba(11,11,12,1) 50%, rgba(64,64,73,1) 96%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(139,139,147,1)), color-stop(49%,rgba(64,64,71,1)), color-stop(50%,rgba(11,11,12,1)), color-stop(96%,rgba(64,64,73,1))); /* Chrome,Safari4+ */
+	
+	border-radius: 1px 1px 1px 1px;
+	border-style: solid;
+	border-width: 1px;
+	color: #FFFFFF;
+	font-weight: bolder;
+	display: inline-block;
+	padding: 3% 6%;
+	/* margin: 0 -2px; */
+	text-align: center;
+	/* text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3); */
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	font-family: "MS Reference Sans Serif";
+	font-size: 244%;
+	width:5%;
+}
+
+.phone-keyboard .calls {
+	height: 39px;
+}
+.phone-keyboard .up {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7a897a), color-stop(49%,#2f3d2f), color-stop(50%,#0f330f), color-stop(60%,#001400), color-stop(100%,#3c753c)); /* Chrome,Safari4+ */
+	height: 39px;
+}
+.phone-keyboard .del {
+	height: 39px;
+}
+.phone-keyboard .focus{
+	background: -moz-linear-gradient(top, rgba(142,129,125,1) 0%, rgba(66,53,50,1) 49%, rgba(51,22,15,1) 50%, rgba(51,22,15,1) 60%, rgba(168,77,57,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#8c7c70), color-stop(49%,#3f3730), color-stop(50%,#331f0f), color-stop(60%,#331f0f), color-stop(100%,#f28024)); 
+}
+.phone-keyboard .phoneBook{
+	height:39px;
+}
+
+.phone-keyboard .up .phone-image {
+	height: 27px;
+}
+
+.phone-keyboard .del .phone-image {
+	height: 27px;
+	margin-left: -5px;
+}
+.phone-keyboard .calls .phone-image {
+	height: 27px;
+	margin-left: -7px;
+}
+.phone-keyboard .phoneBook .phone-image {
+	height: 27px;
+}
+.phone-keyboard .row{
+	margin-top:0;
+	display:block;
+}
+
+
+.phone-keyboard .phoneDisplay {
+color: black;
+text-align: right;
+width: 70.5%;
+height: 30px;
+padding: 0px 9px 24px 9px;
+margin-bottom:8px;
+margin-top:40px;
+display: inline-block;
+line-height: 2;
+font-size: 30px;
+/* border-radius: 8px; */
+border: 2px solid #AFAFAF;
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(50%,rgba(243,243,243,1)), color-stop(51%,rgba(237,237,237,1)), color-stop(100%,rgba(255,255,255,1))); 
+}
+
+.tui-keyboard {
+	text-align: center;
+	height: 169px;
+}
+
+.tui-keyboard .kbdrow {
+    list-style: none;   
+}
+.tui-keyboard > ul {
+/*	margin: 0;*/
+	padding: 0;
+}
+.tui-keyboard .ul0 {
+	margin-left: 15px;
+}
+.tui-keyboard .ul1 {
+    margin-left: 30px;
+}
+.tui-keyboard .ul2 {
+    margin-left: 15px;
+}
+.tui-keyboard .ul3 {
+    margin-left: 15px;
+}
+.tui-keyboard .ul4 {
+    margin-left: 45px;
+}
+.tui-keyboard .kbdrow li {
+    border-radius: 3px;
+	width: 23px;
+	height: 20px;
+	display: block;
+	cursor: pointer;
+	margin: 3px;
+	float: left;
+	padding-top: 3px;
+	text-align: center;
+	color: #92B3E7;
+	border: 1px solid #3E5170;
+	font-weight: bold;
+}
+.tui-keyboard .kbdrow li.smallwidekey {
+    width: 54px;
+}
+.tui-keyboard .kbdrow li.widekey {
+    width: 84px;
+}
+.tui-keyboard .kbdrow li.spacek {
+    width: 143px;
+}
+.tui-keyboard .kbdrow li.activekey {
+	color: #E4EDFB;
+	background: #001C3D;
+	border: 1px solid #AEC9F4;
+}
+.weatherWrapper::-webkit-scrollbar-thumb {
+	background: none;
+}
+.weatherWrapper {
+	width: 640px;
+	height: 480px;
+	overflow: auto;
+	
+}
+.weatherScreen {
+	padding: 50px 0 20px 20px;
+	color: white;
+	width: 620px;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+.weatherScreen .weatherCity {
+	font-size: 120%;
+	color: #FFAB2D;
+	text-align: left;
+	position: fixed;
+	left: 20px;
+	top: 20px;
+	z-index: 10;
+}
+.weatherScreen .weatherDate {
+	text-align: center;
+	font-size: 110%;
+}
+.weatherScreen .weatherDay {
+	width: 290px;
+	height: 160px;
+	background-color: #252525;
+	border-radius: 8px;
+	display: inline-block;
+	margin-top: 18px;
+	margin-right: 9px;
+	margin-left: 2px;
+	float: left;
+	box-shadow: inset 0px 0px 5px #545454;
+	-webkit-box-shadow: inset 0px 0px 5px #545454;
+	-moz-box-shadow: inset 0px 0px 5px #545454;
+	
+	background-image: linear-gradient(bottom, rgb(41,46,56) 15%, rgb(22,24,26) 49%, rgb(41,46,56) 94%);
+	background-image: -o-linear-gradient(bottom, rgb(41,46,56) 15%, rgb(22,24,26) 49%, rgb(41,46,56) 94%);
+	background-image: -moz-linear-gradient(bottom, rgb(41,46,56) 15%, rgb(22,24,26) 49%, rgb(41,46,56) 94%);
+	background-image: -webkit-linear-gradient(bottom, rgb(41,46,56) 15%, rgb(22,24,26) 49%, rgb(41,46,56) 94%);
+	background-image: -ms-linear-gradient(bottom, rgb(41,46,56) 15%, rgb(22,24,26) 49%, rgb(41,46,56) 94%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.15, rgb(41,46,56)),
+		color-stop(0.49, rgb(22,24,26)),
+		color-stop(0.94, rgb(41,46,56))
+	);
+}
+.weatherScreen .weatherDay div {
+	font-size: 110%;
+	color: #CCCCCC
+}
+.weatherScreen .weatherDay div.weatherName {
+	color: #C17400;
+}
+
+.weatherScreen .weatherDay div.weatherDayTitle {
+	text-align: center;
+	font-size: 130%;
+	color: white;
+	margin: 8px 0;
+}
+.weatherScreen .weatherDay .icon {
+	width: 105px;
+	height: 90%;
+	float: left;
+	line-height: 160px;
+	padding-right: 10px;
+}
+.weatherScreen .weatherDay .icon img {
+	height: 74px;
+}
