@@ -5,13 +5,21 @@
 define([
 	'utils/listingapp'
 ], function(App){
-	return new App({
-		name: 'uservideo',
-		/**
-		 * This tells the app engine that the items in this screen support
-		 * resuming when playing, useful for user provided videos and VOD
-         * @type {boolean}
-		 */
-		canResume: true
-	});
+	return {
+		instance: null,
+		init: function() {
+			if (this.instance === null) {
+				this.instance = new App({
+					name: 'uservideo',
+					/**
+					 * This tells the app engine that the items in this screen support
+					 * resuming when playing, useful for user provided videos and VOD
+					 * @type {boolean}
+					 */
+					canResume: true
+				});
+			}
+			return this.instance;
+		}
+	};
 });

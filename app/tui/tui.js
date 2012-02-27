@@ -168,7 +168,7 @@ ConfigOptions, Paths, bind, array, Response, RemoteEvents, Player, exports) {
 			}
 		}
 		require([appobj.module], bind(function(appmodule) {
-			this.appModuleAdded(appmodule);
+			this.appModuleAdded(appmodule.init());
 		}, this));		
 	};
 	tui.prototype.getContainer = function() {

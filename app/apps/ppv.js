@@ -5,7 +5,13 @@
 define([
 	'utils/listingapp'
 ], function(App){
-	return new App({
-		name: 'ppv'
-	});
+	return {
+		instance: null,
+		init: function() {
+			if (this.instance===null) this.instance = new App({
+				name: 'ppv'
+			});
+			return this.instance;
+		}
+	};
 });

@@ -156,31 +156,32 @@ define([
 		delete this.unitsLoaded_;
 	};
     
-    /**
-     * Compose a new instance, as we will even only need one, thus no need to 
-     * export the constructor as module, just export the instance
-     */
-	var a = new Weather({
-		name: 'weather'
-	});
-    
-    /**
-     * Export global symbols for loading the JSONP requests to weatherbug
-     * Load the forcast
-     */
-	exports.exportSymbol('weather', {
-		name: 'load',
-		symbol: bind(a.load, a)
-	});
-    
-    /**
-     * Export global symbols for loading the JSONP requests to weatherbug
-     * Load the station information
-     */
-	exports.exportSymbol('weather', {
-		name: 'locationInfo',
-		symbol: bind(a.setLocationInfo, a)
-	});
-    
-	return a;
+    return {
+    	instance: null,
+    	init: function() {
+    		if (this.instance === null ) {
+    			this.instance = new Weather({
+					name: 'weather'
+				});
+				/**
+				 * Export global symbols for loading the JSONP requests to weatherbug
+				 * Load the forcast
+				 */
+				exports.exportSymbol('weather', {
+					name: 'load',
+					symbol: bind(this.instance.load, this.instance)
+				});
+		
+				/**
+				 * Export global symbols for loading the JSONP requests to weatherbug
+				 * Load the station information
+				 */
+				exports.exportSymbol('weather', {
+					name: 'locationInfo',
+					symbol: bind(this.instance.setLocationInfo, this.instance)
+				});
+			}
+			return this.instance;
+		}
+	};
 });

@@ -12,7 +12,7 @@ define([
 	'debug/logger',
 	'ui/popup'
 ], function(App, YTData, ytpartial, dom, bind, strings, Logger, Popups){
-    
+
     /**
      * Listing app that uses youtube as list source, can be used
      * as an example on how to bind other (different from sysmaster's) data
@@ -103,6 +103,9 @@ define([
 		YouTube.logger_.info('selection is ', this.selectionDialogOptions.actions[sIndex]);
 		this.model.resetSource(this.selectionDialogOptions.actions[sIndex]);
 	};
-	
-	return YouTube;
+	return {
+		init: function() {
+			return YouTube;
+		}
+	};
 });

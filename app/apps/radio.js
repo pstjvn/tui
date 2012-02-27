@@ -5,7 +5,13 @@
 define([
 	'utils/listingapp'
 ], function(App){
-	return new App({
-		name: 'radio'
-	});
+	return {
+		instance: null,
+		init: function() {
+			if (this.instance === null ) this.instance = new App({
+				name: 'radio'
+			});
+			return this.instance;
+		}
+	};
 });

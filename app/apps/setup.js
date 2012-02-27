@@ -124,14 +124,31 @@ define([
 			keys: ['return']
 		}
 	});
-	var Setup = new App({
-		name: 'setup',
-		miniscreens: [ Chooser , General, IPTV, lan, wifi, voip ],
-		deps: {
-			"run": 'fill_setup_json',
-			'newif': 1
+	return {
+		instance: null,
+		init: function() {
+			if (this.instance === null) {
+				this.instance = new App({
+					name: 'setup',
+					miniscreens: [ Chooser , General, IPTV, lan, wifi, voip ],
+					deps: {
+						"run": 'fill_setup_json',
+						'newif': 1
+					}
+				});
+				this.instance.fillContent = function(data) {};
+			}
+			return this.instance;
 		}
-	});
-	Setup.fillContent = function(data) {};
-	return Setup;
+	};
+//	var Setup = new App({
+//		name: 'setup',
+//		miniscreens: [ Chooser , General, IPTV, lan, wifi, voip ],
+//		deps: {
+//			"run": 'fill_setup_json',
+//			'newif': 1
+//		}
+//	});
+//	Setup.fillContent = function(data) {};
+//	return Setup;
 });

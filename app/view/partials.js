@@ -149,8 +149,6 @@ Partials.prototype.activate = function( data_index ) {
 	if (this.getData().length > data_index ) {
 		this.dataIndex = data_index;
 		this.activateItemInternal();
-	} else {
-		throw Error("Data index out of bound");
 	}
 };
 //

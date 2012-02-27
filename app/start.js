@@ -60,7 +60,17 @@ require([
 	'utils/miniscreenjson',
 	'utils/scrollable',
 	'tpl/setupminiscreen',
-	'tpl/setup_chooser'
+	'tpl/setup_chooser',
+	'apps/iptv',
+	'apps/aod',
+	'apps/games',
+	'apps/ppv',
+	'apps/radio',
+	'apps/setup',
+	'apps/uvideo',
+	'apps/vod',
+	'apps/weather',
+	'apps/youtube'
 ], function(LoadIndicator, ConfigOptions, dom, Response, Request, TUI, RemoteEvents, Player,
 LogKeeper, SimpleConsole) {
 	// Show loading indication to user first thing
