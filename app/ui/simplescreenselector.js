@@ -171,6 +171,13 @@ bind, Logger) {
 		this.baloon = dom.create('p', {
 			classes: 'text-baloon'
 		});
+		this.baloon_wrapper = dom.create('div', {
+			style: 'position: absolute; right: 200px; display: table; height: 100%; top:0;',
+			html: '<div style=" display: table-cell; vertical-align: middle; ">'
+		});
+		this.baloon_wrapper.firstChild.appendChild(this.baloon);
+		this.baloon_wrapper.firstChild.appendChild(dom.create('p', {
+			style: 'content: ""; position: absolute; border-style: solid; display: -webkit-inline-box; width: 0; border-color: transparent hsl(204, 70%, 38%); top: 49%; right: -40px; border-width: 10px 0 10px 40px;' }));
 	};
 	
 	AppSelector.prototype.relocateTo = function( seq ) {
@@ -190,9 +197,9 @@ bind, Logger) {
 	AppSelector.prototype.updateBaloonInfo = function( text ) {
 		if ( text && text.length > 0 ) {
 			this.baloon.innerHTML = text;
-			dom.adopt(this.baloon);
+			dom.adopt(this.baloon_wrapper);
 		} else {
-			dom.dispose(this.baloon);
+			dom.dispose(this.baloon_wrapper);
 		}		
 	};
 	

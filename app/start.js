@@ -93,7 +93,6 @@ LogKeeper, SimpleConsole) {
 		if ( res.status == 'OK') {
             // Eval them in the global context as they do not include rjs 
             // wrpaper
-            console.log(res.content)
 			eval(res.content);
 		}
 	});
@@ -161,7 +160,6 @@ LogKeeper, SimpleConsole) {
 	});
 	
 	var tui = TUI.getInstance();
-	console.log('And now tui is : ', tui);
 	
 	RemoteEvents.addHandlers({
 		/** 

@@ -81,24 +81,23 @@ The 'glower' indicating the active app in the selector
     width: 173px;
     z-index: 2000;
 }
-.text-baloon::after {
-content: "";
-position: absolute;
-bottom: auto;
-left: auto;
-border-width: 15px 0 0 40px;
-border-style: solid;
-display: block;
-width: 0;
-border-color: transparent hsl(204, 62%, 44%);
-top: 6px;
-right: -35px;
-}
+
+/*.text-baloon::after {*/
+/*content: "";*/
+/*position: relative;*/
+/*bottom: auto;*/
+/*left: auto;*/
+/*border-width: 15px 0 0 40px;*/
+/*border-style: solid;*/
+/*display: block;*/
+/*width: 0;*/
+/*border-color: transparent hsl(204, 62%, 44%);*/
+/*top: -140px;*/
+/*right: -350px;*/
+/*}*/
 
 .text-baloon {
-position: relative;
 padding: 15px;
-margin: 1em 0 3em;
 color: white;
 background: hsl(207, 91%, 31%);
 background: -webkit-gradient(linear, 0 0, 0 100%, from(hsl(204, 62%, 47%)), to(hsl(207, 91%, 31%)));
@@ -109,9 +108,8 @@ background: linear-gradient(hsl(204, 62%, 47%), hsl(207, 91%, 31%));
 -moz-border-radius: 10px;
 border-radius: 10px;
 width: 340px;
-bottom: 300px;
-left: 80px;
 font-size: 18px;
+/*margin-top: 120px;*/
 }
 /**
 Styles for the audio player, used when audio streams are played

@@ -202,6 +202,13 @@ ConfigOptions, Paths, bind, array, Response, RemoteEvents, Player, exports) {
 		this.setPanels( false, false );
 		classes.addClasses( this.getContainer(), 'obscure' );
 	};
+    tui.prototype.refreshLists = function() {
+        this.logger_.warn('refreshing the list');
+        this.lastRefreshTimeStamp_ = dt.getCurrentTime();
+        if ( array.has( tui.listingApp, this.currentActiveApp.name ) ) {
+            this.appModuleAdded( this.currentActiveApp );
+        }
+    };
 	tui.prototype.handleAppSignals = function(type, opts) {
 		switch ( type ) {
 			case 'ready':

@@ -61,10 +61,11 @@ define([
 				case 'cmd':
 					switch (this.json['event']['action']) {
 						case 'reloadconfig':
-							exportSymbols.tui.instance.refreshConfig();
+							exportedSymbols.tui.instance.refreshConfig();
 							break;
 						case 'refreshdata':
-							exportSymbols.tui.instance.refreshLists();
+                            // Find out about refreshlists
+							exportedSymbols.tui.instance.refreshLists();
 							break;
 						case 'reloadinterface':
 							this.logger_.info("Reload interface came from remote");
