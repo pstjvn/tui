@@ -274,6 +274,8 @@ request, response, json, Partials, cloner, NFList, jpaths, TUI, Dialogs, Player)
 			url["password"] = val;
 		}
 		var req = request.create('calld', url);
+        // Notify data structure for locking
+        this.updateInProcess = true;
 		response.register(req, bind(this.handleUpdate, this, this.dialogInstance.index, this.dialogInstance.action));
 		req.send();
 		this.dialogInstance.object = null;
@@ -298,7 +300,8 @@ request, response, json, Partials, cloner, NFList, jpaths, TUI, Dialogs, Player)
 		} else {
 			Dialogs.createDialog('message', undefined, undefined, strings.lists.actionFailed);
 		}
-
+        // unlock data structure
+        this.updateInProcess = false;
 	};
 	ListApp.prototype.updateItem = function( index, obj) {
 		this.presentation.updateItem(index, obj);

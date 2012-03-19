@@ -212,17 +212,25 @@ define([
 				this.setActiveChannel(this.onscreen_[index - this.dataPointer_ ]);
 			} else {
 				if ( index > this.dataPointer_ + this.rows_ - 1) {
-					//selectirame posledniq element v vidimata chast
+					// Select the last element to make the jump vusaly aestetic
 					this.setActiveChannel(this.onscreen_[this.onscreen_.length-1]);
-					//namirame kolko sled posledniq element e tyrseniq
+					// Make large jumps easy on the calculation
 					jumps = index - ( this.dataPointer_ + this.rows_ - 1);
+                    if ( jumps > ( (this.rows_ * 2 ) + 3) ) {
+                        this.dataPointer_ = index - (( this.rows_ * 2 ) + 3);
+                        jumps = index - ( this.dataPointer_ + this.rows_ - 1);
+                    }
+                    
 					this.iterateRotationTimes_( jumps, 'down');
 					this.setActiveChannel(this.onscreen_[this.onscreen_.length-1]);
 				} else if ( index < this.dataPointer_ ) {
-					//selectirame purviq element v vidimata zona
 					this.setActiveChannel( this.onscreen_[0]);
-					//namirame kolko predi purviq kanal tr da rotirame
 					jumps = this.dataPointer_ - index;
+                    if ( jumps > ( this.rows_ * 2 ) )  {
+                        this.dataPointer_ = index + ( this.rows_ * 2 );
+                        jumps = this.dataPointer_ - index;
+                    }
+                    
 					this.iterateRotationTimes_( jumps, 'up');
 					this.setActiveChannel( this.onscreen_[0]);
 				}
@@ -317,9 +325,9 @@ define([
 	NFList.prototype.unhide = function() {
 		this.reEnterDom();
 	};
-	NFList.prototype.updateItem = function(index, channel){
+	NFList.prototype.updateItem = function(index, data){
 		if ( this.indexIsVisible(index) ) {
-			this.setItemsContent();
+            this.populateItem( this.activeChannelElement_, data );
 		}
 	};
 

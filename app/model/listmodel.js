@@ -63,7 +63,7 @@ strings, jpaths, LoadIndicator, TUI){
      * @param {Object.<string>} ev Should contain at least the action
      */
 	Storage.prototype.acceptEvent = function(ev) {
-		if (this.isLoading) {
+		if (this.isLoading || this.app.updateInProcess) {
             return;
 		}
 		var step = this.app.presentation.getStep();
@@ -105,11 +105,15 @@ strings, jpaths, LoadIndicator, TUI){
 		case 'down':
 			if (this.currentIndex + step < this.pointer.length) {
 				this.app.presentation.activate(this.currentIndex + step);
+			} else {
+                this.app.presentation.activate(0);
 			}
 			break;
 		case 'up':
 			if (this.currentIndex - step > -1) {
 				this.app.presentation.activate(this.currentIndex - step);
+			} else {
+                this.app.presentation.activate( this.data.list.length-1 );
 			}
 			break;	
 		case 'ok':
@@ -286,7 +290,7 @@ strings, jpaths, LoadIndicator, TUI){
 			return true;
 		} else {
 			return false;
-		}	
+		}
 	};
     
     /**
