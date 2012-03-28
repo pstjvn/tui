@@ -93,7 +93,8 @@ request, response, json, Partials, cloner, NFList, jpaths, TUI, Dialogs, Player)
 		}
 	};
 	ListApp.prototype.onShowScreen = function() {
-		this.presentation.show(this.container);
+		this.presentation.show(this.container, this.forceRedraw_);
+		this.forceRedraw_ = false;
 		if ( this.model.get().length > 0) this.presentation.activate(0);
 	};
 	ListApp.numerics_ = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
@@ -229,6 +230,11 @@ request, response, json, Partials, cloner, NFList, jpaths, TUI, Dialogs, Player)
 			actions : actions
 		};
 		Dialogs.createDialog('optionlist', this.dialogInstance.options, bind(this.handleDialogSelection, this), strings.components.dialogs.select);
+	};
+	ListApp.prototype.forceRedraw_ = false;
+	ListApp.prototype.cancelData = function() {
+		this.model.wipe();
+		this.forceRedraw_ = true;
 	};
 	ListApp.prototype.handleDialogSelection = function(selectedIndex) {
 		var action;

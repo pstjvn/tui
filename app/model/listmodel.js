@@ -41,7 +41,16 @@ strings, jpaths, LoadIndicator, TUI){
 		this.lastLoadedTS = null;
 	};
 	inherit(Storage, Disposable);
-    
+    Storage.prototype.wipe = function() {
+		this.history.length = 0;
+		this.currentIndex = 0;
+		this.data.list.length = 0;
+		this.data.dirs = {};
+		this.data.epg = null;
+		this.isLoaded = false;
+		this.isLoading = false;
+		this.pointer = this.data.list;
+	};
     /**
      * Loads the data from server
      * @param {Object} o Object

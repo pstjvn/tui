@@ -29,7 +29,7 @@ ConfigOptions, Paths, bind, array, Response, RemoteEvents, Player, exports) {
 	};
 	
 	
-	tui.listingApp = ['iptv', 'vod', 'ppv', 'aod', 'radio'];
+	tui.listingApp = ['iptv', 'vod', 'ppv', 'aod', 'radio', 'uservideo'];
 	tui.prototype.getPaths = function() {
 		return this.paths_;
 	};
@@ -68,7 +68,7 @@ ConfigOptions, Paths, bind, array, Response, RemoteEvents, Player, exports) {
 		this.keyboardInputHandler_ = tui.defaultKeyboardInputHandler;
 	};
 	tui.prototype.setKeyboardInputHandler = function( method ) {
-		this,keyboardInputHandler_ = method;
+		this.keyboardInputHandler_ = method;
 	};
 	tui.prototype.currentAppHasModelWithChannels = function() {
 		if ( this.currentActiveApp ) {
@@ -206,6 +206,7 @@ ConfigOptions, Paths, bind, array, Response, RemoteEvents, Player, exports) {
         this.logger_.warn('refreshing the list');
         this.lastRefreshTimeStamp_ = dt.getCurrentTime();
         if ( array.has( tui.listingApp, this.currentActiveApp.name ) ) {
+			this.currentActiveApp.cancelData();
             this.appModuleAdded( this.currentActiveApp );
         }
     };
