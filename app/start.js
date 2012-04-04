@@ -160,7 +160,12 @@ LogKeeper, SimpleConsole) {
 	});
 	
 	var tui = TUI.getInstance();
-	
+	var __startBrowser = function(key) {
+		if ( key == 'display') {
+			(Request.create('display', { 'page': 'ui' })).send();
+			exportedSymbols.tui.instance.restoreEventTree(__startBrowser);
+		}
+	};
 	RemoteEvents.addHandlers({
 		/** 
 		* Handle the player visibility/activity
@@ -207,6 +212,14 @@ LogKeeper, SimpleConsole) {
 			name: 'setup',
 			func: tui.selectApp,
 			attached: false			
+		},
+		loadWebBrowser: {
+			name: 'web',
+			func: function() {
+				(Request.create('display', { 'page': 'browser' })).send();
+				exportedSymbols.tui.instance.stealEvents(__startBrowser);
+			},
+			attached: false
 		}
 	});
 	Response.setRemoteKeyHandler(RemoteEvents.defaultEventAccepter);

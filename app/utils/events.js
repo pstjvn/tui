@@ -19,7 +19,7 @@ define([
 		'play', 'stop', 'ff', 'rw', 'rec', 'save',
 		'power',
 		'delete',
-		'setup','video','audio'
+		'setup','video','audio', 'web'
 	];
 	var numbers =  ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
 	var defHandler = function(useraction) {};
