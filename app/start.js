@@ -43,14 +43,15 @@ require([
 	'tui/tui',
 	'utils/events',
 	'ui/player',
-	'debug/log-keeper',
-	'debug/simple-console'
+	'debug/log-keeper',	
+	'debug/simple-console',	
+	'ui/simplescreenselector'
 	
 	// From here on the preloading is forced
 	// Do preload some useful files
 	// DO NOT preload app files as server side 
 	// settings will be ignored as the apps are loaded immediately
-	,'apps/youtube',
+	, 'apps/youtube',
 	'apps/weather',
 	'ui/epgvisual',
 	'tpl/infobuttons',
@@ -72,7 +73,7 @@ require([
 	'apps/weather',
 	'apps/youtube'
 ], function(LoadIndicator, ConfigOptions, dom, Response, Request, TUI, RemoteEvents, Player,
-LogKeeper, SimpleConsole) {
+LogKeeper, SimpleConsole, AppSelector) {
 	// Show loading indication to user first thing
 	LoadIndicator.show();
 	//Create the main container and put it on the page
@@ -222,6 +223,11 @@ LogKeeper, SimpleConsole) {
 			attached: false
 		}
 	});
+	
+	AppSelector.saveShortCut_( 'setup', 'setup' );
+	AppSelector.saveShortCut_( 'video', 'iptv' );
+	AppSelector.saveShortCut_( 'audio', 'radio' );
+	
 	Response.setRemoteKeyHandler(RemoteEvents.defaultEventAccepter);
 	if (ConfigOptions.DEBUG) {
 		LogKeeper.getInstance().setLogLevel( LogKeeper.Levels.ALL );

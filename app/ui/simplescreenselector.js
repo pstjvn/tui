@@ -130,15 +130,17 @@ bind, Logger) {
 	
 	AppSelector.boundSaveShirtCut = null;
 	
-	AppSelector.prototype.saveShortCut = function( key ) {
-		this.logger_.info('Received shortcut to save now')
+	AppSelector.prototype.saveShortCut = function( key, appname ) {
 		if ( array.has( Mevents.getNumberEvent(), key ) ) {
-			this.shortCuts_[key] = dom.dataGet( this.currenScreen, 'appname' );
-			window.localStorage.setItem( 'shortcuts',
-					json.serialize( this.shortCuts_ ));
+			this.saveShortCut_( key, appname );
 		}
-		this.logger_.info('Try to restore events tree');
 		this.controllerInstance_.restoreEventTree( AppSelector.boundSaveShirtCut );		
+	};
+	
+	AppSelector.prototype.saveShortCut_ = function( key, appname ) {
+		this.shortCuts_[key] = appname || dom.dataGet( this.currenScreen, 'appname' );
+		window.localStorage.setItem( 'shortcuts',
+				json.serialize( this.shortCuts_ ));
 	};
 	
 	AppSelector.prototype.executeShortCut = function( key ) {

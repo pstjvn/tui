@@ -291,8 +291,7 @@ ConfigOptions, Paths, bind, array, Response, RemoteEvents, Player, exports) {
 	};
 	
 	tui.prototype.selectApp = function(key) {
-		var apptag = ( key === 'video') ? 'iptv' : (key === 'audio') ? 'radio': key;
-		AppSelector.remoteSelectScreen( apptag );
+		AppSelector.executeShortCut( key );
 	};
 		
 	return tui;
