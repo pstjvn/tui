@@ -179,7 +179,8 @@ response, bind, json, Dialogs ) {
 		if ( new_value != record_value) {
 			dom.$('.value', this.getDataNodes()[this.selectedIndex]).textContent = record['values'][new_value];
 			this.isDirty_ = true;
-			this.updates_[record_name] = new_value;
+			this.updates_[encodeURIComponent(record_name)] = encodeURIComponent(new_value);
+			if ( record['servicedata']) this.updates_['servicedata'] = record['servicedata'];
 		}
 		this.deactivateItem();
 	};

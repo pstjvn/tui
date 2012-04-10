@@ -18,9 +18,9 @@ define([
 		req.send();
 	};
 	MS.prototype.loadData = function(data) {
-		if (data.status === 'OK')
+		if (data.status === 'OK') {
 			this.commonData_ = json.parse(data.content);
-		else this.commonData_ = {};
+		} else this.commonData_ = {};
 		this.depsLoaded_ = true;
 		if (!this.isRendered) {
 			this.fire('start-ready');
